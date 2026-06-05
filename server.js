@@ -626,7 +626,7 @@ app.post('/api/create-payment', async (req, res) => {
         }],
         expire_in_days: 3,
         transaction_origin: 'api',
-        postback_url: `${process.env.BASE_URL || 'https://ativacacambas.onrender.com'}/api/webhook/pagamento`
+        postback_url: `${process.env.BASE_URL || 'https://reidacacambinha.onrender.com'}/api/webhook/pagamento`
     };
 
     console.log('Enviando para Plumify:', JSON.stringify(payload, null, 2));
