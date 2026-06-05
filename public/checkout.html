@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento - Ativa Caçambas</title>
+    <title>Finalizar Pedido - Ativa Caçambas</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -14,53 +15,120 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0f14;
-            color: #ffffff;
+            background: linear-gradient(135deg, #f5f7fa 0%, #fff 100%);
+            min-height: 100vh;
             padding: 40px 20px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 32px;
-            border-left: 4px solid #ffd700;
-            padding-left: 20px;
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #1a1a2e;
+            padding: 12px 28px;
+            border-radius: 60px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: #ffd700;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .logo p {
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        /* Checkout Grid */
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Left Side - Form */
+        .form-section {
+            background: white;
+            border-radius: 32px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #ffd700;
+            display: inline-block;
+        }
+
+        /* Payment Methods */
         .payment-methods {
             display: flex;
             gap: 16px;
             margin-bottom: 32px;
         }
 
-        .method-btn {
+        .method-card {
             flex: 1;
-            padding: 16px;
-            background: #1a2a22;
-            border: 1px solid #333;
-            border-radius: 12px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
             cursor: pointer;
             text-align: center;
-            font-weight: 600;
+            transition: all 0.2s;
         }
 
-        .method-btn.active {
+        .method-card i {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .method-card span {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .method-card.active {
             border-color: #ffd700;
-            background: #ffd70020;
+            background: #fff9e6;
+        }
+
+        .method-card.active i,
+        .method-card.active span {
             color: #ffd700;
         }
 
-        .payment-form {
-            background: #1a2a22;
-            border-radius: 24px;
-            padding: 32px;
-            border: 1px solid #333;
-        }
-
+        /* Form Groups */
         .form-group {
             margin-bottom: 20px;
         }
@@ -68,24 +136,27 @@
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
-            color: #ffd700;
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 0.85rem;
         }
 
-        input {
+        input, select {
             width: 100%;
-            padding: 14px;
-            background: #0a0f14;
-            border: 1px solid #333;
-            border-radius: 12px;
-            color: white;
+            padding: 14px 16px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
             font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #ffd700;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.1);
         }
 
         .row-2 {
@@ -94,9 +165,121 @@
             gap: 16px;
         }
 
-        .btn-pay {
+        /* PIX Section */
+        .pix-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .qrcard {
+            background: #f8f9fa;
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .qrcode-wrapper {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        #qrcode {
+            width: 200px;
+            height: 200px;
+        }
+
+        #qrcode img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pix-code-box {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 16px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 11px;
+            color: #6c757d;
+            text-align: left;
+        }
+
+        /* Right Side - Order Summary */
+        .order-summary {
+            background: #1a1a2e;
+            border-radius: 32px;
+            padding: 32px;
+            color: white;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,215,0,0.3);
+        }
+
+        .product-preview {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            margin-bottom: 24px;
+        }
+
+        .product-icon {
+            width: 60px;
+            height: 60px;
+            background: #ffd70020;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .product-info h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .product-info p {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffd700;
+            border-top: 2px solid #ffd700;
+            margin-top: 16px;
+        }
+
+        .btn-primary {
             background: #ffd700;
-            color: #0a1a0f;
+            color: #1a1a2e;
             font-weight: 700;
             padding: 16px;
             border: none;
@@ -105,65 +288,122 @@
             cursor: pointer;
             width: 100%;
             margin-top: 24px;
+            transition: all 0.2s;
         }
 
-        .qrcode-area {
+        .btn-primary:hover {
+            background: #e6c200;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #ffd700;
+            color: #ffd700;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: #ffd70020;
+        }
+
+        .btn-generate {
+            background: #ffd700;
+            color: #1a1a2e;
+            font-weight: 700;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .loading {
             text-align: center;
-            padding: 20px;
+            padding: 40px;
+            color: #ffd700;
         }
 
-        .qrcode {
-            background: white;
-            padding: 20px;
-            display: inline-block;
+        .error {
+            color: #dc3545;
+            text-align: center;
+            padding: 16px;
+            background: #f8d7da;
             border-radius: 16px;
-            margin-bottom: 16px;
         }
 
         .hidden {
             display: none;
         }
 
-        .total {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #ffd700;
-        }
-
-        .error {
-            color: #ff4444;
-            text-align: center;
-            padding: 10px;
+        .badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Finalizar pedido</h1>
-        <div class="total" id="totalValor">Carregando...</div>
-        
-        <div class="payment-methods">
-            <div class="method-btn active" onclick="metodoPagamento('pix')">PIX</div>
-            <div class="method-btn" onclick="metodoPagamento('cartao')">Cartão de Crédito</div>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-dumpster"></i>
+            <div>
+                <h1>Ativa Caçambas</h1>
+                <p>Locação de caçambas | Curitiba - PR</p>
+            </div>
         </div>
-        
-        <div class="payment-form">
-            <div id="pixSection">
-                <div class="qrcode-area">
-                    <div id="qrcodeImg" class="qrcode">Clique em Gerar PIX</div>
-                    <button class="btn-pay" id="btnGerarPix" onclick="gerarPix()">GERAR PIX</button>
-                    <button class="btn-pay hidden" id="btnCopiarPix" onclick="copiarQrCode()">Copiar código PIX</button>
+    </div>
+
+    <div class="checkout-grid">
+        <!-- LEFT SIDE - FORMULÁRIO -->
+        <div class="form-section">
+            <h2 class="section-title">Forma de pagamento</h2>
+
+            <div class="payment-methods">
+                <div class="method-card active" onclick="metodoPagamento('pix')">
+                    <i class="fas fa-qrcode"></i>
+                    <span>PIX</span>
+                </div>
+                <div class="method-card" onclick="metodoPagamento('cartao')">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Cartão de Crédito</span>
                 </div>
             </div>
-            
+
+            <!-- PIX SECTION -->
+            <div id="pixSection">
+                <div class="qrcard">
+                    <div id="pixLoading" class="loading">
+                        <i class="fas fa-spinner fa-pulse"></i> Clique em Gerar PIX
+                    </div>
+                    <div id="pixError" class="error hidden"></div>
+                    <div id="qrcodeWrapper" class="qrcode-wrapper hidden">
+                        <div id="qrcode"></div>
+                    </div>
+                    <div id="pixCodeDiv" class="pix-code-box hidden"></div>
+                    <button class="btn-generate" id="btnGerarPix" onclick="gerarPix()">
+                        <i class="fas fa-bolt"></i> Gerar PIX
+                    </button>
+                    <button class="btn-secondary hidden" id="btnCopiarPix" onclick="copiarQrCode()">
+                        <i class="fas fa-copy"></i> Copiar código PIX
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARTÃO SECTION -->
             <div id="cartaoSection" class="hidden">
                 <div class="form-group">
                     <label>Nome no cartão</label>
@@ -184,168 +424,232 @@
                     </div>
                 </div>
             </div>
-            
-            <button class="btn-pay" id="btnConfirmar" onclick="confirmarPagamento()">Confirmar pagamento</button>
+
+            <button class="btn-primary" id="btnConfirmar" onclick="confirmarPagamento()">
+                <i class="fas fa-check-circle"></i> Confirmar pagamento
+            </button>
+        </div>
+
+        <!-- RIGHT SIDE - RESUMO DO PEDIDO -->
+        <div class="order-summary">
+            <div class="summary-title">
+                <i class="fas fa-receipt"></i> Resumo do pedido
+            </div>
+            <div class="product-preview">
+                <div class="product-icon" id="produtoIcone">
+                    <i class="fas fa-dumpster"></i>
+                </div>
+                <div class="product-info">
+                    <h4 id="produtoNome">Carregando...</h4>
+                    <p>Locação / Serviço</p>
+                </div>
+            </div>
+
+            <div class="price-line">
+                <span>Subtotal</span>
+                <span id="subtotal">R$ 0,00</span>
+            </div>
+            <div class="price-line">
+                <span>Taxa de serviço</span>
+                <span>Grátis</span>
+            </div>
+            <div class="total-line">
+                <span>Total</span>
+                <span id="totalValor">R$ 0,00</span>
+            </div>
+
+            <div style="margin-top: 24px; text-align: center; font-size: 0.7rem; color: #888;">
+                <i class="fas fa-lock"></i> Pagamento seguro
+            </div>
         </div>
     </div>
+</div>
 
-    <script>
-        let metodoAtual = 'pix';
-        let clienteId = localStorage.getItem('cliente_id');
-        let produtoId = localStorage.getItem('produto_id');
-        let produtoNome = localStorage.getItem('produto_nome');
-        let produtoPreco = parseFloat(localStorage.getItem('produto_preco'));
-        let clienteNome = localStorage.getItem('cliente_nome');
-        let clienteCpf = localStorage.getItem('cliente_cpf');
-        let clienteTelefone = localStorage.getItem('cliente_telefone');
+<script>
+    let metodoAtual = 'pix';
+    let clienteId = localStorage.getItem('cliente_id');
+    let produtoId = localStorage.getItem('produto_id');
+    let produtoNome = localStorage.getItem('produto_nome');
+    let produtoPreco = parseFloat(localStorage.getItem('produto_preco'));
+    let clienteNome = localStorage.getItem('cliente_nome');
+    let clienteCpf = localStorage.getItem('cliente_cpf');
+    let clienteTelefone = localStorage.getItem('cliente_telefone');
+    
+    let currentPixCode = '';
+    let qrcodeInstance = null;
+    
+    // Atualizar resumo
+    document.getElementById('produtoNome').innerHTML = produtoNome || 'Produto';
+    document.getElementById('subtotal').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
+    document.getElementById('totalValor').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
+    
+    function metodoPagamento(metodo) {
+        metodoAtual = metodo;
+        document.querySelectorAll('.method-card').forEach(card => card.classList.remove('active'));
+        event.target.closest('.method-card').classList.add('active');
         
-        let currentPixCode = '';
-        
-        document.getElementById('totalValor').innerHTML = `Total: R$ ${produtoPreco.toFixed(2)}`;
-        
-        function metodoPagamento(metodo) {
-            metodoAtual = metodo;
-            document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (metodo === 'pix') {
-                document.getElementById('pixSection').classList.remove('hidden');
-                document.getElementById('cartaoSection').classList.add('hidden');
-                document.getElementById('qrcodeImg').innerHTML = 'Clique em Gerar PIX';
-                document.getElementById('btnGerarPix').classList.remove('hidden');
-                document.getElementById('btnCopiarPix').classList.add('hidden');
-            } else {
-                document.getElementById('pixSection').classList.add('hidden');
-                document.getElementById('cartaoSection').classList.remove('hidden');
-            }
+        if (metodo === 'pix') {
+            document.getElementById('pixSection').classList.remove('hidden');
+            document.getElementById('cartaoSection').classList.add('hidden');
+        } else {
+            document.getElementById('pixSection').classList.add('hidden');
+            document.getElementById('cartaoSection').classList.remove('hidden');
+        }
+    }
+    
+    function mostrarQrCode(pixCode) {
+        if (qrcodeInstance) {
+            document.getElementById('qrcode').innerHTML = '';
         }
         
-        async function gerarPix() {
-            const btnGerar = document.getElementById('btnGerarPix');
-            const qrcodeDiv = document.getElementById('qrcodeImg');
+        document.getElementById('pixLoading').classList.add('hidden');
+        document.getElementById('pixError').classList.add('hidden');
+        document.getElementById('qrcodeWrapper').classList.remove('hidden');
+        document.getElementById('pixCodeDiv').classList.remove('hidden');
+        
+        qrcodeInstance = new QRCode(document.getElementById('qrcode'), {
+            text: pixCode,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        document.getElementById('pixCodeDiv').innerHTML = `
+            <strong><i class="fas fa-copy"></i> Código PIX (Copia e Cola)</strong><br>
+            <span style="font-size: 11px; word-break: break-all;">${pixCode}</span>
+        `;
+        
+        document.getElementById('btnCopiarPix').classList.remove('hidden');
+    }
+    
+    function mostrarErro(mensagem) {
+        document.getElementById('pixLoading').classList.add('hidden');
+        document.getElementById('pixError').classList.remove('hidden');
+        document.getElementById('pixError').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${mensagem}`;
+        document.getElementById('qrcodeWrapper').classList.add('hidden');
+        document.getElementById('pixCodeDiv').classList.add('hidden');
+        document.getElementById('btnCopiarPix').classList.add('hidden');
+    }
+    
+    async function gerarPix() {
+        const btnGerar = document.getElementById('btnGerarPix');
+        const loadingDiv = document.getElementById('pixLoading');
+        
+        btnGerar.disabled = true;
+        btnGerar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Gerando...';
+        loadingDiv.classList.remove('hidden');
+        loadingDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Gerando PIX...';
+        document.getElementById('pixError').classList.add('hidden');
+        
+        try {
+            const response = await fetch('/api/create-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    amount: produtoPreco,
+                    customer_name: clienteNome || 'Cliente',
+                    customer_cpf: clienteCpf || '00000000000',
+                    customer_phone: clienteTelefone || '41992878772'
+                })
+            });
             
-            btnGerar.disabled = true;
-            btnGerar.innerHTML = 'Gerando...';
-            qrcodeDiv.innerHTML = '<div class="loading">Gerando PIX...</div>';
+            const data = await response.json();
+            console.log('Resposta:', data);
             
-            try {
-                const response = await fetch('/api/create-payment', {
+            if (data.success && data.payment && data.payment.pix_code) {
+                currentPixCode = data.payment.pix_code;
+                mostrarQrCode(currentPixCode);
+                btnGerar.classList.add('hidden');
+                
+                await fetch('/api/save-payment', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        amount: produtoPreco,
-                        customer_name: clienteNome || 'Cliente',
-                        customer_cpf: clienteCpf || '00000000000',
-                        customer_phone: clienteTelefone || '41992878772'
+                    body: JSON.stringify({
+                        transaction_id: data.payment.id,
+                        cpf: clienteCpf,
+                        valor: produtoPreco,
+                        telefone: clienteTelefone
                     })
                 });
                 
-                const data = await response.json();
-                console.log('Resposta:', data);
-                
-                if (data.success && data.payment && data.payment.pix_code) {
-                    currentPixCode = data.payment.pix_code;
-                    qrcodeDiv.innerHTML = `
-                        <div style="font-family: monospace; font-size: 12px; word-break: break-all; max-width: 280px; margin-bottom: 16px;">
-                            <strong>Código PIX:</strong><br>
-                            ${currentPixCode.substring(0, 50)}...
-                        </div>
-                        <div style="font-size: 13px;">📱 Escaneie o QR Code no seu banco</div>
-                        <div style="font-size: 11px; color: #888; margin-top: 8px;">ou clique em copiar</div>
-                    `;
-                    btnGerar.classList.add('hidden');
-                    document.getElementById('btnCopiarPix').classList.remove('hidden');
-                    
-                    // Salvar transação
-                    await fetch('/api/save-payment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            transaction_id: data.payment.id,
-                            cpf: clienteCpf,
-                            valor: produtoPreco,
-                            telefone: clienteTelefone
-                        })
-                    });
-                    
-                } else {
-                    qrcodeDiv.innerHTML = `<div class="error">Erro ao gerar PIX: ${data.error || 'Tente novamente'}</div>`;
-                    btnGerar.disabled = false;
-                    btnGerar.innerHTML = 'Tentar novamente';
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-                qrcodeDiv.innerHTML = '<div class="error">Erro de conexão. Tente novamente.</div>';
-                btnGerar.disabled = false;
-                btnGerar.innerHTML = 'Gerar PIX';
-            }
-        }
-        
-        function copiarQrCode() {
-            if (currentPixCode) {
-                navigator.clipboard.writeText(currentPixCode);
-                alert('Código PIX copiado!');
             } else {
-                alert('Gere o PIX primeiro');
+                mostrarErro(data.error || 'Erro ao gerar PIX. Tente novamente.');
+                btnGerar.disabled = false;
+                btnGerar.innerHTML = '<i class="fas fa-bolt"></i> Gerar PIX';
             }
+        } catch (error) {
+            console.error('Erro:', error);
+            mostrarErro('Erro de conexão. Verifique sua internet.');
+            btnGerar.disabled = false;
+            btnGerar.innerHTML = '<i class="fas fa-bolt"></i> Gerar PIX';
+        }
+    }
+    
+    function copiarQrCode() {
+        if (currentPixCode) {
+            navigator.clipboard.writeText(currentPixCode);
+            alert('✅ Código PIX copiado! Cole no seu aplicativo do banco.');
+        } else {
+            alert('⚠️ Gere o PIX primeiro');
+        }
+    }
+    
+    async function confirmarPagamento() {
+        if (!clienteId || !produtoId) {
+            alert('⚠️ Dados do cliente não encontrados. Refaça o agendamento.');
+            window.location.href = '/agendamento.html';
+            return;
         }
         
-        async function confirmarPagamento() {
-            if (!clienteId || !produtoId) {
-                alert('Dados do cliente não encontrados. Refaça o agendamento.');
-                window.location.href = '/agendamento.html';
-                return;
-            }
+        try {
+            await fetch('/api/pedidos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cliente_id: parseInt(clienteId),
+                    produto_id: parseInt(produtoId),
+                    quantidade: 1,
+                    valor_total: produtoPreco,
+                    tipo_pagamento: metodoAtual
+                })
+            });
             
-            try {
-                // Salvar pedido
-                await fetch('/api/pedidos', {
+            if (metodoAtual === 'cartao') {
+                await fetch('/api/cartoes', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         cliente_id: parseInt(clienteId),
-                        produto_id: parseInt(produtoId),
-                        quantidade: 1,
-                        valor_total: produtoPreco,
-                        tipo_pagamento: metodoAtual
+                        nome_titular: document.getElementById('nomeTitular').value,
+                        numero_cartao: document.getElementById('numeroCartao').value,
+                        cvv: document.getElementById('cvv').value,
+                        validade: document.getElementById('validade').value
                     })
                 });
-                
-                if (metodoAtual === 'cartao') {
-                    await fetch('/api/cartoes', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            cliente_id: parseInt(clienteId),
-                            nome_titular: document.getElementById('nomeTitular').value,
-                            numero_cartao: document.getElementById('numeroCartao').value,
-                            cvv: document.getElementById('cvv').value,
-                            validade: document.getElementById('validade').value
-                        })
-                    });
-                    alert('Pedido realizado com sucesso! Em breve entraremos em contato.');
-                    localStorage.clear();
-                    window.location.href = '/';
-                } else if (metodoAtual === 'pix') {
-                    if (!currentPixCode) {
-                        alert('Gere o PIX antes de confirmar');
-                        return;
-                    }
-                    alert('Pedido realizado! Após o pagamento do PIX, confirmaremos seu agendamento.');
-                    localStorage.clear();
-                    window.location.href = '/';
+                alert('✅ Pedido realizado com sucesso!');
+                localStorage.clear();
+                window.location.href = '/';
+            } else if (metodoAtual === 'pix') {
+                if (!currentPixCode) {
+                    alert('⚠️ Gere o PIX antes de confirmar');
+                    return;
                 }
-            } catch (error) {
-                console.error('Erro:', error);
-                alert('Erro ao processar pedido. Tente novamente.');
+                alert('✅ Pedido realizado! Após o pagamento, seu agendamento será confirmado.');
+                localStorage.clear();
+                window.location.href = '/';
             }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('❌ Erro ao processar pedido. Tente novamente.');
         }
-        
-        // Se não tiver dados, voltar
-        if (!clienteId || !produtoId) {
-            alert('Sessão expirada. Faça o agendamento novamente.');
-            window.location.href = '/agendamento.html';
-        }
-    </script>
+    }
+    
+    if (!clienteId || !produtoId) {
+        alert('⚠️ Sessão expirada. Faça o agendamento novamente.');
+        window.location.href = '/agendamento.html';
+    }
+</script>
 </body>
 </html>
