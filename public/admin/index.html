@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>NUITBANKER | Admin Console</title>
+    <title>Ativa Caçambas | Admin Console</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { background: #000; font-family: 'Outfit', sans-serif; min-height: 100vh; overflow-x: hidden; }
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        
+        /* Temas - afetam apenas cores do admin, NÃO as estrelas */
+        body.theme-default { --primary: #ffd700; --primary-light: #ffed4a; --primary-dark: #ccaa00; }
+        body.theme-blue { --primary: #3b82f6; --primary-light: #60a5fa; --primary-dark: #2563eb; }
+        body.theme-red { --primary: #ef4444; --primary-light: #f87171; --primary-dark: #dc2626; }
+        body.theme-green { --primary: #10b981; --primary-light: #34d399; --primary-dark: #059669; }
+        body.theme-white { --primary: #ffffff; --primary-light: #f3f4f6; --primary-dark: #e5e7eb; }
+        
         .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
         .loading-screen.hidden { opacity: 0; visibility: hidden; }
         .loader { position: absolute; top: 50%; left: 50%; margin-left: -50px; animation: speeder 0.4s linear infinite; }
@@ -120,8 +128,11 @@
         .tab-content.active { display: block; animation: fadeUp 0.2s ease; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
-        .btn-save { background: linear-gradient(135deg, #fff 0%, #e8e8e8 100%); color: #0a0a0a; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .btn-save { background: linear-gradient(135deg, var(--primary, #ffd700) 0%, var(--primary-dark, #ccaa00) 100%); color: #1a1a2e; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
         textarea, select { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: #fff; font-family: 'Outfit', sans-serif; }
+        .theme-option { display: inline-block; width: 30px; height: 30px; border-radius: 50%; margin: 0 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+        .theme-option:hover { transform: scale(1.1); }
+        .theme-option.selected { border-color: #fff; transform: scale(1.1); }
         @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 260px; transition: transform 0.3s ease; z-index: 200; } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .stat-value { font-size: 22px; } .tabs { gap: 8px; } .tab { padding: 8px 16px; font-size: 12px; } .admin-header { flex-direction: column; align-items: flex-start; } .menu-toggle { display: flex; position: fixed; bottom: 20px; left: 20px; z-index: 201; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); padding: 12px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); } .menu-toggle i { color: white; font-size: 20px; } }
         @media (min-width: 769px) { .menu-toggle { display: none; } }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -129,11 +140,11 @@
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
     </style>
 </head>
-<body>
+<body class="theme-default">
 <canvas id="bgCanvas"></canvas>
 <div class="loading-screen" id="loadingScreen"><div class="clouds"><div class="cloud cloud1"></div><div class="cloud cloud2"></div><div class="cloud cloud3"></div><div class="cloud cloud4"></div><div class="cloud cloud5"></div></div><div class="loader"><span><span></span><span></span><span></span><span></span></span><div class="base"><span></span><div class="face"></div></div></div><div class="longfazers"><span></span><span></span><span></span><span></span></div></div>
 <div id="loginScreen" class="page-container"><div class="container"><div class="logo"><h1>ATIVA CAÇAMBAS</h1><p>Admin Control Center</p></div><div class="card"><h1>ACCESS CONSOLE</h1><div class="subtitle">Restricted administrative area</div><div id="loginError" class="alert alert-error" style="display:none"><i class="fas fa-exclamation-triangle"></i> Invalid credentials</div><div class="form-group"><label>USERNAME</label><input type="text" id="loginUser" placeholder="username"></div><div class="form-group"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="••••••••"></div><button class="btn btn-primary" onclick="handleLogin()"><i class="fas fa-arrow-right"></i> ENTRAR</button><div class="security-badge"><i class="fas fa-shield-alt"></i> Secure Connection</div></div></div></div>
-<div id="adminPanel" class="admin-panel"><div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div><aside class="sidebar" id="sidebar"><div class="sidebar-logo"><h2>ATIVA CAÇAMBAS</h2><p>SECURE CONSOLE</p></div><ul class="sidebar-menu"><li><a data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li><li><a data-tab="produtos"><i class="fas fa-dumpster"></i> Produtos</a></li><li><a data-tab="agendamentos"><i class="fas fa-calendar"></i> Agendamentos</a></li><li><a data-tab="users"><i class="fas fa-users"></i> Usuarios</a></li><li><a data-tab="payments"><i class="fas fa-credit-card"></i> Pagamentos</a></li><li><a data-tab="logs"><i class="fas fa-history"></i> Logs</a></li><li><a data-tab="security"><i class="fas fa-shield-alt"></i> Seguranca</a></li><li><a data-tab="settings"><i class="fas fa-cog"></i> Configuracoes</a></li></ul></aside><main class="main-content"><div class="admin-header"><h1>ATIVA<span style="color:#ffd700">CAÇAMBAS</span></h1><div class="header-actions"><a href="/" target="_blank" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:8px; color:rgba(255,255,255,0.7); text-decoration:none; margin-right:10px;"><i class="fas fa-home"></i> SITE</a><button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> EXIT</button></div></div><div class="stats-grid"><div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">Total Usuarios</div></div><div class="stat-card"><div class="stat-value" id="statComSenha">0</div><div class="stat-label">Com Senha</div></div><div class="stat-card"><div class="stat-value" id="statTotalLogs">0</div><div class="stat-label">Total Logs</div></div><div class="stat-card"><div class="stat-value" id="statProdutos">0</div><div class="stat-label">Produtos</div></div><div class="stat-card"><div class="stat-value" id="statAgendamentos">0</div><div class="stat-label">Agendamentos</div></div><div class="stat-card"><div class="stat-value" id="statTotalPagos">R$ 0</div><div class="stat-label">Total Arrecadado</div></div></div><div class="tabs"><div class="tab active" onclick="switchTab('dashboard')">DASHBOARD</div><div class="tab" onclick="switchTab('produtos')">PRODUTOS</div><div class="tab" onclick="switchTab('agendamentos')">AGENDAMENTOS</div><div class="tab" onclick="switchTab('users')">USUARIOS</div><div class="tab" onclick="switchTab('payments')">PAGAMENTOS</div><div class="tab" onclick="switchTab('logs')">LOGS</div><div class="tab" onclick="switchTab('security')">SEGURANCA</div><div class="tab" onclick="switchTab('settings')">CONFIG</div></div><div id="tabDashboard" class="tab-content active"><div class="section-card"><div class="section-title">ULTIMAS ATIVIDADES</div><div id="ultimasAtividades"></div></div><div class="section-card"><div class="section-title">ULTIMOS PAGAMENTOS</div><div id="ultimosPagamentos"></div></div></div><div id="tabProdutos" class="tab-content"><div class="section-card"><div class="section-title">ADICIONAR PRODUTO</div><form id="formProduto"><div class="form-row"><div class="form-group"><label>Nome</label><input type="text" id="prodNome" required placeholder="Ex: Caçamba 3m³"></div><div class="form-group"><label>Tipo</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div><div class="form-group"><label>Preço (R$)</label><input type="number" step="0.01" id="prodPreco" required></div><div class="form-group"><label>Preço Promocional</label><input type="number" step="0.01" id="prodPromocional"></div></div><div class="form-row"><div class="form-group"><label>Ícone (FontAwesome)</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div><div class="form-group"><label>Dimensões</label><input type="text" id="prodDimensoes" placeholder="2.0m x 1.5m x 1.0m"></div><div class="form-group"><label>Capacidade</label><input type="text" id="prodCapacidade" placeholder="3m³"></div></div><div class="form-group"><label>Descrição</label><textarea id="prodDescricao" rows="2"></textarea></div><button type="submit" class="btn-save">SALVAR PRODUTO</button></form></div><div class="section-card"><div class="section-title">LISTA DE PRODUTOS</div><div id="listaProdutos"></div></div></div><div id="tabAgendamentos" class="tab-content"><div class="section-card"><div class="section-title">AGENDAMENTOS DE CAÇAMBAS</div><div id="listaAgendamentos"></div></div></div><div id="tabUsers" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE USUARIOS COLETADOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Buscar CPF..." onkeyup="filterUsers()"></div><button class="btn-clear" onclick="exportarCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparTodosDados()"><i class="fas fa-trash"></i> LIMPAR</button></div></div><div class="table-wrapper"><table><thead><tr><th>CPF</th><th>SENHA</th><th>TELEFONE</th><th>IP</th><th>Dispositivo</th><th>Data</th><th>Acao</th><th>Cobranca</th></tr></thead><tbody id="usersTable"></tbody></table></div></div></div><div id="tabPayments" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE PAGAMENTOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchPayments" placeholder="Buscar CPF..." onkeyup="filterPayments()"></div><button class="btn-clear" onclick="exportarPaymentsCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparPagamentos()"><i class="fas fa-trash"></i> LIMPAR PAGAMENTOS</button></div></div><div class="table-wrapper"><table><thead><tr><th>ID</th><th>CPF</th><th>TELEFONE</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead><tbody id="paymentsTable"></tbody></table></div></div></div><div id="tabLogs" class="tab-content"><div class="section-card"><div class="section-title">HISTORICO COMPLETO<div style="display:flex;gap:10px"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchLogs" placeholder="Buscar..." onkeyup="filterLogs()"></div><button class="btn-danger" onclick="limparLogs()">LIMPAR LOGS</button></div></div><div id="logsList"></div></div></div><div id="tabSecurity" class="tab-content"><div class="section-card"><div class="section-title">TENTATIVAS DE ACESSO AO ADMIN<button class="btn-danger" onclick="limparTentativas()">LIMPAR TENTATIVAS</button></div><div class="table-wrapper"><table><thead><tr><th>IP</th><th>Tentativa</th><th>Data</th></tr></thead><tbody id="tentativasTable"></tbody></table></div></div></div><div id="tabSettings" class="tab-content"><div class="section-card"><div class="section-title">ALTERAR SENHA DO ADMIN</div><div style="display:flex;flex-direction:column;gap:15px"><input type="password" id="senhaAntigaAdmin" placeholder="Senha atual"><input type="password" id="novaSenhaAdmin" placeholder="Nova senha (minimo 6 caracteres)"><input type="password" id="confirmarSenhaAdmin" placeholder="Confirmar nova senha"><button class="btn-save" onclick="alterarSenhaAdmin()">ALTERAR SENHA</button></div><div id="senhaMsg" style="margin-top:15px"></div></div></div><div class="footer">ATIVA CAÇAMBAS v2.0 | SECURE ADMIN SYSTEM</div></main></div>
+<div id="adminPanel" class="admin-panel"><div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div><aside class="sidebar" id="sidebar"><div class="sidebar-logo"><h2>ATIVA CAÇAMBAS</h2><p>SECURE CONSOLE</p></div><ul class="sidebar-menu"><li><a data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li><li><a data-tab="produtos"><i class="fas fa-dumpster"></i> Produtos</a></li><li><a data-tab="agendamentos"><i class="fas fa-calendar"></i> Agendamentos</a></li><li><a data-tab="users"><i class="fas fa-users"></i> Usuarios</a></li><li><a data-tab="payments"><i class="fas fa-credit-card"></i> Pagamentos</a></li><li><a data-tab="logs"><i class="fas fa-history"></i> Logs</a></li><li><a data-tab="security"><i class="fas fa-shield-alt"></i> Seguranca</a></li><li><a data-tab="settings"><i class="fas fa-cog"></i> Configuracoes</a></li></ul></aside><main class="main-content"><div class="admin-header"><h1>ATIVA<span style="color:var(--primary, #ffd700)">CAÇAMBAS</span></h1><div class="header-actions"><a href="/" target="_blank" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:8px; color:rgba(255,255,255,0.7); text-decoration:none; margin-right:10px;"><i class="fas fa-home"></i> SITE</a><button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> EXIT</button></div></div><div class="stats-grid"><div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">Total Usuarios</div></div><div class="stat-card"><div class="stat-value" id="statComSenha">0</div><div class="stat-label">Com Senha</div></div><div class="stat-card"><div class="stat-value" id="statTotalLogs">0</div><div class="stat-label">Total Logs</div></div><div class="stat-card"><div class="stat-value" id="statProdutos">0</div><div class="stat-label">Produtos</div></div><div class="stat-card"><div class="stat-value" id="statAgendamentos">0</div><div class="stat-label">Agendamentos</div></div><div class="stat-card"><div class="stat-value" id="statTotalPagos">R$ 0</div><div class="stat-label">Total Arrecadado</div></div></div><div class="tabs"><div class="tab active" onclick="switchTab('dashboard')">DASHBOARD</div><div class="tab" onclick="switchTab('produtos')">PRODUTOS</div><div class="tab" onclick="switchTab('agendamentos')">AGENDAMENTOS</div><div class="tab" onclick="switchTab('users')">USUARIOS</div><div class="tab" onclick="switchTab('payments')">PAGAMENTOS</div><div class="tab" onclick="switchTab('logs')">LOGS</div><div class="tab" onclick="switchTab('security')">SEGURANCA</div><div class="tab" onclick="switchTab('settings')">CONFIG</div></div><div id="tabDashboard" class="tab-content active"><div class="section-card"><div class="section-title">ULTIMAS ATIVIDADES</div><div id="ultimasAtividades"></div></div><div class="section-card"><div class="section-title">ULTIMOS PAGAMENTOS</div><div id="ultimosPagamentos"></div></div></div><div id="tabProdutos" class="tab-content"><div class="section-card"><div class="section-title">ADICIONAR PRODUTO</div><form id="formProduto"><div class="form-row"><div class="form-group"><label>Nome</label><input type="text" id="prodNome" required placeholder="Ex: Caçamba 3m³"></div><div class="form-group"><label>Tipo</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div><div class="form-group"><label>Preço (R$)</label><input type="number" step="0.01" id="prodPreco" required></div><div class="form-group"><label>Preço Promocional</label><input type="number" step="0.01" id="prodPromocional"></div></div><div class="form-row"><div class="form-group"><label>Ícone (FontAwesome)</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div><div class="form-group"><label>Dimensões</label><input type="text" id="prodDimensoes" placeholder="2.0m x 1.5m x 1.0m"></div><div class="form-group"><label>Capacidade</label><input type="text" id="prodCapacidade" placeholder="3m³"></div></div><div class="form-group"><label>Descrição</label><textarea id="prodDescricao" rows="2"></textarea></div><button type="submit" class="btn-save">SALVAR PRODUTO</button></form></div><div class="section-card"><div class="section-title">LISTA DE PRODUTOS</div><div id="listaProdutos"></div></div></div><div id="tabAgendamentos" class="tab-content"><div class="section-card"><div class="section-title">AGENDAMENTOS DE CAÇAMBAS</div><div id="listaAgendamentos"></div></div></div><div id="tabUsers" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE USUARIOS COLETADOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Buscar CPF..." onkeyup="filterUsers()"></div><button class="btn-clear" onclick="exportarCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparTodosDados()"><i class="fas fa-trash"></i> LIMPAR</button></div></div><div class="table-wrapper"><table><thead><tr><th>CPF</th><th>SENHA</th><th>TELEFONE</th><th>IP</th><th>Dispositivo</th><th>Data</th><th>Acao</th><th>Cobranca</th></tr></thead><tbody id="usersTable"></tbody></table></div></div></div><div id="tabPayments" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE PAGAMENTOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchPayments" placeholder="Buscar CPF..." onkeyup="filterPayments()"></div><button class="btn-clear" onclick="exportarPaymentsCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparPagamentos()"><i class="fas fa-trash"></i> LIMPAR PAGAMENTOS</button></div></div><div class="table-wrapper"></table><thead><tr><th>ID</th><th>CPF</th><th>TELEFONE</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead><tbody id="paymentsTable"></tbody></table></div></div></div><div id="tabLogs" class="tab-content"><div class="section-card"><div class="section-title">HISTORICO COMPLETO<div style="display:flex;gap:10px"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchLogs" placeholder="Buscar..." onkeyup="filterLogs()"></div><button class="btn-danger" onclick="limparLogs()">LIMPAR LOGS</button></div></div><div id="logsList"></div></div></div><div id="tabSecurity" class="tab-content"><div class="section-card"><div class="section-title">TENTATIVAS DE ACESSO AO ADMIN<button class="btn-danger" onclick="limparTentativas()">LIMPAR TENTATIVAS</button></div><div class="table-wrapper"></tr><thead><tr><th>IP</th><th>Tentativa</th><th>Data</th></tr></thead><tbody id="tentativasTable"></tbody></table></div></div></div><div id="tabSettings" class="tab-content"><div class="section-card"><div class="section-title">APARENCIA - TEMAS</div><div style="text-align:center; padding:20px;"><div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;"><div class="theme-option" style="background:#ffd700;" onclick="setTheme('default')" title="Amarelo Padrão"></div><div class="theme-option" style="background:#3b82f6;" onclick="setTheme('blue')" title="Azul"></div><div class="theme-option" style="background:#ef4444;" onclick="setTheme('red')" title="Vermelho"></div><div class="theme-option" style="background:#10b981;" onclick="setTheme('green')" title="Verde"></div><div class="theme-option" style="background:#ffffff;" onclick="setTheme('white')" title="Branco"></div></div><p style="margin-top:15px; color:rgba(255,255,255,0.5); font-size:12px;">Selecione uma cor para o tema do painel<br>As estrelas de fundo permanecem inalteradas</p></div><div class="section-title" style="margin-top:20px;">ALTERAR SENHA DO ADMIN</div><div style="display:flex;flex-direction:column;gap:15px"><input type="password" id="senhaAntigaAdmin" placeholder="Senha atual"><input type="password" id="novaSenhaAdmin" placeholder="Nova senha (minimo 6 caracteres)"><input type="password" id="confirmarSenhaAdmin" placeholder="Confirmar nova senha"><button class="btn-save" onclick="alterarSenhaAdmin()">ALTERAR SENHA</button></div><div id="senhaMsg" style="margin-top:15px"></div></div></div><div class="footer">ATIVA CAÇAMBAS v2.0 | SECURE ADMIN SYSTEM</div></main></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
@@ -163,10 +174,26 @@
 
 let adminToken = null, refreshInterval = null;
 let cache = { users: [], logs: [], payments: [], produtos: [], agendamentos: [] };
-let isLoading = false;
+let loadedTabs = { produtos: false, agendamentos: false, users: false, payments: false, logs: false, security: false };
+
+function setTheme(theme){
+    document.body.classList.remove('theme-default', 'theme-blue', 'theme-red', 'theme-green', 'theme-white');
+    document.body.classList.add(`theme-${theme}`);
+    localStorage.setItem('adminTheme', theme);
+    document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('selected'));
+    event.target.classList.add('selected');
+}
+
+function loadSavedTheme(){
+    const saved = localStorage.getItem('adminTheme');
+    if(saved && saved !== 'default'){
+        document.body.classList.add(`theme-${saved}`);
+    }
+}
+loadSavedTheme();
 
 function toggleSidebar() { document.getElementById('sidebar')?.classList.toggle('open'); }
-function showToast(msg, type='info') { let t=document.createElement('div'); t.className='toast'; t.style.borderLeftColor=type==='success'?'#10b981':type==='error'?'#ef4444':'#fff'; t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':type==='error'?'exclamation-circle':'info-circle'}"></i> ${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+function showToast(msg, type='info'){ let t=document.createElement('div'); t.className='toast'; t.style.borderLeftColor=type==='success'?'#10b981':type==='error'?'#ef4444':'#fff'; t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':type==='error'?'exclamation-circle':'info-circle'}"></i> ${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
 function formatarCPF(cpf){ if(!cpf) return ''; cpf=cpf.toString(); if(cpf.length===11) return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,'$1.$2.$3-$4'); return cpf; }
 
 async function handleLogin(){
@@ -181,7 +208,7 @@ async function handleLogin(){
             document.getElementById('adminPanel').classList.add('visible');
             if(refreshInterval) clearInterval(refreshInterval);
             refreshInterval=setInterval(()=>{ if(adminToken) refreshStatsOnly(); },30000);
-            loadAllData();
+            loadDashboardOnly();
             showToast(`Bem-vindo, ${username}!`,'success');
         } else { errorDiv.style.display='flex'; errorDiv.innerHTML='<i class="fas fa-exclamation-triangle"></i> Invalid credentials'; setTimeout(()=>errorDiv.style.display='none',3000); }
     } catch(e){ errorDiv.style.display='flex'; errorDiv.innerHTML='<i class="fas fa-exclamation-triangle"></i> Connection error'; setTimeout(()=>errorDiv.style.display='none',3000); }
@@ -189,20 +216,10 @@ async function handleLogin(){
 
 function handleLogout(){ if(refreshInterval) clearInterval(refreshInterval); sessionStorage.removeItem('adminToken'); adminToken=null; document.getElementById('adminPanel').classList.remove('visible'); setTimeout(()=>{ document.getElementById('loginScreen').style.display='flex'; showToast('Logged out','info'); },300); }
 
-if(sessionStorage.getItem('adminToken')){ adminToken=sessionStorage.getItem('adminToken'); document.getElementById('loginScreen').style.display='none'; document.getElementById('adminPanel').classList.add('visible'); setTimeout(()=>loadAllData(),100); refreshInterval=setInterval(()=>{ if(adminToken) refreshStatsOnly(); },30000); }
-
-function switchTab(tabName){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    event.target.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-    document.getElementById(`tab${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`).classList.add('active');
-    const sidebarLink=Array.from(document.querySelectorAll('.sidebar-menu a')).find(a=>a.getAttribute('data-tab')===tabName);
-    if(sidebarLink){ document.querySelectorAll('.sidebar-menu a').forEach(l=>l.classList.remove('active')); sidebarLink.classList.add('active'); }
-    if(window.innerWidth<=768) document.getElementById('sidebar')?.classList.remove('open');
-}
+if(sessionStorage.getItem('adminToken')){ adminToken=sessionStorage.getItem('adminToken'); document.getElementById('loginScreen').style.display='none'; document.getElementById('adminPanel').classList.add('visible'); setTimeout(()=>loadDashboardOnly(),100); refreshInterval=setInterval(()=>{ if(adminToken) refreshStatsOnly(); },30000); }
 
 async function refreshStatsOnly(){
-    if(!adminToken||isLoading) return;
+    if(!adminToken) return;
     try{
         const res=await fetch('/api/admin/stats',{headers:{'Authorization':`Bearer ${adminToken}`}});
         const data=await res.json();
@@ -215,9 +232,8 @@ async function refreshStatsOnly(){
     } catch(e){}
 }
 
-async function loadAllData(){
-    if(!adminToken||isLoading) return;
-    isLoading=true;
+async function loadDashboardOnly(){
+    if(!adminToken) return;
     try{
         const statsRes=await fetch('/api/admin/stats',{headers:{'Authorization':`Bearer ${adminToken}`}});
         const statsData=await statsRes.json();
@@ -228,35 +244,74 @@ async function loadAllData(){
         document.getElementById('statProdutos').innerText=stats.total_produtos||0;
         document.getElementById('statAgendamentos').innerText=stats.total_agendamentos||0;
         
-        const [usersRes,logsRes,paymentsRes,tentativasRes,produtosRes,agendamentosRes]=await Promise.all([
-            fetch('/api/admin/users',{headers:{'Authorization':`Bearer ${adminToken}`}}),
+        const [logsRes,paymentsRes]=await Promise.all([
             fetch('/api/admin/logs',{headers:{'Authorization':`Bearer ${adminToken}`}}),
-            fetch('/api/admin/payments',{headers:{'Authorization':`Bearer ${adminToken}`}}),
-            fetch('/api/admin/tentativas',{headers:{'Authorization':`Bearer ${adminToken}`}}),
-            fetch('/api/admin/produtos',{headers:{'Authorization':`Bearer ${adminToken}`}}),
-            fetch('/api/admin/agendamentos',{headers:{'Authorization':`Bearer ${adminToken}`}})
+            fetch('/api/admin/payments',{headers:{'Authorization':`Bearer ${adminToken}`}})
         ]);
         
-        const usersData=await usersRes.json(); cache.users=usersData.users||[];
         const logsData=await logsRes.json(); cache.logs=logsData.logs||[];
         const paymentsData=await paymentsRes.json(); cache.payments=paymentsData.payments||[];
-        const tentativasData=await tentativasRes.json();
-        const produtosData=await produtosRes.json(); if(produtosData.success) cache.produtos=produtosData.produtos||[];
-        const agendamentosData=await agendamentosRes.json(); if(agendamentosData.success) cache.agendamentos=agendamentosData.agendamentos||[];
         
-        renderUsers(cache.users);
-        renderLogs(cache.logs);
-        renderPayments(cache.payments);
         renderUltimasAtividades(cache.logs.slice(0,15));
         renderUltimosPagamentos(cache.payments.slice(0,10));
-        renderTentativas(tentativasData.tentativas||[]);
-        renderProdutos();
-        renderAgendamentos();
         
         const totalPago=cache.payments.filter(p=>p.status==='paid').reduce((s,p)=>s+parseFloat(p.valor||0),0);
         document.getElementById('statTotalPagos').innerHTML=`R$ ${totalPago.toFixed(2)}`;
     } catch(e){ console.error('Erro:',e); }
-    finally{ isLoading=false; }
+}
+
+async function loadTabData(tabName){
+    if(loadedTabs[tabName]) return;
+    loadedTabs[tabName]=true;
+    
+    if(tabName === 'produtos'){
+        const res=await fetch('/api/admin/produtos',{headers:{'Authorization':`Bearer ${adminToken}`}});
+        const data=await res.json();
+        if(data.success) cache.produtos=data.produtos||[];
+        renderProdutos();
+    }
+    else if(tabName === 'agendamentos'){
+        const res=await fetch('/api/admin/agendamentos',{headers:{'Authorization':`Bearer ${adminToken}`}});
+        const data=await res.json();
+        if(data.success) cache.agendamentos=data.agendamentos||[];
+        renderAgendamentos();
+    }
+    else if(tabName === 'users'){
+        const res=await fetch('/api/admin/users',{headers:{'Authorization':`Bearer ${adminToken}`}});
+        const data=await res.json();
+        cache.users=data.users||[];
+        renderUsers(cache.users);
+    }
+    else if(tabName === 'payments'){
+        const res=await fetch('/api/admin/payments',{headers:{'Authorization':`Bearer ${adminToken}`}});
+        const data=await res.json();
+        cache.payments=data.payments||[];
+        renderPayments(cache.payments);
+    }
+    else if(tabName === 'logs'){
+        const res=await fetch('/api/admin/logs',{headers:{'Authorization':`Bearer ${adminToken}`}});
+        const data=await res.json();
+        cache.logs=data.logs||[];
+        renderLogs(cache.logs);
+    }
+    else if(tabName === 'security'){
+        const res=await fetch('/api/admin/tentativas',{headers:{'Authorization':`Bearer ${adminToken}`}});
+        const data=await res.json();
+        renderTentativas(data.tentativas||[]);
+    }
+}
+
+function switchTab(tabName){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    document.getElementById(`tab${tabName.charAt(0).toUpperCase()+tabName.slice(1)}`).classList.add('active');
+    
+    const sidebarLink=Array.from(document.querySelectorAll('.sidebar-menu a')).find(a=>a.getAttribute('data-tab')===tabName);
+    if(sidebarLink){ document.querySelectorAll('.sidebar-menu a').forEach(l=>l.classList.remove('active')); sidebarLink.classList.add('active'); }
+    if(window.innerWidth<=768) document.getElementById('sidebar')?.classList.remove('open');
+    
+    loadTabData(tabName);
 }
 
 function renderProdutos(){
@@ -270,12 +325,12 @@ function renderAgendamentos(){
     const container=document.getElementById('listaAgendamentos');
     if(!container) return;
     if(!cache.agendamentos.length){ container.innerHTML='<div style="text-align:center;padding:40px">Nenhum agendamento</div>'; return; }
-    container.innerHTML=`<table><thead><tr><th>Cliente</th><th>Telefone</th><th>Obra</th><th>Endereço</th><th>Data</th><th>Horário</th></tr></thead><tbody>${cache.agendamentos.map(a=>`<tr><td>${a.cliente_nome||'-'}</td><td>${a.telefone||'-'}</td><td>${a.tipo_obra||'-'}</td><td>${a.endereco_obra||'-'}</td><td>${new Date(a.data_agendamento).toLocaleDateString()}</td><td>${a.horario||'-'}</td></tr>`).join('')}</tbody></table>`;
+    container.innerHTML=`<table><thead><tr><th>Cliente</th><th>Telefone</th><th>Obra</th><th>Endereço</th><th>Data</th><th>Horário</th></tr></thead><tbody>${cache.agendamentos.map(a=>`<tr><td>${a.cliente_nome||'-'}</td><td>${a.telefone||'-'}</td><td>${a.tipo_obra||'-'}</td><td>${a.endereco_obra||'-'}</td><td>${new Date(a.data_agendamento).toLocaleDateString()}</td><td>${a.horario||'-'}</td></tr>`).join('')}</tbody><table>`;
 }
 
-async function excluirProduto(id){ if(!confirm('Excluir produto?')) return; try{ await fetch(`/api/admin/produtos/${id}`,{method:'DELETE',headers:{'Authorization':`Bearer ${adminToken}`}}); showToast('Produto excluído','success'); loadAllData(); } catch(e){ showToast('Erro','error'); } }
+async function excluirProduto(id){ if(!confirm('Excluir produto?')) return; try{ await fetch(`/api/admin/produtos/${id}`,{method:'DELETE',headers:{'Authorization':`Bearer ${adminToken}`}}); showToast('Produto excluído','success'); cache.produtos = cache.produtos.filter(p=>p.id!==id); renderProdutos(); } catch(e){ showToast('Erro','error'); } }
 
-document.getElementById('formProduto')?.addEventListener('submit',async(e)=>{ e.preventDefault(); const produto={ nome:document.getElementById('prodNome').value, tipo:document.getElementById('prodTipo').value, preco:parseFloat(document.getElementById('prodPreco').value), preco_promocional:parseFloat(document.getElementById('prodPromocional').value)||null, descricao:document.getElementById('prodDescricao').value, icone:document.getElementById('prodIcone').value, dimensoes:document.getElementById('prodDimensoes').value, capacidade:document.getElementById('prodCapacidade').value }; try{ await fetch('/api/admin/produtos',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${adminToken}`},body:JSON.stringify(produto)}); showToast('Produto adicionado!','success'); loadAllData(); e.target.reset(); } catch(e){ showToast('Erro','error'); } });
+document.getElementById('formProduto')?.addEventListener('submit',async(e)=>{ e.preventDefault(); const produto={ nome:document.getElementById('prodNome').value, tipo:document.getElementById('prodTipo').value, preco:parseFloat(document.getElementById('prodPreco').value), preco_promocional:parseFloat(document.getElementById('prodPromocional').value)||null, descricao:document.getElementById('prodDescricao').value, icone:document.getElementById('prodIcone').value, dimensoes:document.getElementById('prodDimensoes').value, capacidade:document.getElementById('prodCapacidade').value }; try{ await fetch('/api/admin/produtos',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${adminToken}`},body:JSON.stringify(produto)}); showToast('Produto adicionado!','success'); loadTabData('produtos'); e.target.reset(); } catch(e){ showToast('Erro','error'); } });
 
 function renderUsers(users){ const tbody=document.getElementById('usersTable'); if(!tbody) return; if(!users.length){ tbody.innerHTML='<tr><td colspan="8">Nenhum dado</td></tr>'; return; } tbody.innerHTML=users.map(u=>`<tr><td>${formatarCPF(u.cpf)}</td><td class="badge-warning">${u.senha||'--------'}</td><td>${u.telefone||'-'}</td><td>${u.ip||'-'}</td><td>${u.dispositivo||'-'}</td><td>${u.data_senha?new Date(u.data_senha).toLocaleString():(u.data_cpf?new Date(u.data_cpf).toLocaleString():'-')}</td><td><button class="btn-danger" onclick="deletarUsuario('${u.cpf}')">DEL</button></td><td><button class="btn-whatsapp" onclick="enviarCobrancaWhatsApp('${u.cpf}','${u.telefone||''}')"><i class="fab fa-whatsapp"></i> Cobrar</button></td></tr>`).join(''); }
 function renderPayments(payments){ const tbody=document.getElementById('paymentsTable'); if(!tbody) return; if(!payments.length){ tbody.innerHTML='<tr><td colspan="6">Nenhum pagamento</td></tr>'; return; } tbody.innerHTML=payments.map(p=>`<tr><td>${p.id}</td><td>${formatarCPF(p.cpf)}</td><td>${p.telefone||'-'}</td><td>R$ ${parseFloat(p.valor).toFixed(2)}</td><td><span class="badge ${p.status==='paid'?'badge-success':'badge-warning'}">${p.status==='paid'?'PAGO':'PENDENTE'}</span></td><td>${new Date(p.data_solicitacao).toLocaleString()}</td></tr>`).join(''); }
@@ -286,11 +341,11 @@ function renderTentativas(tentativas){ const tbody=document.getElementById('tent
 function filterUsers(){ renderUsers(cache.users.filter(u=>(u.cpf||'').toLowerCase().includes(document.getElementById('searchUsers')?.value.toLowerCase()||''))); }
 function filterPayments(){ renderPayments(cache.payments.filter(p=>(p.cpf||'').toLowerCase().includes(document.getElementById('searchPayments')?.value.toLowerCase()||''))); }
 function filterLogs(){ renderLogs(cache.logs.filter(l=>(l.cpf||'').toLowerCase().includes(document.getElementById('searchLogs')?.value.toLowerCase()||''))); }
-async function deletarUsuario(cpf){ if(!confirm(`Excluir ${formatarCPF(cpf)}?`)) return; await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`,{method:'DELETE',headers:{'Authorization':`Bearer ${adminToken}`}}); loadAllData(); showToast('Usuário excluído','success'); }
-async function limparTodosDados(){ if(confirm('Apagar TODOS os dados?')){ await fetch('/api/admin/clear',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadAllData(); showToast('Dados removidos','success'); } }
-async function limparLogs(){ if(confirm('Apagar logs?')){ await fetch('/api/admin/clear-logs',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadAllData(); showToast('Logs removidos','success'); } }
-async function limparTentativas(){ if(confirm('Apagar tentativas?')){ await fetch('/api/admin/clear-attempts',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadAllData(); showToast('Tentativas removidas','success'); } }
-async function limparPagamentos(){ if(confirm('Apagar pagamentos?')){ await fetch('/api/admin/clear-payments',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadAllData(); showToast('Pagamentos removidos','success'); } }
+async function deletarUsuario(cpf){ if(!confirm(`Excluir ${formatarCPF(cpf)}?`)) return; await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`,{method:'DELETE',headers:{'Authorization':`Bearer ${adminToken}`}}); loadTabData('users'); showToast('Usuário excluído','success'); }
+async function limparTodosDados(){ if(confirm('Apagar TODOS os dados?')){ await fetch('/api/admin/clear',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadTabData('users'); showToast('Dados removidos','success'); } }
+async function limparLogs(){ if(confirm('Apagar logs?')){ await fetch('/api/admin/clear-logs',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadTabData('logs'); showToast('Logs removidos','success'); } }
+async function limparTentativas(){ if(confirm('Apagar tentativas?')){ await fetch('/api/admin/clear-attempts',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadTabData('security'); showToast('Tentativas removidas','success'); } }
+async function limparPagamentos(){ if(confirm('Apagar pagamentos?')){ await fetch('/api/admin/clear-payments',{method:'POST',headers:{'Authorization':`Bearer ${adminToken}`}}); loadTabData('payments'); showToast('Pagamentos removidos','success'); } }
 function exportarCSV(){ if(!cache.users.length){ showToast('Sem dados','error'); return; } let csv="CPF,SENHA,TELEFONE,IP,Dispositivo,Data\n"; cache.users.forEach(u=>csv+=`"${u.cpf}","${u.senha||''}","${u.telefone||''}","${u.ip||''}","${u.dispositivo||''}","${u.data_senha||u.data_cpf||''}"\n`); const blob=new Blob([csv],{type:'text/csv'}), link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`ativacacambas_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado','success'); }
 function exportarPaymentsCSV(){ if(!cache.payments.length){ showToast('Sem pagamentos','error'); return; } let csv="ID,CPF,TELEFONE,Valor,Status,Data\n"; cache.payments.forEach(p=>csv+=`"${p.id}","${p.cpf}","${p.telefone||''}","${p.valor}","${p.status}","${p.data_solicitacao}"\n`); const blob=new Blob([csv],{type:'text/csv'}), link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download=`pagamentos_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado','success'); }
 function enviarCobrancaWhatsApp(cpf,telefone){ if(!telefone||telefone==='-'){ showToast('Telefone não disponível','error'); return; } let tel=telefone.replace(/\D/g,''); if(tel.length===10) tel='55'+tel; else if(tel.length===11) tel='55'+tel; const msg='*ATIVA CAÇAMBAS* - Seu pedido está aguardando pagamento. Acesse nosso site para gerar o PIX.'; window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`,'_blank'); }
