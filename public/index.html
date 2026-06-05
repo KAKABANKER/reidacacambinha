@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Ativa Caçambas | Locação Profissional em Curitiba</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -14,24 +15,23 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f4f5f7;
-            color: #1f2937;
+            background: #ffffff;
+            color: #1a1f2e;
             line-height: 1.5;
         }
 
-        /* container padrão estilo amazon */
         .container {
-            max-width: 1400px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 32px;
         }
 
-        /* header profissional */
+        /* Top Bar */
         .top-bar {
-            background: #131921;
-            color: white;
-            padding: 0.5rem 0;
-            font-size: 0.85rem;
+            background: #1a1f2e;
+            color: #9ca3af;
+            padding: 8px 0;
+            font-size: 13px;
         }
 
         .top-bar .container {
@@ -39,476 +39,655 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
-        .top-location {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
+        /* Main Header */
         .main-header {
             background: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-bottom: 1px solid #eef2f6;
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 1rem 0;
+            padding: 16px 0;
         }
 
         .header-flex {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 2rem;
+            gap: 32px;
             flex-wrap: wrap;
         }
 
-        .logo h2 {
-            color: #ff9900;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo img {
+            height: 55px;
+            width: auto;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
             font-weight: 800;
-            font-size: 1.8rem;
             letter-spacing: -0.5px;
+            color: #1a1f2e;
         }
 
-        .logo span {
-            color: #1f2937;
-            font-weight: 500;
-            font-size: 0.9rem;
-            display: block;
+        .logo-text h1 span {
+            color: #f5a623;
         }
 
-        .search-bar {
-            flex: 2;
-            display: flex;
-            max-width: 600px;
+        .logo-text p {
+            font-size: 11px;
+            color: #6b7280;
         }
 
-        .search-bar input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 12px 0 0 12px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: 0.2s;
-        }
-
-        .search-bar input:focus {
-            border-color: #ff9900;
-        }
-
-        .search-bar button {
-            background: #ff9900;
-            border: none;
-            padding: 0 1.5rem;
-            border-radius: 0 12px 12px 0;
-            font-weight: 600;
-            cursor: pointer;
-            color: #111;
-            transition: 0.2s;
-        }
-
-        .search-bar button:hover {
-            background: #e68a00;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .action-item {
-            text-align: right;
-        }
-
-        .action-small {
-            font-size: 0.7rem;
-            color: #4b5563;
-        }
-
-        .action-bold {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .btn-whats {
-            background: #25D366;
-            color: white;
-            border-radius: 30px;
-            padding: 0.4rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* hero banner profissional */
+        /* Hero Section */
         .hero {
-            background: linear-gradient(105deg, #fef7e0 0%, #ffffff 100%);
-            margin: 1.5rem 0;
-            border-radius: 28px;
-            padding: 2.5rem;
+            background: linear-gradient(135deg, #fff9ef 0%, #ffffff 100%);
+            border-radius: 32px;
+            margin: 32px 0;
+            padding: 56px 48px;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 2rem;
+            gap: 40px;
         }
 
-        .hero-text {
+        .hero-content {
             flex: 1;
         }
 
         .hero-badge {
-            background: #ff9900;
-            color: #131921;
+            background: #f5a623;
+            color: #1a1f2e;
             display: inline-block;
-            padding: 0.2rem 1rem;
-            border-radius: 30px;
-            font-size: 0.7rem;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 12px;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
         }
 
-        .hero-text h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #131921;
+        .hero h2 {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
-        .hero-text p {
-            color: #2d3a48;
-            margin-bottom: 1.5rem;
-            font-size: 1rem;
+        .hero p {
+            color: #4b5563;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.6;
         }
 
         .hero-stats {
             display: flex;
-            gap: 1.5rem;
-            margin-top: 1rem;
+            gap: 40px;
+            margin-top: 24px;
         }
 
-        .stat {
-            font-size: 0.9rem;
+        .stat-item {
+            text-align: left;
         }
 
-        .stat strong {
-            font-size: 1.3rem;
-            color: #ff9900;
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #f5a623;
         }
 
-        .hero-img {
-            background: #e2e8f0;
-            padding: 1rem 2rem;
+        .stat-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .hero-image {
+            background: #f8fafc;
             border-radius: 24px;
+            padding: 32px;
             text-align: center;
-            min-width: 200px;
+            min-width: 280px;
         }
 
-        /* grade de serviços (cards Amazon) */
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+        }
+
+        .hero-image .placeholder-icon {
+            font-size: 80px;
+            color: #f5a623;
+        }
+
+        /* Section Title */
         .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin: 2.5rem 0 1rem;
+            text-align: center;
+            margin: 56px 0 32px;
         }
 
         .section-title h3 {
-            font-size: 1.6rem;
+            font-size: 32px;
             font-weight: 700;
+            margin-bottom: 12px;
         }
 
-        .see-more {
-            color: #ff9900;
-            font-weight: 600;
-            text-decoration: none;
+        .section-title p {
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 2.5rem;
+        /* History Section */
+        .history-section {
+            background: #f8fafc;
+            border-radius: 32px;
+            padding: 48px;
+            margin: 32px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 48px;
+            align-items: center;
         }
 
-        .product-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: all 0.2s ease;
-            border: 1px solid #eef2f6;
+        .history-content {
+            flex: 1;
+        }
+
+        .history-content h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1a1f2e;
+        }
+
+        .history-content p {
+            color: #4b5563;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .history-image {
+            flex: 0.8;
+            background: #eef2f6;
+            border-radius: 24px;
+            padding: 40px;
             text-align: center;
         }
 
-        .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
-            border-color: #ffd966;
+        .history-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
         }
 
-        .card-icon {
-            font-size: 2.6rem;
-            background: #fef3c7;
-            width: 70px;
-            height: 70px;
+        .history-image .placeholder-icon {
+            font-size: 100px;
+            color: #f5a623;
+        }
+
+        /* Values Section */
+        .values-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 32px 24px;
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 24px;
+            transition: all 0.2s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-4px);
+            border-color: #f5a623;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+
+        .value-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(245,166,35,0.1);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 40px;
-            margin: 0 auto 1rem;
+            margin: 0 auto 20px;
         }
 
-        .product-card h4 {
-            font-size: 1.5rem;
+        .value-icon i {
+            font-size: 28px;
+            color: #f5a623;
+        }
+
+        .value-card h4 {
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 12px;
         }
 
-        .capacity {
-            color: #ff9900;
-            font-weight: 800;
-            font-size: 1.2rem;
-            margin: 0.5rem 0;
+        .value-card p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
         }
 
-        .desc {
-            color: #4b5563;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
+        /* Testimonials Section */
+        .testimonials-section {
+            background: #f8fafc;
+            border-radius: 32px;
+            padding: 48px;
+            margin: 48px 0;
         }
 
-        .price-row {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            align-items: baseline;
-            margin: 1rem 0;
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
         }
 
-        .price {
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-
-        .btn-card {
-            background: #ff9900;
-            border: none;
-            width: 100%;
-            padding: 0.7rem;
-            border-radius: 40px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 8px;
-        }
-
-        .btn-card:hover {
-            background: #e68a00;
-        }
-
-        /* seção de diferenciais estilo amazon */
-        .features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 1rem;
-            background: white;
-            border-radius: 28px;
-            padding: 2rem;
-            margin: 2rem 0;
+        .testimonial-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px;
             border: 1px solid #eef2f6;
         }
 
-        .feature {
-            flex: 1;
-            text-align: center;
-            font-size: 0.9rem;
-            border-right: 1px solid #e2e8f0;
+        .testimonial-text {
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
-        .feature:last-child {
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(245,166,35,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .author-icon i {
+            font-size: 20px;
+            color: #f5a623;
+        }
+
+        .author-info h5 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .author-info p {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: #1a1f2e;
+            border-radius: 32px;
+            padding: 56px 48px;
+            margin: 48px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h3 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: #9ca3af;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-large {
+            background: #f5a623;
+            color: #1a1f2e;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary-large:hover {
+            background: #e09515;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-large {
+            background: transparent;
+            border: 1.5px solid #f5a623;
+            color: #f5a623;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-outline-large:hover {
+            background: rgba(245,166,35,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* WhatsApp Flutuante - CORNER RIGHT */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.2s;
             border: none;
         }
 
-        .feature strong {
-            display: block;
-            font-size: 1rem;
-            margin-top: 0.4rem;
+        .whatsapp-float:hover {
+            transform: scale(1.08);
+            background: #1da1f2;
         }
 
-        /* footer profissional */
+        /* Footer */
         footer {
-            background: #131921;
-            color: #ddd;
-            margin-top: 3rem;
-            padding: 2rem 0 1.5rem;
+            background: #1a1f2e;
+            color: #9ca3af;
+            margin-top: 48px;
+            padding: 48px 0 24px;
         }
 
         .footer-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 2rem;
-            border-bottom: 1px solid #2a3a4a;
-            padding-bottom: 2rem;
-            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
         }
 
         .footer-col p {
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
+            font-size: 12px;
+            margin-bottom: 8px;
+            line-height: 1.5;
         }
 
         .copyright {
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 11px;
+            padding-top: 24px;
+            border-top: 1px solid #2d3748;
         }
 
-        @media (max-width: 800px) {
-            .container { padding: 0 1rem; }
-            .header-flex { flex-direction: column; align-items: stretch; }
-            .search-bar { max-width: 100%; }
-            .hero { flex-direction: column; text-align: center; }
-            .hero-stats { justify-content: center; }
-            .features { flex-direction: column; }
-            .feature { border-right: none; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem; }
+        @media (max-width: 900px) {
+            .container { padding: 0 20px; }
+            .hero { padding: 32px; }
+            .hero h2 { font-size: 32px; }
+            .values-section { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .history-section { flex-direction: column; }
+        }
+
+        @media (max-width: 600px) {
+            .hero-stats { flex-wrap: wrap; gap: 16px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .whatsapp-float {
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- top bar amazon style -->
+<!-- Top Bar -->
 <div class="top-bar">
     <div class="container">
-        <div>✅ Entrega rápida em Curitiba e Região Metropolitana</div>
-        <div class="top-location">📍 Base: Hauer, Curitiba | Certificação SEMMA</div>
+        <span>Entrega rápida em Curitiba e Região Metropolitana</span>
+        <span>Base: Hauer, Curitiba | Certificação SEMMA</span>
     </div>
 </div>
 
-<!-- header principal -->
+<!-- Main Header -->
 <div class="main-header">
     <div class="container header-flex">
-        <div class="logo">
-            <h2>ATIVA <span style="color:#ff9900;">CAÇAMBAS</span></h2>
-            <span>Locação profissional desde 2012</span>
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar por tamanho, serviço ou região...">
-            <button>🔍 Buscar</button>
-        </div>
-        <div class="header-actions">
-            <div class="action-item">
-                <div class="action-small">Olá, empresa</div>
-                <div class="action-bold">Conta & contratos</div>
-            </div>
-            <div class="action-item">
-                <div class="action-small">Solicitar</div>
-                <div class="action-bold">📋 Orçamento</div>
-            </div>
-            <div class="btn-whats">
-                📞 (41) 99999-1234
+        <div class="logo.png">
+            <!-- TROQUE O SRC PELA SUA LOGO -->
+            <img src="img/logo" alt="Ativa Caçambas Logo">
+            <div class="logo-text">
+                <h1>ATIVA <span>CAÇAMBAS</span></h1>
+                <p>Locação profissional desde 2012</p>
             </div>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <!-- hero profissional -->
+    <!-- Hero Section -->
     <div class="hero">
-        <div class="hero-text">
-            <div class="hero-badge">⚡ MAIS RÁPIDO DA REGIÃO</div>
-            <h1>Caçambas estacionárias para obra ou reforma</h1>
-            <p>Frota própria, troca 24h e destinação ambiental correta. Solicite pelo site e tenha sua caçamba em até 2h.</p>
+        <div class="hero-content">
+            <div class="hero-badge">MAIS RÁPIDO DA REGIÃO</div>
+            <h2>Caçambas estacionárias para obra ou reforma</h2>
+            <p>Frota própria, troca 24h e destinação ambiental correta. Solicite pelo site e tenha sua caçamba em até 2 horas.</p>
             <div class="hero-stats">
-                <div class="stat"><strong>+1.200</strong><br>obras atendidas</div>
-                <div class="stat"><strong>100%</strong><br>licenciado</div>
-                <div class="stat"><strong>3, 5 e 7 m³</strong><br>disponíveis</div>
+                <div class="stat-item">
+                    <div class="stat-number">+1.200</div>
+                    <div class="stat-label">obras atendidas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">licenciado</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3,5,7m³</div>
+                    <div class="stat-label">disponíveis</div>
+                </div>
             </div>
         </div>
-        <div class="hero-img">
-             <br> <strong>Ativa Frota</strong><br> caminhões modernos
-        </div>
-    </div>
-
-    <!-- grade de serviços estilo amazon -->
-    <div class="section-title">
-        <h3> Escolha o tamanho ideal</h3>
-        <a href="#" class="see-more">Ver todos os modelos →</a>
-    </div>
-
-    <div class="card-grid">
-        <div class="product-card">
-            <div class="card-icon"></div>
-            <h4>Caçamba 3m³</h4>
-            <div class="capacity">3 metros cúbicos</div>
-            <div class="desc">Ideal para pequenas reformas, restos de construção leve e jardinagem.</div>
-            <div class="price-row"><span class="price">R$ 359</span> /diária</div>
-            <button class="btn-card">Solicitar este modelo</button>
-        </div>
-        <div class="product-card">
-            <div class="card-icon"></div>
-            <h4>Caçamba 5m³</h4>
-            <div class="capacity">5 metros cúbicos</div>
-            <div class="desc">Mais popular para demolição média, entulho misto e sobras de obra.</div>
-            <div class="price-row"><span class="price">R$ 459</span> /diária</div>
-            <button class="btn-card">Solicitar este modelo</button>
-        </div>
-        <div class="product-card">
-            <div class="card-icon"></div>
-            <h4>Caçamba 7m³</h4>
-            <div class="capacity">7 metros cúbicos</div>
-            <div class="desc">Para grandes volumes, construtoras e descarte pesado.</div>
-            <div class="price-row"><span class="price">R$ 569</span> /diária</div>
-            <button class="btn-card">Solicitar este modelo</button>
-        </div>
-        <div class="product-card">
-            <div class="card-icon"></div>
-            <h4>Coleta especial</h4>
-            <div class="capacity">Resíduos mistos</div>
-            <div class="desc">Atendimento personalizado com certificado de destinação final.</div>
-            <div class="price-row"><span class="price">Sob consulta</span></div>
-            <button class="btn-card">Falar com equipe</button>
-        </div>
-    </div>
-
-    <!-- diferenciais estilo amazon (trust badges) -->
-    <div class="features">
-        <div class="feature"><strong>Frota própria</strong> Sem terceirizados</div>
-        <div class="feature"><strong>Certificação ambiental</strong> SEMMA / IAP</div>
-        <div class="feature"><strong>Entrega em até 2h</strong> Após confirmação</div>
-        <div class="feature"><strong>Suporte 24/7</strong> Whatsapp e central</div>
+        <div class="hero-image">
+        <!-- TROQUE O SRC PELA SUA IMAGEM DO CAMINHÃO/FROTA -->
+        <img src="img/frota.png" alt="Frota Ativa Caçambas" style="max-width:100%; border-radius:16px;">
+        <p style="margin-top:16px; font-weight:600;">Ativa Frota</p>
     </div>
 </div>
 
-<!-- footer profissional -->
+    <!-- História da Empresa -->
+    <div class="history-section">
+        <div class="history-content">
+            <h3>Nossa história</h3>
+            <p>Fundada em 2012 por empreendedores com vasta experiência no setor da construção civil, a Ativa Caçambas nasceu com o propósito de oferecer um serviço de locação de caçambas ágil, transparente e ambientalmente responsável.</p>
+            <p>O que começou com apenas três veículos e uma visão clara de atendimento humanizado, hoje se tornou referência em Curitiba e região metropolitana. Com mais de 1.200 obras atendidas, mantemos o compromisso de inovar e cuidar do descarte correto de resíduos.</p>
+            <p>Nossa certificação SEMMA e alvará de funcionamento são a garantia de que sua obra estará em conformidade com as leis ambientais, evitando multas e contribuindo para um futuro mais sustentável.</p>
+        </div>
+        <div class="history-image">
+            <!-- TROQUE O SRC PELA SUA IMAGEM DA HISTÓRIA -->
+            <div class="placeholder-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <p style="margin-top:16px; font-weight:600;">12 anos de mercado</p>
+        </div>
+    </div>
+
+    <!-- Valores e Diferenciais -->
+    <div class="section-title">
+        <h3>Nossos valores</h3>
+        <p>O que nos torna referência na região</p>
+    </div>
+
+    <div class="values-section">
+        <div class="value-card">
+            <div class="value-icon"><i class="fas fa-clock"></i></div>
+            <h4>Agilidade</h4>
+            <p>Entregamos sua caçamba em até 2 horas após a confirmação, com frota própria e rastreamento em tempo real.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon"><i class="fas fa-leaf"></i></div>
+            <h4>Sustentabilidade</h4>
+            <p>Destinação ambientalmente correta de todos os resíduos, com certificação SEMMA e licenças atualizadas.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon"><i class="fas fa-handshake"></i></div>
+            <h4>Transparência</h4>
+            <p>Orçamento sem surpresas, contrato claro e atendimento humanizado do primeiro contato até a retirada da caçamba.</p>
+        </div>
+    </div>
+
+    <!-- Relatos de Clientes -->
+    <div class="testimonials-section">
+        <div style="text-align: center;">
+            <h3>O que nossos clientes dizem</h3>
+            <p style="color:#6b7280;">Histórias reais de quem confia no nosso trabalho</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-text">"Excelente atendimento e pontualidade. Solicitei uma caçamba de 5m³ pela manhã e antes do almoço já estava no local. Preço justo e equipe muito educada. Recomendo!"</div>
+                <div class="testimonial-author">
+                    <div class="author-icon"><i class="fas fa-user"></i></div>
+                    <div class="author-info">
+                        <h5>Carlos Eduardo Silva</h5>
+                        <p>Construtor - Curitiba</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text">"Contratei a Ativa para uma reforma comercial e fiquei impressionado com a agilidade e organização. Emitiram toda a documentação ambiental que meu condomínio exigia. Serviço de primeira."</div>
+                <div class="testimonial-author">
+                    <div class="author-icon"><i class="fas fa-user"></i></div>
+                    <div class="author-info">
+                        <h5>Mariana Oliveira</h5>
+                        <p>Arquiteta - Curitiba</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-text">"Já utilizei outras empresas, mas nenhuma se compara à Ativa. A frota é nova, os motoristas são cuidadosos e o suporte via WhatsApp é rápido. Cliente fidelizado!"</div>
+                <div class="testimonial-author">
+                    <div class="author-icon"><i class="fas fa-user"></i></div>
+                    <div class="author-info">
+                        <h5>Roberto Mendes</h5>
+                        <p>Engenheiro Civil - São José dos Pinhais</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chamada para ação -->
+    <div class="cta-section">
+        <h3>Pronto para começar sua obra?</h3>
+        <p>Solicite um orçamento sem compromisso e tenha sua caçamba no local em até 2 horas</p>
+        <div class="cta-buttons">
+            <a href="/produtos.html" class="btn-primary-large">
+                Ver modelos de caçambas
+            </a>
+            <a href="/agendamento.html" class="btn-outline-large">
+                Agendar entrega
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- WhatsApp Flutuante - CANTÃO DIREITO INFERIOR -->
+<button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1%21%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20loca%C3%A7%C3%A3o%20de%20ca%C3%A7ambas.', '_blank')">
+    <i class="fab fa-whatsapp"></i>
+</button>
+
+<!-- Footer -->
 <footer>
     <div class="container">
         <div class="footer-grid">
             <div class="footer-col">
-                <h4 style="color:#ff9900;">Ativa Caçambas</h4>
-                <p>Rua dos Operários, 450 - Hauer, Curitiba/PR<br>CNPJ: 45.678.123/0001-90</p>
+                <h4>Ativa Caçambas</h4>
+                <p>Rua Irmã Maria Lúcia Roland, 410</p>
+                <p>Hauer, Curitiba - PR</p>
+                <p>CEP: 81.630-250</p>
             </div>
             <div class="footer-col">
                 <h4>Atendimento</h4>
-                <p>(41) 99999-1234<br>comercial@ativacacambas.com.br<br>Seg–Sáb: 7h às 20h</p>
+                <p>(41) 9 9287-8772</p>
+                <p>Segunda a Sábado: 7h às 20h</p>
+                <p>Domingo: Plantão 24h para emergências</p>
             </div>
             <div class="footer-col">
-                <h4>Institucional</h4>
-                <p>Política de privacidade<br>Termos de locação<br>Licenças ambientais</p>
+                <h4>Documentação</h4>
+                <p>Alvará de funcionamento</p>
+                <p>Certificação SEMMA</p>
+                <p>Licença ambiental IAP</p>
             </div>
             <div class="footer-col">
                 <h4>Formas de pagamento</h4>
-                <p>PIX | Cartão | Boleto | Fatura 30 dias para empresas</p>
+                <p>PIX | Cartão de crédito</p>
+                <p>Boleto bancário</p>
+                <p>Faturamento para empresas</p>
             </div>
         </div>
         <div class="copyright">
-            © 2025 Ativa Caçambas - Locação profissional com responsabilidade ambiental. Atendimento Curitiba e RMC.
+            © 2025 Ativa Caçambas - Locação profissional com responsabilidade ambiental. Atendimento Curitiba e Região Metropolitana.
         </div>
     </div>
 </footer>
