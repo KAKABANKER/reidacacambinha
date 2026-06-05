@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ativa Caçambas | Avaliações dos Clientes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1f2e;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: #1a1f2e;
+            color: #9ca3af;
+            padding: 8px 0;
+            font-size: 13px;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* Main Header */
+        .main-header {
+            background: #ffffff;
+            border-bottom: 1px solid #eef2f6;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 0;
+        }
+
+        .header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo img {
+            height: 55px;
+            width: auto;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #1a1f2e;
+        }
+
+        .logo-text h1 span {
+            color: #f5a623;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* Navbar Links */
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a1f2e;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #f5a623;
+        }
+
+        .nav-links .btn-nav {
+            background: #f5a623;
+            color: #1a1f2e;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+        }
+
+        .nav-links .btn-nav:hover {
+            background: #e09515;
+            color: #1a1f2e;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #fff9ef 0%, #ffffff 100%);
+            border-radius: 32px;
+            margin: 32px 0;
+            padding: 56px 48px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            background: #f5a623;
+            color: #1a1f2e;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: #4b5563;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Estatísticas de avaliações */
+        .stats-container {
+            background: #f8fafc;
+            border-radius: 32px;
+            padding: 40px;
+            margin: 32px 0;
+            text-align: center;
+        }
+
+        .rating-number {
+            font-size: 56px;
+            font-weight: 800;
+            color: #f5a623;
+            line-height: 1;
+        }
+
+        .rating-stars {
+            color: #f5a623;
+            font-size: 20px;
+            margin: 12px 0;
+            letter-spacing: 4px;
+        }
+
+        .rating-text {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .rating-bars {
+            max-width: 400px;
+            margin: 24px auto 0;
+        }
+
+        .rating-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .rating-bar-label {
+            width: 70px;
+            color: #4b5563;
+        }
+
+        .rating-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            background: #f5a623;
+            border-radius: 10px;
+        }
+
+        .rating-bar-percent {
+            width: 40px;
+            color: #6b7280;
+        }
+
+        /* Botão excluir todos */
+        .delete-all-btn {
+            background: none;
+            border: 1.5px solid #f5a623;
+            color: #f5a623;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .delete-all-btn:hover {
+            background: #f5a623;
+            color: #1a1f2e;
+        }
+
+        /* Cards de comentários */
+        .reviews-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .review-card {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 24px;
+            padding: 28px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .review-card:hover {
+            transform: translateY(-2px);
+            border-color: #f5a623;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+
+        .delete-review {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.2s;
+            padding: 5px;
+        }
+
+        .delete-review:hover {
+            color: #ef4444;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-right: 30px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .reviewer-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(245,166,35,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #f5a623;
+        }
+
+        .reviewer-details h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1f2e;
+            margin-bottom: 4px;
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .review-stars {
+            color: #f5a623;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .review-text {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .review-service {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* Sem comentários */
+        .no-reviews {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8fafc;
+            border-radius: 24px;
+            color: #9ca3af;
+        }
+
+        .no-reviews i {
+            font-size: 48px;
+            color: #cbd5e1;
+            margin-bottom: 16px;
+        }
+
+        /* Formulário de avaliação */
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 32px;
+            padding: 40px;
+            margin: 48px 0;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-header .badge {
+            background: rgba(245,166,35,0.1);
+            color: #f5a623;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .form-header h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: #6b7280;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1f2e;
+        }
+
+        label i {
+            margin-right: 8px;
+            color: #f5a623;
+        }
+
+        .required::after {
+            content: '*';
+            color: #f5a623;
+            margin-left: 4px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border: 1.5px solid #eef2f6;
+            border-radius: 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #1a1f2e;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #f5a623;
+            background: #ffffff;
+        }
+
+        /* Estrelas de avaliação */
+        .rating-input {
+            display: flex;
+            gap: 10px;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+        }
+
+        .rating-input input {
+            display: none;
+        }
+
+        .rating-input label {
+            font-size: 28px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin-bottom: 0;
+        }
+
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input:checked ~ label {
+            color: #f5a623;
+        }
+
+        /* Botão */
+        .btn {
+            background: #f5a623;
+            color: #1a1f2e;
+            font-weight: 700;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 40px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            background: #e09515;
+            transform: translateY(-2px);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: #1a1f2e;
+            border-radius: 32px;
+            padding: 56px 48px;
+            margin: 48px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h3 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: #9ca3af;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-large {
+            background: #f5a623;
+            color: #1a1f2e;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-large:hover {
+            background: #e09515;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-large {
+            background: transparent;
+            border: 1.5px solid #f5a623;
+            color: #f5a623;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-outline-large:hover {
+            background: rgba(245,166,35,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* WhatsApp Flutuante */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.08);
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1f2e;
+            color: #9ca3af;
+            margin-top: 48px;
+            padding: 48px 0 24px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-col p {
+            font-size: 12px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 11px;
+            padding-top: 24px;
+            border-top: 1px solid #2d3748;
+        }
+
+        @media (max-width: 900px) {
+            .container { padding: 0 20px; }
+            .hero { padding: 32px; }
+            .hero h2 { font-size: 32px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-container { padding: 24px; }
+            .form-card { padding: 24px; }
+            .review-card { padding: 20px; }
+        }
+
+        @media (max-width: 600px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .whatsapp-float {
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .hero-stats { flex-wrap: wrap; gap: 16px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="container">
+        <span>Entrega rápida em Curitiba e Região Metropolitana</span>
+        <span>Base: Hauer, Curitiba | Certificação SEMMA</span>
+    </div>
+</div>
+
+<!-- Main Header -->
+<div class="main-header">
+    <div class="container header-flex">
+        <div class="logo">
+            <img src="https://placehold.co/55x55/f5a623/ffffff?text=AC" alt="Ativa Caçambas Logo">
+            <div class="logo-text">
+                <h1>ATIVA <span>CAÇAMBAS</span></h1>
+                <p>Locação profissional desde 2012</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Início</a>
+            <a href="agendamento.html">Agendar</a>
+            <a href="comentarios.html" class="btn-nav">Avaliações</a>
+            <a href="suporte.html">Suporte</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-badge">OPINIÃO DE QUEM CONFIA</div>
+        <h2>O que nossos <span style="color:#f5a623;">clientes dizem</span></h2>
+        <p>Mais de 1.200 obras atendidas com excelência e compromisso ambiental</p>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="stats-container" id="statsContainer">
+        <div class="rating-number" id="mediaRating">4.9</div>
+        <div class="rating-stars" id="mediaStars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+        </div>
+        <div class="rating-text" id="totalReviews">Baseado em 6 avaliações</div>
+        
+        <div class="rating-bars">
+            <div class="rating-bar-item">
+                <div class="rating-bar-label">5 estrelas</div>
+                <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar5" style="width: 83%"></div></div>
+                <div class="rating-bar-percent" id="percent5">83%</div>
+            </div>
+            <div class="rating-bar-item">
+                <div class="rating-bar-label">4 estrelas</div>
+                <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar4" style="width: 17%"></div></div>
+                <div class="rating-bar-percent" id="percent4">17%</div>
+            </div>
+            <div class="rating-bar-item">
+                <div class="rating-bar-label">3 estrelas</div>
+                <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar3" style="width: 0%"></div></div>
+                <div class="rating-bar-percent" id="percent3">0%</div>
+            </div>
+            <div class="rating-bar-item">
+                <div class="rating-bar-label">2 estrelas</div>
+                <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar2" style="width: 0%"></div></div>
+                <div class="rating-bar-percent" id="percent2">0%</div>
+            </div>
+            <div class="rating-bar-item">
+                <div class="rating-bar-label">1 estrela</div>
+                <div class="rating-bar-bg"><div class="rating-bar-fill" id="bar1" style="width: 0%"></div></div>
+                <div class="rating-bar-percent" id="percent1">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão excluir todos -->
+    <button class="delete-all-btn" id="deleteAllBtn">
+        <i class="fas fa-trash-alt"></i> Excluir todos os comentários
+    </button>
+
+    <!-- Lista de comentários -->
+    <div id="reviewsGrid" class="reviews-grid"></div>
+
+    <!-- Formulário de avaliação -->
+    <div class="form-card">
+        <div class="form-header">
+            <div class="badge">DEIXE SUA OPINIÃO</div>
+            <h3>Compartilhe sua experiência</h3>
+            <p>Sua avaliação nos ajuda a melhorar cada vez mais</p>
+        </div>
+
+        <form id="formAvaliacao">
+            <div class="form-group">
+                <label class="required"><i class="fas fa-user"></i> Nome completo</label>
+                <input type="text" id="nome" placeholder="Como você gostaria de ser chamado?" required>
+            </div>
+
+            <div class="form-group">
+                <label class="required"><i class="fas fa-star"></i> Sua avaliação</label>
+                <div class="rating-input">
+                    <input type="radio" name="rating" id="star5" value="5"><label for="star5"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" id="star4" value="4"><label for="star4"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" id="star3" value="3"><label for="star3"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" id="star2" value="2"><label for="star2"><i class="fas fa-star"></i></label>
+                    <input type="radio" name="rating" id="star1" value="1"><label for="star1"><i class="fas fa-star"></i></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="required"><i class="fas fa-comment"></i> Seu comentário</label>
+                <textarea id="comentario" rows="4" placeholder="Conte-nos como foi sua experiência com a Ativa Caçambas..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-dumpster"></i> Serviço contratado</label>
+                <select id="servico">
+                    <option value="">Selecione o serviço</option>
+                    <option value="Caçamba 5m³">Caçamba 5m³</option>
+                    <option value="Caçamba 7m³">Caçamba 7m³</option>
+                    <option value="Caçamba 10m³">Caçamba 10m³</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">
+                <i class="fas fa-save"></i>
+                Salvar avaliação
+            </button>
+        </form>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h3>Pronto para começar sua obra?</h3>
+        <p>Solicite um orçamento sem compromisso e tenha sua caçamba no local em até 2 horas</p>
+        <div class="cta-buttons">
+            <a href="/produtos.html" class="btn-primary-large">
+                Ver modelos de caçambas
+            </a>
+            <a href="/agendamento.html" class="btn-outline-large">
+                Agendar entrega
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- WhatsApp Flutuante -->
+<button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1%21%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20loca%C3%A7%C3%A3o%20de%20ca%C3%A7ambas.', '_blank')">
+    <i class="fab fa-whatsapp"></i>
+</button>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Ativa Caçambas</h4>
+                <p>Rua Irmã Maria Lúcia Roland, 410</p>
+                <p>Hauer, Curitiba - PR</p>
+                <p>CEP: 81.630-250</p>
+            </div>
+            <div class="footer-col">
+                <h4>Atendimento</h4>
+                <p>(41) 9 9287-8772</p>
+                <p>Segunda a Sábado: 7h às 20h</p>
+                <p>Domingo: Plantão 24h para emergências</p>
+            </div>
+            <div class="footer-col">
+                <h4>Documentação</h4>
+                <p>Alvará de funcionamento</p>
+                <p>Certificação SEMMA</p>
+                <p>Licença ambiental IAP</p>
+            </div>
+            <div class="footer-col">
+                <h4>Formas de pagamento</h4>
+                <p>PIX | Cartão de crédito</p>
+                <p>Boleto bancário</p>
+                <p>Faturamento para empresas</p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Ativa Caçambas - Locação profissional com responsabilidade ambiental. Atendimento Curitiba e Região Metropolitana.
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Chave para localStorage
+    const STORAGE_KEY = 'ativa_cacambas_reviews';
+
+    // Comentários anteriores (falsos)
+    const DEFAULT_REVIEWS = [
+        {
+            id: 1,
+            nome: "Carlos Eduardo Silva",
+            rating: 5,
+            comentario: "Excelente atendimento e pontualidade. Solicitei uma caçamba de 5m³ pela manhã e antes do almoço já estava no local. Preço justo e equipe muito educada. Recomendo!",
+            servico: "Caçamba 5m³",
+            data: "Há 2 dias",
+            timestamp: Date.now() - (2 * 24 * 60 * 60 * 1000)
+        },
+        {
+            id: 2,
+            nome: "Mariana Oliveira",
+            rating: 5,
+            comentario: "Contratei a Ativa para uma reforma comercial e fiquei impressionado com a agilidade e organização. Emitiram toda a documentação ambiental que meu condomínio exigia. Serviço de primeira.",
+            servico: "Caçamba 7m³",
+            data: "Há 5 dias",
+            timestamp: Date.now() - (5 * 24 * 60 * 60 * 1000)
+        },
+        {
+            id: 3,
+            nome: "Roberto Mendes",
+            rating: 5,
+            comentario: "Já utilizei outras empresas, mas nenhuma se compara à Ativa. A frota é nova, os motoristas são cuidadosos e o suporte via WhatsApp é rápido. Cliente fidelizado!",
+            servico: "Caçamba 10m³",
+            data: "Há 1 semana",
+            timestamp: Date.now() - (7 * 24 * 60 * 60 * 1000)
+        },
+        {
+            id: 4,
+            nome: "Patrícia Souza",
+            rating: 5,
+            comentario: "Foi a primeira vez que contratei uma empresa de caçambas e não poderia ter escolhido melhor. Desde o agendamento até a retirada, tudo foi muito profissional. O preço foi o mais em conta que pesquisei na região. Super recomendo!",
+            servico: "Caçamba 5m³",
+            data: "Há 2 semanas",
+            timestamp: Date.now() - (14 * 24 * 60 * 60 * 1000)
+        },
+        {
+            id: 5,
+            nome: "João Lima",
+            rating: 5,
+            comentario: "Atendimento de primeira qualidade! Precisei de uma caçamba urgente para uma obra e eles conseguiram entregar no mesmo dia. O valor foi justo e o pessoal foi muito prestativo. Já indiquei para meus vizinhos.",
+            servico: "Caçamba 7m³",
+            data: "Há 3 semanas",
+            timestamp: Date.now() - (21 * 24 * 60 * 60 * 1000)
+        },
+        {
+            id: 6,
+            nome: "Fernanda Martins",
+            rating: 4,
+            comentario: "Ótima experiência! Agendei pelo site, foi super fácil. A caçamba chegou na data certa e retiraram no prazo combinado. O entulho foi todo descartado corretamente, com certificado de destinação adequada.",
+            servico: "Caçamba 5m³",
+            data: "Há 1 mês",
+            timestamp: Date.now() - (30 * 24 * 60 * 60 * 1000)
+        }
+    ];
+
+    let reviews = [];
+
+    function loadReviews() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            reviews = JSON.parse(stored);
+        } else {
+            reviews = JSON.parse(JSON.stringify(DEFAULT_REVIEWS));
+            saveReviews();
+        }
+        renderReviews();
+        updateStats();
+    }
+
+    function saveReviews() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+    }
+
+    function addReview(nome, rating, comentario, servico) {
+        const now = new Date();
+        const dataFormatada = formatarData(now);
+        
+        const newReview = {
+            id: Date.now(),
+            nome: nome,
+            rating: parseInt(rating),
+            comentario: comentario,
+            servico: servico || 'Não informado',
+            data: dataFormatada,
+            timestamp: now.getTime()
+        };
+        
+        reviews.unshift(newReview);
+        saveReviews();
+        renderReviews();
+        updateStats();
+        
+        return newReview;
+    }
+
+    function deleteReview(id) {
+        if (confirm('Tem certeza que deseja excluir este comentário?')) {
+            reviews = reviews.filter(review => review.id !== id);
+            saveReviews();
+            renderReviews();
+            updateStats();
+        }
+    }
+
+    function deleteAllReviews() {
+        if (reviews.length > 0 && confirm('Tem certeza que deseja excluir TODOS os comentários?')) {
+            reviews = [];
+            saveReviews();
+            renderReviews();
+            updateStats();
+        }
+    }
+
+    function formatarData(date) {
+        const agora = new Date();
+        const diffHoras = Math.floor((agora - date) / (1000 * 60 * 60));
+        
+        if (diffHoras < 1) return 'Agora mesmo';
+        if (diffHoras < 24) return `Há ${diffHoras} ${diffHoras === 1 ? 'hora' : 'horas'}`;
+        
+        const diffDias = Math.floor(diffHoras / 24);
+        if (diffDias < 7) return `Há ${diffDias} ${diffDias === 1 ? 'dia' : 'dias'}`;
+        
+        if (diffDias < 30) return `Há ${Math.floor(diffDias / 7)} ${Math.floor(diffDias / 7) === 1 ? 'semana' : 'semanas'}`;
+        
+        return date.toLocaleDateString('pt-BR');
+    }
+
+    function gerarEstrelas(rating) {
+        let estrelas = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                estrelas += '<i class="fas fa-star"></i>';
+            } else {
+                estrelas += '<i class="far fa-star"></i>';
+            }
+        }
+        return estrelas;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function renderReviews() {
+        const grid = document.getElementById('reviewsGrid');
+        
+        if (reviews.length === 0) {
+            grid.innerHTML = `
+                <div class="no-reviews">
+                    <i class="fas fa-comment-dots"></i>
+                    <p>Nenhum comentário ainda.</p>
+                    <p style="font-size: 13px; margin-top: 8px;">Seja o primeiro a deixar sua avaliação!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        grid.innerHTML = reviews.map(review => `
+            <div class="review-card">
+                <button class="delete-review" onclick="deleteReview(${review.id})" title="Excluir comentário">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">${escapeHtml(review.nome.substring(0, 2).toUpperCase())}</div>
+                        <div class="reviewer-details">
+                            <h4>${escapeHtml(review.nome)}</h4>
+                            <div class="review-date">${review.data}</div>
+                        </div>
+                    </div>
+                    <div class="review-stars">
+                        ${gerarEstrelas(review.rating)}
+                    </div>
+                </div>
+                <div class="review-text">
+                    "${escapeHtml(review.comentario)}"
+                </div>
+                <div class="review-service">
+                    <i class="fas fa-dumpster"></i> Serviço: ${escapeHtml(review.servico)}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateStats() {
+        const total = reviews.length;
+        
+        if (total === 0) {
+            document.getElementById('mediaRating').textContent = '0.0';
+            document.getElementById('mediaStars').innerHTML = '<i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>';
+            document.getElementById('totalReviews').textContent = 'Baseado em 0 avaliações';
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`bar${i}`).style.width = '0%';
+                document.getElementById(`percent${i}`).textContent = '0%';
+            }
+            return;
+        }
+        
+        let soma = 0;
+        const contagem = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+        
+        reviews.forEach(review => {
+            soma += review.rating;
+            contagem[review.rating]++;
+        });
+        
+        const media = soma / total;
+        document.getElementById('mediaRating').textContent = media.toFixed(1);
+        
+        const mediaInt = Math.floor(media);
+        const mediaFrac = media - mediaInt;
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= mediaInt) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            } else if (i === mediaInt + 1 && mediaFrac >= 0.5) {
+                starsHtml += '<i class="fas fa-star-half-alt"></i>';
+            } else {
+                starsHtml += '<i class="far fa-star"></i>';
+            }
+        }
+        document.getElementById('mediaStars').innerHTML = starsHtml;
+        document.getElementById('totalReviews').textContent = `Baseado em ${total} ${total === 1 ? 'avaliação' : 'avaliações'}`;
+        
+        for (let i = 1; i <= 5; i++) {
+            const percentual = (contagem[i] / total) * 100;
+            document.getElementById(`bar${i}`).style.width = `${percentual}%`;
+            document.getElementById(`percent${i}`).textContent = `${Math.round(percentual)}%`;
+        }
+    }
+
+    document.getElementById('formAvaliacao').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nome = document.getElementById('nome').value.trim();
+        const ratingInput = document.querySelector('input[name="rating"]:checked');
+        const comentario = document.getElementById('comentario').value.trim();
+        const servico = document.getElementById('servico').value;
+        
+        if (!nome) {
+            alert('Por favor, digite seu nome.');
+            return;
+        }
+        if (!ratingInput) {
+            alert('Por favor, selecione uma classificação por estrelas.');
+            return;
+        }
+        if (!comentario) {
+            alert('Por favor, digite seu comentário.');
+            return;
+        }
+        
+        addReview(nome, ratingInput.value, comentario, servico);
+        alert('✅ Avaliação salva com sucesso!\n\nObrigado por compartilhar sua experiência!');
+        
+        document.getElementById('formAvaliacao').reset();
+        document.querySelector('.reviews-grid').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('deleteAllBtn').addEventListener('click', deleteAllReviews);
+    window.deleteReview = deleteReview;
+
+    loadReviews();
+</script>
+</body>
+</html>
