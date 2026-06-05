@@ -214,21 +214,29 @@
             box-shadow: 0 12px 28px rgba(0,0,0,0.08);
         }
 
-        .product-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(245,166,35,0.1);
+        /* ESTA É A CLASSE QUE ESTAVA FALTANDO - ADICIONADA AGORA */
+        .product-image {
+            background: #f8fafc;
             border-radius: 16px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
+            overflow: hidden;
         }
 
-        .product-icon i {
-            font-size: 28px;
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-image i {
+            font-size: 48px;
             color: #f5a623;
         }
+        /* FIM DA CLASSE ADICIONADA */
 
         .product-card h3 {
             font-size: 20px;
@@ -608,33 +616,33 @@
             
             if (data.success && data.produtos.length > 0) {
                 const grid = document.getElementById('produtosGrid');
-               grid.innerHTML = data.produtos.map(p => {
-    const hasImage = p.imagem && p.imagem.trim() !== '';
-    const categoryName = p.tipo === 'cacamba' ? 'Caçamba' : 'Material';
-    
-    return `
-        <div class="product-card" onclick="selecionarProduto(${p.id}, '${p.nome.replace(/'/g, "\\'")}', ${p.preco_promocional || p.preco})">
-            <div class="product-image">
-                ${hasImage ? 
-                    `<img src="${p.imagem}" alt="${p.nome}" style="width:100%; height:140px; object-fit:cover; border-radius:16px;">` : 
-                    `<i class="fas ${p.icone || 'fa-dumpster'}" style="font-size:48px; color:#f5a623;"></i>`
-                }
-            </div>
-            <h3>${p.nome}</h3>
-            <div class="price-section">
-                <span class="current-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</span>
-                ${p.preco_promocional ? `<span class="old-price">R$ ${p.preco.toFixed(2)}</span>` : ''}
-                <div class="installment">ou em até 3x sem juros</div>
-            </div>
-            <div class="product-description">${p.descricao || 'Caçamba estacionária de alta qualidade.'}</div>
-            <div class="product-meta">
-                ${p.dimensoes ? `<span class="meta-tag"><i class="fas fa-ruler"></i> ${p.dimensoes}</span>` : ''}
-                ${p.capacidade ? `<span class="meta-tag"><i class="fas fa-cube"></i> ${p.capacidade}</span>` : ''}
-            </div>
-            <span class="badge-category">${categoryName}</span>
-        </div>
-    `;
-}).join('');
+                grid.innerHTML = data.produtos.map(p => {
+                    const hasImage = p.imagem && p.imagem.trim() !== '';
+                    const categoryName = p.tipo === 'cacamba' ? 'Caçamba' : 'Material';
+                    
+                    return `
+                        <div class="product-card" onclick="selecionarProduto(${p.id}, '${p.nome.replace(/'/g, "\\'")}', ${p.preco_promocional || p.preco})">
+                            <div class="product-image">
+                                ${hasImage ? 
+                                    `<img src="${p.imagem}" alt="${p.nome}">` : 
+                                    `<i class="fas ${p.icone || 'fa-dumpster'}"></i>`
+                                }
+                            </div>
+                            <h3>${p.nome}</h3>
+                            <div class="price-section">
+                                <span class="current-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</span>
+                                ${p.preco_promocional ? `<span class="old-price">R$ ${p.preco.toFixed(2)}</span>` : ''}
+                                <div class="installment">ou em até 3x sem juros</div>
+                            </div>
+                            <div class="product-description">${p.descricao || 'Caçamba estacionária de alta qualidade.'}</div>
+                            <div class="product-meta">
+                                ${p.dimensoes ? `<span class="meta-tag"><i class="fas fa-ruler"></i> ${p.dimensoes}</span>` : ''}
+                                ${p.capacidade ? `<span class="meta-tag"><i class="fas fa-cube"></i> ${p.capacidade}</span>` : ''}
+                            </div>
+                            <span class="badge-category">${categoryName}</span>
+                        </div>
+                    `;
+                }).join('');
             } else {
                 document.getElementById('produtosGrid').innerHTML = `
                     <div class="empty-state">
