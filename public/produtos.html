@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos - Ativa Caçambas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Ativa Caçambas | Nossos Produtos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -14,129 +15,653 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0f14;
-            color: #ffffff;
-            padding: 40px 20px;
+            background: #ffffff;
+            color: #1a1f2e;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
+            padding: 0 32px;
         }
 
-        h1 {
-            font-size: 2rem;
+        /* Top Bar */
+        .top-bar {
+            background: #1a1f2e;
+            color: #9ca3af;
+            padding: 8px 0;
+            font-size: 13px;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* Main Header */
+        .main-header {
+            background: #ffffff;
+            border-bottom: 1px solid #eef2f6;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 0;
+        }
+
+        .header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo img {
+            height: 55px;
+            width: auto;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #1a1f2e;
+        }
+
+        .logo-text h1 span {
+            color: #f5a623;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* Navbar Links */
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a1f2e;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #f5a623;
+        }
+
+        .nav-links .btn-nav {
+            background: #f5a623;
+            color: #1a1f2e;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+        }
+
+        .nav-links .btn-nav:hover {
+            background: #e09515;
+            color: #1a1f2e;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #fff9ef 0%, #ffffff 100%);
+            border-radius: 32px;
+            margin: 32px 0;
+            padding: 56px 48px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            background: #f5a623;
+            color: #1a1f2e;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: #4b5563;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Products Grid */
+        .products-section {
+            margin: 48px 0;
+        }
+
+        .section-header {
             margin-bottom: 32px;
-            border-left: 4px solid #ffd700;
-            padding-left: 20px;
+        }
+
+        .section-header h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            color: #6b7280;
         }
 
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
+            gap: 28px;
         }
 
         .product-card {
-            background: #1a2a22;
-            border-radius: 20px;
-            padding: 24px;
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 24px;
+            padding: 28px;
             cursor: pointer;
-            transition: transform 0.2s;
-            border: 1px solid #333;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #f5a623, #f5a623);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
         }
 
         .product-card:hover {
             transform: translateY(-4px);
-            border-color: #ffd700;
+            border-color: #f5a623;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+
+        .product-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(245,166,35,0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .product-icon i {
+            font-size: 28px;
+            color: #f5a623;
         }
 
         .product-card h3 {
-            font-size: 1.4rem;
+            font-size: 20px;
+            font-weight: 700;
             margin-bottom: 12px;
+            color: #1a1f2e;
         }
 
-        .price {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #ffd700;
+        .price-section {
             margin: 16px 0;
         }
 
+        .current-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #f5a623;
+        }
+
         .old-price {
-            font-size: 0.9rem;
-            color: #888;
+            font-size: 14px;
+            color: #9ca3af;
             text-decoration: line-through;
             margin-left: 8px;
         }
 
-        .desc {
-            color: #aaa;
-            font-size: 0.85rem;
-            line-height: 1.4;
+        .installment {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .product-description {
+            color: #4b5563;
+            font-size: 13px;
+            line-height: 1.5;
             margin-bottom: 16px;
         }
 
-        .badge {
-            display: inline-block;
-            background: #ffd70020;
+        .product-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            background: #f8fafc;
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 11px;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-category {
+            display: inline-block;
+            background: rgba(245,166,35,0.1);
+            color: #f5a623;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
-        .loading {
+        /* Loading State */
+        .loading-container {
             text-align: center;
-            padding: 60px;
-            color: #ffd700;
+            padding: 80px 20px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #eef2f6;
+            border-top-color: #f5a623;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-container p {
+            color: #6b7280;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: #f8fafc;
+            border-radius: 32px;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #f5a623;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #6b7280;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: #1a1f2e;
+            border-radius: 32px;
+            padding: 56px 48px;
+            margin: 48px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h3 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: #9ca3af;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-large {
+            background: #f5a623;
+            color: #1a1f2e;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-large:hover {
+            background: #e09515;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-large {
+            background: transparent;
+            border: 1.5px solid #f5a623;
+            color: #f5a623;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-outline-large:hover {
+            background: rgba(245,166,35,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* WhatsApp Flutuante */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.08);
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1f2e;
+            color: #9ca3af;
+            margin-top: 48px;
+            padding: 48px 0 24px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .footer-col h4 {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-col p {
+            font-size: 12px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 11px;
+            padding-top: 24px;
+            border-top: 1px solid #2d3748;
+        }
+
+        @media (max-width: 900px) {
+            .container { padding: 0 20px; }
+            .hero { padding: 32px; }
+            .hero h2 { font-size: 32px; }
+            .products-grid { gap: 20px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .whatsapp-float {
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .nav-links { display: none; }
+            .products-grid { grid-template-columns: 1fr; }
+            .hero { padding: 24px; }
         }
     </style>
 </head>
 <body>
+
+<!-- Top Bar -->
+<div class="top-bar">
     <div class="container">
-        <h1>Escolha o produto</h1>
+        <span>Entrega rápida de todo o BRASIL!</span>
+    </div>
+</div>
+
+<!-- Main Header -->
+<div class="main-header">
+    <div class="container header-flex">
+        <div class="logo">
+            <img src="img/logo.png" alt="Ativa Caçambas Logo" onerror="this.src='https://placehold.co/55x55/f5a623/ffffff?text=AC'">
+            <div class="logo-text">
+                <h1>ATIVA <span>CAÇAMBAS</span></h1>
+                <p>Locação profissional desde 2012</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Início</a>
+            <a href="agendamento.html">Agendar</a>
+            <a href="comentarios.htm">Avaliações</a>
+            <a href="suporte.htm">Suporte</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-badge">QUALIDADE GARANTIDA</div>
+        <h2>Nossos <span style="color:#f5a623;">Produtos</span></h2>
+        <p>Escolha a melhor opção para sua obra ou reforma. Caçambas de alta qualidade com entrega rápida.</p>
+    </div>
+
+    <!-- Products Section -->
+    <div class="products-section">
+        <div class="section-header">
+            <h3>Modelos disponíveis</h3>
+            <p>Selecione o produto e faça seu orçamento</p>
+        </div>
+        
         <div class="products-grid" id="produtosGrid">
-            <div class="loading">Carregando produtos...</div>
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Carregando produtos...</p>
+            </div>
         </div>
     </div>
 
-    <script>
-        async function carregarProdutos() {
-            try {
-                const response = await fetch('/api/produtos');
-                const data = await response.json();
-                
-                if (data.success && data.produtos.length > 0) {
-                    const grid = document.getElementById('produtosGrid');
-                    grid.innerHTML = data.produtos.map(p => `
-                        <div class="product-card" onclick="selecionarProduto(${p.id}, '${p.nome}', ${p.preco_promocional || p.preco})">
-                            <h3>${p.nome}</h3>
-                            <div class="price">
-                                R$ ${(p.preco_promocional || p.preco).toFixed(2)}
-                                ${p.preco_promocional ? `<span class="old-price">R$ ${p.preco.toFixed(2)}</span>` : ''}
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h3>Precisa de ajuda para escolher?</h3>
+        <p>Nossa equipe está pronta para te ajudar a escolher a melhor caçamba para sua obra</p>
+        <div class="cta-buttons">
+            <a href="suporte.html" class="btn-primary-large">
+                <i class="fas fa-headset"></i> Falar com suporte
+            </a>
+            <a href="agendamento.html" class="btn-outline-large">
+                <i class="fas fa-calendar"></i> Agendar entrega
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- WhatsApp Flutuante -->
+<button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1%21%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20produtos.', '_blank')">
+    <i class="fab fa-whatsapp"></i>
+</button>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Ativa Caçambas</h4>
+                <p>Rua Irmã Maria Lúcia Roland, 410</p>
+                <p>Hauer, Curitiba - PR</p>
+                <p>CEP: 81.630-250</p>
+            </div>
+            <div class="footer-col">
+                <h4>Atendimento</h4>
+                <p>(41) 9 9287-8772</p>
+                <p>Segunda a Sábado: 7h às 20h</p>
+                <p>Domingo: Plantão 24h para emergências</p>
+            </div>
+            <div class="footer-col">
+                <h4>Documentação</h4>
+                <p>Alvará de funcionamento</p>
+                <p>Certificação SEMMA</p>
+                <p>Licença ambiental IAP</p>
+            </div>
+            <div class="footer-col">
+                <h4>Formas de pagamento</h4>
+                <p>PIX | Cartão de crédito</p>
+                <p>Boleto bancário</p>
+                <p>Faturamento para empresas</p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Ativa Caçambas - Locação profissional com responsabilidade ambiental. Atendimento Curitiba e Região Metropolitana.
+        </div>
+    </div>
+</footer>
+
+<script>
+    async function carregarProdutos() {
+        try {
+            const response = await fetch('/api/produtos');
+            const data = await response.json();
+            
+            if (data.success && data.produtos.length > 0) {
+                const grid = document.getElementById('produtosGrid');
+                grid.innerHTML = data.produtos.map(p => {
+                    // Determinar ícone baseado no tipo
+                    const icon = p.tipo === 'cacamba' ? 'fa-dumpster' : 'fa-tools';
+                    const categoryName = p.tipo === 'cacamba' ? 'Caçamba' : 'Material';
+                    
+                    return `
+                        <div class="product-card" onclick="selecionarProduto(${p.id}, '${p.nome.replace(/'/g, "\\'")}', ${p.preco_promocional || p.preco})">
+                            <div class="product-icon">
+                                <i class="fas ${icon}"></i>
                             </div>
-                            <div class="desc">${p.descricao || 'Sem descrição'}</div>
-                            ${p.dimensoes ? `<div style="font-size:0.7rem; color:#888; margin-top:8px;">${p.dimensoes} | ${p.capacidade || ''}</div>` : ''}
-                            <div style="margin-top: 16px;"><span class="badge">${p.tipo === 'cacamba' ? 'Caçamba' : 'Material'}</span></div>
+                            <h3>${p.nome}</h3>
+                            <div class="price-section">
+                                <span class="current-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</span>
+                                ${p.preco_promocional ? `<span class="old-price">R$ ${p.preco.toFixed(2)}</span>` : ''}
+                                <div class="installment">ou em até 3x sem juros</div>
+                            </div>
+                            <div class="product-description">${p.descricao || 'Caçamba estacionária de alta qualidade, ideal para obras e reformas.'}</div>
+                            <div class="product-meta">
+                                ${p.dimensoes ? `<span class="meta-tag"><i class="fas fa-ruler"></i> ${p.dimensoes}</span>` : ''}
+                                ${p.capacidade ? `<span class="meta-tag"><i class="fas fa-cube"></i> ${p.capacidade}</span>` : ''}
+                            </div>
+                            <span class="badge-category">${categoryName}</span>
                         </div>
-                    `).join('');
-                } else {
-                    document.getElementById('produtosGrid').innerHTML = '<div class="loading">Nenhum produto cadastrado</div>';
-                }
-            } catch (error) {
-                document.getElementById('produtosGrid').innerHTML = '<div class="loading">Erro ao carregar produtos</div>';
+                    `;
+                }).join('');
+            } else {
+                document.getElementById('produtosGrid').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <h4>Nenhum produto cadastrado</h4>
+                        <p>Em breve teremos novidades. Entre em contato para mais informações.</p>
+                    </div>
+                `;
             }
+        } catch (error) {
+            console.error('Erro:', error);
+            document.getElementById('produtosGrid').innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-wifi-slash"></i>
+                    <h4>Erro ao carregar produtos</h4>
+                    <p>Não foi possível carregar os produtos. Tente novamente mais tarde.</p>
+                </div>
+            `;
         }
-        
-        function selecionarProduto(id, nome, preco) {
-            localStorage.setItem('produto_id', id);
-            localStorage.setItem('produto_nome', nome);
-            localStorage.setItem('produto_preco', preco);
-            window.location.href = `/produto.html?id=${id}`;
-        }
-        
-        carregarProdutos();
-    </script>
+    }
+    
+    function selecionarProduto(id, nome, preco) {
+        localStorage.setItem('produto_id', id);
+        localStorage.setItem('produto_nome', nome);
+        localStorage.setItem('produto_preco', preco);
+        window.location.href = `/produto.html?id=${id}`;
+    }
+    
+    carregarProdutos();
+</script>
 </body>
 </html>
