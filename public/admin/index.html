@@ -887,7 +887,9 @@ function renderProducts() {
     container.innerHTML = productsData.map(p => `
         <div class="product-row">
             <div class="product-info">
-                <div class="product-icon"><i class="${p.icone || 'fas fa-box'}"></i></div>
+                <div class="product-icon">
+                    ${p.imagem ? `<img src="${p.imagem}" style="width:44px; height:44px; object-fit:cover; border-radius:12px;">` : `<i class="${p.icone || 'fas fa-box'}"></i>`}
+                </div>
                 <div class="product-details">
                     <h4>${escapeHtml(p.nome)}</h4>
                     <p>${p.tipo === 'cacamba' ? 'Caçamba' : 'Material'} ${p.dimensoes ? ' · ' + p.dimensoes : ''}</p>
