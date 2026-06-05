@@ -160,7 +160,7 @@
             overflow: hidden;
         }
 
-        /* Product Image */
+        /* Product Image - COM SUPORTE PARA IMAGEM REAL */
         .product-image {
             background: linear-gradient(135deg, #fff9ef 0%, #ffffff 100%);
             padding: 48px;
@@ -168,6 +168,13 @@
             align-items: center;
             justify-content: center;
             min-height: 400px;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border-radius: 16px;
         }
 
         .image-placeholder {
@@ -642,18 +649,21 @@
                 // Atualizar breadcrumb
                 document.getElementById('produtoNome').textContent = p.nome;
                 
-                // Determinar ícone baseado no tipo
-                const icon = p.tipo === 'cacamba' ? 'fa-dumpster' : 'fa-tools';
+                // Verificar se tem imagem
+                const hasImage = p.imagem && p.imagem.trim() !== '';
                 const categoryName = p.tipo === 'cacamba' ? 'Caçamba Estacionária' : 'Material de Construção';
                 
-                // Gerar HTML do produto
+                // Gerar HTML do produto com imagem real
                 document.getElementById('detalhes').innerHTML = `
                     <div class="product-grid">
                         <div class="product-image">
-                            <div class="image-placeholder">
-                                <i class="fas ${icon}"></i>
-                                <p>${p.nome}</p>
-                            </div>
+                            ${hasImage ? 
+                                `<img src="${p.imagem}" alt="${p.nome}">` : 
+                                `<div class="image-placeholder">
+                                    <i class="fas ${p.tipo === 'cacamba' ? 'fa-dumpster' : 'fa-tools'}"></i>
+                                    <p>${p.nome}</p>
+                                </div>`
+                            }
                         </div>
                         <div class="product-info">
                             <div class="product-badge">DESTAQUE</div>
