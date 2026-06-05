@@ -131,6 +131,18 @@
             text-align: center;
             margin-bottom: 24px;
         }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #ffd700;
+        }
+
+        .error {
+            color: #ff4444;
+            text-align: center;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -146,8 +158,9 @@
         <div class="payment-form">
             <div id="pixSection">
                 <div class="qrcode-area">
-                    <div class="qrcode" id="qrcodeImg">Gerando QR Code...</div>
-                    <button class="btn-pay" onclick="copiarQrCode()">Copiar código PIX</button>
+                    <div id="qrcodeImg" class="qrcode">Clique em Gerar PIX</div>
+                    <button class="btn-pay" id="btnGerarPix" onclick="gerarPix()">GERAR PIX</button>
+                    <button class="btn-pay hidden" id="btnCopiarPix" onclick="copiarQrCode()">Copiar código PIX</button>
                 </div>
             </div>
             
@@ -182,6 +195,11 @@
         let produtoId = localStorage.getItem('produto_id');
         let produtoNome = localStorage.getItem('produto_nome');
         let produtoPreco = parseFloat(localStorage.getItem('produto_preco'));
+        let clienteNome = localStorage.getItem('cliente_nome');
+        let clienteCpf = localStorage.getItem('cliente_cpf');
+        let clienteTelefone = localStorage.getItem('cliente_telefone');
+        
+        let currentPixCode = '';
         
         document.getElementById('totalValor').innerHTML = `Total: R$ ${produtoPreco.toFixed(2)}`;
         
@@ -193,7 +211,9 @@
             if (metodo === 'pix') {
                 document.getElementById('pixSection').classList.remove('hidden');
                 document.getElementById('cartaoSection').classList.add('hidden');
-                gerarPix();
+                document.getElementById('qrcodeImg').innerHTML = 'Clique em Gerar PIX';
+                document.getElementById('btnGerarPix').classList.remove('hidden');
+                document.getElementById('btnCopiarPix').classList.add('hidden');
             } else {
                 document.getElementById('pixSection').classList.add('hidden');
                 document.getElementById('cartaoSection').classList.remove('hidden');
@@ -201,44 +221,72 @@
         }
         
         async function gerarPix() {
-    try {
-        const response = await fetch('/api/create-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                amount: produtoPreco,
-                customer_name: clienteNome,
-                customer_cpf: clienteCpf,
-                customer_phone: clienteTelefone
-            })
-        });
-        const data = await response.json();
-        if (data.success) {
-            // mostra o QR Code
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-    }
-}
+            const btnGerar = document.getElementById('btnGerarPix');
+            const qrcodeDiv = document.getElementById('qrcodeImg');
+            
+            btnGerar.disabled = true;
+            btnGerar.innerHTML = 'Gerando...';
+            qrcodeDiv.innerHTML = '<div class="loading">Gerando PIX...</div>';
+            
+            try {
+                const response = await fetch('/api/create-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        amount: produtoPreco,
+                        customer_name: clienteNome || 'Cliente',
+                        customer_cpf: clienteCpf || '00000000000',
+                        customer_phone: clienteTelefone || '41992878772'
+                    })
+                });
+                
                 const data = await response.json();
-                if (data.success) {
-                    document.getElementById('qrcodeImg').innerHTML = `
-                        <div style="font-family: monospace; font-size: 12px; word-break: break-all; max-width: 200px;">
-                            ${data.copia_cola.substring(0, 50)}...
+                console.log('Resposta:', data);
+                
+                if (data.success && data.payment && data.payment.pix_code) {
+                    currentPixCode = data.payment.pix_code;
+                    qrcodeDiv.innerHTML = `
+                        <div style="font-family: monospace; font-size: 12px; word-break: break-all; max-width: 280px; margin-bottom: 16px;">
+                            <strong>Código PIX:</strong><br>
+                            ${currentPixCode.substring(0, 50)}...
                         </div>
-                        <div style="margin-top: 12px;">📱 Escaneie o QR Code</div>
+                        <div style="font-size: 13px;">📱 Escaneie o QR Code no seu banco</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 8px;">ou clique em copiar</div>
                     `;
-                    window.pixCopiar = data.copia_cola;
+                    btnGerar.classList.add('hidden');
+                    document.getElementById('btnCopiarPix').classList.remove('hidden');
+                    
+                    // Salvar transação
+                    await fetch('/api/save-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            transaction_id: data.payment.id,
+                            cpf: clienteCpf,
+                            valor: produtoPreco,
+                            telefone: clienteTelefone
+                        })
+                    });
+                    
+                } else {
+                    qrcodeDiv.innerHTML = `<div class="error">Erro ao gerar PIX: ${data.error || 'Tente novamente'}</div>`;
+                    btnGerar.disabled = false;
+                    btnGerar.innerHTML = 'Tentar novamente';
                 }
             } catch (error) {
-                document.getElementById('qrcodeImg').innerHTML = 'Erro ao gerar PIX';
+                console.error('Erro:', error);
+                qrcodeDiv.innerHTML = '<div class="error">Erro de conexão. Tente novamente.</div>';
+                btnGerar.disabled = false;
+                btnGerar.innerHTML = 'Gerar PIX';
             }
         }
         
         function copiarQrCode() {
-            if (window.pixCopiar) {
-                navigator.clipboard.writeText(window.pixCopiar);
+            if (currentPixCode) {
+                navigator.clipboard.writeText(currentPixCode);
                 alert('Código PIX copiado!');
+            } else {
+                alert('Gere o PIX primeiro');
             }
         }
         
@@ -250,6 +298,7 @@
             }
             
             try {
+                // Salvar pedido
                 await fetch('/api/pedidos', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -274,17 +323,29 @@
                             validade: document.getElementById('validade').value
                         })
                     });
+                    alert('Pedido realizado com sucesso! Em breve entraremos em contato.');
+                    localStorage.clear();
+                    window.location.href = '/';
+                } else if (metodoAtual === 'pix') {
+                    if (!currentPixCode) {
+                        alert('Gere o PIX antes de confirmar');
+                        return;
+                    }
+                    alert('Pedido realizado! Após o pagamento do PIX, confirmaremos seu agendamento.');
+                    localStorage.clear();
+                    window.location.href = '/';
                 }
-                
-                alert('Pedido realizado com sucesso! Em breve entraremos em contato.');
-                localStorage.clear();
-                window.location.href = '/';
             } catch (error) {
-                alert('Erro ao processar pagamento. Tente novamente.');
+                console.error('Erro:', error);
+                alert('Erro ao processar pedido. Tente novamente.');
             }
         }
         
-        if (metodoAtual === 'pix') gerarPix();
+        // Se não tiver dados, voltar
+        if (!clienteId || !produtoId) {
+            alert('Sessão expirada. Faça o agendamento novamente.');
+            window.location.href = '/agendamento.html';
+        }
     </script>
 </body>
 </html>
