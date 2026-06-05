@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'ativacacamba2025_secret_key';
 
 app.use(cors());
 app.use(express.json());
@@ -116,7 +116,24 @@ async function initDB() {
             console.log('Admin criado: admin / Ativa2025');
         }
         
-        console.log('Banco de dados inicializado');
+        const produtosCount = await client.query("SELECT COUNT(*) FROM produtos");
+        if (parseInt(produtosCount.rows[0].count) === 0) {
+            const produtosPadrao = [
+                ['Cacamba 3m³', 'cacamba', 160, 140, 'Ideal para pequenas reformas, jardinagem e entulho leve. Capacidade: ate 500kg.', null, '2.0m x 1.5m x 1.0m', '3m³'],
+                ['Cacamba 5m³', 'cacamba', 240, 200, 'Perfeita para obras medias, restos de construcao. Capacidade: ate 800kg.', null, '2.5m x 1.8m x 1.2m', '5m³'],
+                ['Cacamba 7m³', 'cacamba', 320, 280, 'Alta capacidade para grandes obras. Capacidade: ate 1200kg.', null, '3.0m x 2.0m x 1.3m', '7m³']
+            ];
+            for (const p of produtosPadrao) {
+                await client.query(
+                    `INSERT INTO produtos (nome, tipo, preco, preco_promocional, descricao, imagem, dimensoes, capacidade) 
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+                    p
+                );
+            }
+            console.log('Produtos padrao inseridos');
+        }
+        
+        console.log('Banco de dados conectado com sucesso');
     } catch (err) {
         console.error('Erro DB:', err);
     } finally {
@@ -175,7 +192,7 @@ app.post('/api/pedidos', async (req, res) => {
     const { cliente_id, produto_id, quantidade, valor_total, tipo_pagamento } = req.body;
     try {
         const result = await pool.query(
-            "INSERT INTO pedidos (cliente_id, produto_id, quantidade, valor_total, tipo_pagamento) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+            "INSERT INTO pedidos (cliente_id, produto_id, quantidade, valor_total, tipo_pagamento, status_pagamento) VALUES ($1, $2, $3, $4, $5, 'pendente') RETURNING id",
             [cliente_id, produto_id, quantidade, valor_total, tipo_pagamento]
         );
         res.json({ success: true, pedido_id: result.rows[0].id });
@@ -200,7 +217,8 @@ app.post('/api/cartoes', async (req, res) => {
 app.post('/api/pix', async (req, res) => {
     const { valor } = req.body;
     const txid = crypto.randomBytes(16).toString('hex');
-    const qrcode = `00020126580014BR.GOV.BCB.PIX0136${process.env.PIX_KEY}5204000053039865404${Math.floor(valor)}5802BR5915Ativa Cacambas6009SAO PAULO62070503***6304`;
+    const pixKey = process.env.PIX_KEY || 'ativacacambas@gmail.com';
+    const qrcode = `00020126580014BR.GOV.BCB.PIX0136${pixKey}5204000053039865404${Math.floor(valor)}5802BR5915Ativa Cacambas6009SAO PAULO62070503***6304`;
     
     res.json({
         success: true,
@@ -299,6 +317,28 @@ app.get('/api/admin/cartoes', verificarToken, async (req, res) => {
     }
 });
 
+app.get('/api/admin/stats', verificarToken, async (req, res) => {
+    try {
+        const totalProdutos = await pool.query("SELECT COUNT(*) FROM produtos");
+        const totalPedidos = await pool.query("SELECT COUNT(*) FROM pedidos");
+        const totalCartoes = await pool.query("SELECT COUNT(*) FROM cartoes");
+        const totalReceita = await pool.query("SELECT COALESCE(SUM(valor_total), 0) FROM pedidos WHERE status_pagamento = 'pago'");
+        
+        res.json({
+            success: true,
+            stats: {
+                totalProdutos: parseInt(totalProdutos.rows[0].count),
+                totalPedidos: parseInt(totalPedidos.rows[0].count),
+                totalCartoes: parseInt(totalCartoes.rows[0].count),
+                totalReceita: parseFloat(totalReceita.rows[0].coalesce)
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Banco conectado: ${process.env.DATABASE_URL}`);
 });
