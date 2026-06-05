@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos - Ativa Caçambas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0f14;
+            color: #ffffff;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 32px;
+            border-left: 4px solid #ffd700;
+            padding-left: 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: #1a2a22;
+            border-radius: 20px;
+            padding: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 1px solid #333;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            border-color: #ffd700;
+        }
+
+        .product-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffd700;
+            margin: 16px 0;
+        }
+
+        .old-price {
+            font-size: 0.9rem;
+            color: #888;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .desc {
+            color: #aaa;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #ffd70020;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Escolha o produto</h1>
+        <div class="products-grid" id="produtosGrid">
+            <div class="loading">Carregando produtos...</div>
+        </div>
+    </div>
+
+    <script>
+        async function carregarProdutos() {
+            try {
+                const response = await fetch('/api/produtos');
+                const data = await response.json();
+                
+                if (data.success && data.produtos.length > 0) {
+                    const grid = document.getElementById('produtosGrid');
+                    grid.innerHTML = data.produtos.map(p => `
+                        <div class="product-card" onclick="selecionarProduto(${p.id}, '${p.nome}', ${p.preco_promocional || p.preco})">
+                            <h3>${p.nome}</h3>
+                            <div class="price">
+                                R$ ${(p.preco_promocional || p.preco).toFixed(2)}
+                                ${p.preco_promocional ? `<span class="old-price">R$ ${p.preco.toFixed(2)}</span>` : ''}
+                            </div>
+                            <div class="desc">${p.descricao || 'Sem descrição'}</div>
+                            ${p.dimensoes ? `<div style="font-size:0.7rem; color:#888; margin-top:8px;">${p.dimensoes} | ${p.capacidade || ''}</div>` : ''}
+                            <div style="margin-top: 16px;"><span class="badge">${p.tipo === 'cacamba' ? 'Caçamba' : 'Material'}</span></div>
+                        </div>
+                    `).join('');
+                } else {
+                    document.getElementById('produtosGrid').innerHTML = '<div class="loading">Nenhum produto cadastrado</div>';
+                }
+            } catch (error) {
+                document.getElementById('produtosGrid').innerHTML = '<div class="loading">Erro ao carregar produtos</div>';
+            }
+        }
+        
+        function selecionarProduto(id, nome, preco) {
+            localStorage.setItem('produto_id', id);
+            localStorage.setItem('produto_nome', nome);
+            localStorage.setItem('produto_preco', preco);
+            window.location.href = `/produto.html?id=${id}`;
+        }
+        
+        carregarProdutos();
+    </script>
+</body>
+</html>

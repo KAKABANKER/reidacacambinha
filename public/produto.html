@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Produto - Ativa Caçambas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0f14;
+            color: #ffffff;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 32px;
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        .product-detail {
+            background: #1a2a22;
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid #333;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffd700;
+            margin: 24px 0;
+        }
+
+        .old-price {
+            font-size: 1rem;
+            color: #888;
+            text-decoration: line-through;
+            margin-left: 12px;
+        }
+
+        .desc {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            background: #0a0f14;
+            padding: 12px 20px;
+            border-radius: 12px;
+        }
+
+        .btn {
+            background: #ffd700;
+            color: #0a1a0f;
+            font-weight: 700;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/produtos.html" class="back-link">← Voltar para produtos</a>
+        <div id="detalhes" class="loading">Carregando...</div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const produtoId = urlParams.get('id');
+        
+        async function carregarProduto() {
+            if (!produtoId) {
+                window.location.href = '/produtos.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/produtos/${produtoId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const p = data.produto;
+                    document.getElementById('detalhes').innerHTML = `
+                        <div class="product-detail">
+                            <h1>${p.nome}</h1>
+                            <div class="price">
+                                R$ ${(p.preco_promocional || p.preco).toFixed(2)}
+                                ${p.preco_promocional ? `<span class="old-price">R$ ${p.preco.toFixed(2)}</span>` : ''}
+                            </div>
+                            <div class="desc">${p.descricao || 'Sem descrição disponível.'}</div>
+                            <div class="info-row">
+                                ${p.dimensoes ? `<div class="info-item">📏 Dimensões: ${p.dimensoes}</div>` : ''}
+                                ${p.capacidade ? `<div class="info-item">📦 Capacidade: ${p.capacidade}</div>` : ''}
+                                <div class="info-item">🏷️ Tipo: ${p.tipo === 'cacamba' ? 'Caçamba' : 'Material'}</div>
+                            </div>
+                            <button class="btn" onclick="irParaCheckout()">Continuar para pagamento</button>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('detalhes').innerHTML = '<div class="loading">Produto não encontrado</div>';
+                }
+            } catch (error) {
+                document.getElementById('detalhes').innerHTML = '<div class="loading">Erro ao carregar produto</div>';
+            }
+        }
+        
+        function irParaCheckout() {
+            window.location.href = '/checkout.html';
+        }
+        
+        carregarProduto();
+    </script>
+</body>
+</html>
