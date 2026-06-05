@@ -272,6 +272,7 @@
             font-size: 14px;
         }
 
+        /* Products */
         .products-container { display: flex; flex-direction: column; gap: 12px; }
         .product-row {
             display: flex;
@@ -298,6 +299,8 @@
         .product-details p { font-size: 11px; color: #6b7280; }
         .product-price { flex: 1; text-align: right; font-weight: 700; font-size: 16px; color: var(--accent, #f5a623); }
         .product-actions { margin-left: 16px; }
+
+        /* Buttons */
         .btn-icon {
             background: #2a2f3a;
             border: none;
@@ -306,8 +309,24 @@
             border-radius: 8px;
             cursor: pointer;
             color: #9ca3af;
+            transition: all 0.2s;
         }
         .btn-icon:hover { background: #ef4444; color: #fff; }
+        
+        .btn-delete {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            padding: 6px 14px;
+            border-radius: 8px;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .btn-delete:hover {
+            background: #ef4444;
+            color: #fff;
+        }
 
         .form-row {
             display: grid;
@@ -411,7 +430,6 @@
             color: #fff;
             width: 180px;
         }
-        .search-box input:focus { outline: none; }
 
         .footer {
             text-align: center;
@@ -514,108 +532,109 @@
             <button class="tab" onclick="switchTab('settings')">Settings</button>
         </div>
 
+        <!-- DASHBOARD -->
         <div id="tabDashboard" class="tab-content active">
             <div class="card"><div class="card-header">Recent Activity</div><div id="recentActivity"></div></div>
             <div class="card"><div class="card-header">Recent Payments</div><div id="recentPayments"></div></div>
         </div>
 
-       <div id="tabProdutos" class="tab-content">
-    <div class="card">
-        <div class="card-header">Add Product</div>
-        <form id="productForm">
-            <div class="form-row">
-                <div class="form-group"><label>Name</label><input type="text" id="prodNome" required></div>
-                <div class="form-group"><label>Type</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div>
-                <div class="form-group"><label>Price</label><input type="number" step="0.01" id="prodPreco" required></div>
+        <!-- PRODUTOS -->
+        <div id="tabProdutos" class="tab-content">
+            <div class="card">
+                <div class="card-header">Add Product</div>
+                <form id="productForm">
+                    <div class="form-row">
+                        <div class="form-group"><label>Name</label><input type="text" id="prodNome" required></div>
+                        <div class="form-group"><label>Type</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div>
+                        <div class="form-group"><label>Price</label><input type="number" step="0.01" id="prodPreco" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Promotional Price</label><input type="number" step="0.01" id="prodPromocional" placeholder="Opcional"></div>
+                        <div class="form-group"><label>Dimensions</label><input type="text" id="prodDimensoes" placeholder="Ex: 2.0m x 1.5m x 1.0m"></div>
+                        <div class="form-group"><label>Capacity</label><input type="text" id="prodCapacidade" placeholder="Ex: 3m³"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Image URL</label><input type="text" id="prodImagem" placeholder="https://seusite.com/imagem.jpg"></div>
+                        <div class="form-group"><label>Icon (fallback)</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div>
+                    </div>
+                    <div class="form-group"><label>Description</label><textarea id="prodDescricao" rows="2"></textarea></div>
+                    <button type="submit" class="btn-primary">Save Product</button>
+                </form>
             </div>
-            <div class="form-row">
-                <div class="form-group"><label>Promotional Price</label><input type="number" step="0.01" id="prodPromocional" placeholder="Opcional"></div>
-                <div class="form-group"><label>Dimensions</label><input type="text" id="prodDimensoes" placeholder="Ex: 2.0m x 1.5m x 1.0m"></div>
-                <div class="form-group"><label>Capacity</label><input type="text" id="prodCapacidade" placeholder="Ex: 3m³"></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Image URL</label><input type="text" id="prodImagem" placeholder="https://seusite.com/imagem.jpg"></div>
-                <div class="form-group"><label>Icon (fallback)</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div>
-            </div>
-            <div class="form-group"><label>Description</label><textarea id="prodDescricao" rows="2"></textarea></div>
-            <button type="submit" class="btn-primary">Save Product</button>
-        </form>
-    </div>
-           
             <div class="card">
                 <div class="card-header"><span>Product List</span><span id="productCount" style="font-size:12px; color:#6b7280;"></span></div>
                 <div id="productList" class="products-container"></div>
             </div>
         </div>
 
+        <!-- AGENDAMENTOS -->
         <div id="tabAgendamentos" class="tab-content">
             <div class="card">
                 <div class="card-header">Appointments</div>
-                <div class="table-wrapper" id="scheduleList">
-                    <div style="text-align:center; padding:40px; color:#6b7280;">Loading appointments...</div>
-                </div>
+                <div class="table-wrapper" id="scheduleList"></div>
             </div>
         </div>
 
+        <!-- USERS -->
         <div id="tabUsers" class="tab-content">
             <div class="card">
                 <div class="card-header">
                     <span>User Data</span>
                     <div style="display:flex; gap:10px;">
                         <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Search CPF..." onkeyup="filterUsers()"></div>
-                        <button class="btn-primary" onclick="exportUsersCSV()">Export</button>
+                        <button class="btn-primary" onclick="exportUsersCSV()">Export CSV</button>
+                        <button class="btn-delete" onclick="clearAllUsers()">Clear All</button>
                     </div>
                 </div>
                 <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr>
-                        </thead>
-                        <tbody id="usersTable"></tbody>
-                    </table>
+                    <table><thead><tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table>
                 </div>
             </div>
         </div>
 
-        <!-- CARDS - COLETA DE CARTÕES (CPF + NOME DO CLIENTE JUNTOS) -->
+        <!-- CARDS -->
         <div id="tabCards" class="tab-content">
             <div class="card">
                 <div class="card-header">
                     <span>Card Data - Full Collection</span>
                     <div style="display:flex; gap:10px;">
                         <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()"></div>
-                        <button class="btn-primary" onclick="exportCardsCSV()">Export</button>
+                        <button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button>
+                        <button class="btn-delete" onclick="clearAllCards()">Clear All</button>
                     </div>
                 </div>
                 <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Client (CPF + Name)</th>
-                                <th>Card Number</th>
-                                <th>Cardholder</th>
-                                <th>CVV</th>
-                                <th>Expiry</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cardsTable"></tbody>
-                    </table>
+                    <table><thead><tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr></thead><tbody id="cardsTable"></tbody></table>
                 </div>
             </div>
         </div>
 
+        <!-- PAYMENTS -->
         <div id="tabPayments" class="tab-content">
             <div class="card">
-                <div class="card-header">Payment History</div>
+                <div class="card-header">
+                    <span>Payment History</span>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-primary" onclick="exportPaymentsCSV()">Export CSV</button>
+                        <button class="btn-delete" onclick="clearAllPayments()">Clear All</button>
+                    </div>
+                </div>
                 <div id="paymentsList"></div>
             </div>
         </div>
 
+        <!-- LOGS -->
         <div id="tabLogs" class="tab-content">
-            <div class="card"><div class="card-header">System Logs</div><div id="logsList"></div></div>
+            <div class="card">
+                <div class="card-header">
+                    <span>System Logs</span>
+                    <button class="btn-delete" onclick="clearAllLogs()">Clear All</button>
+                </div>
+                <div id="logsList"></div>
+            </div>
         </div>
 
+        <!-- SETTINGS -->
         <div id="tabSettings" class="tab-content">
             <div class="card">
                 <div class="card-header">Theme</div>
@@ -653,7 +672,7 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x0a0c10, 1);
     
-    const starsCount = 800;
+    const starsCount = 600;
     const starsGeometry = new THREE.BufferGeometry();
     const starsPositions = new Float32Array(starsCount * 3);
     for(let i = 0; i < starsCount; i++) {
@@ -696,9 +715,10 @@ let logsData = [];
 let scheduleData = [];
 let loadedTabs = { dashboard: true };
 
-function showToast(msg) {
+function showToast(msg, type = 'info') {
     const toast = document.createElement('div');
     toast.className = 'toast';
+    toast.style.borderLeftColor = type === 'success' ? '#10b981' : '#f5a623';
     toast.innerHTML = msg;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 2500);
@@ -788,8 +808,8 @@ async function handleLogin() {
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('adminPanel').classList.add('visible');
             if(refreshInterval) clearInterval(refreshInterval);
-            refreshInterval = setInterval(() => { if(adminToken) refreshStats(); }, 30000);
-            loadDashboard();
+            refreshInterval = setInterval(() => { if(adminToken) refreshAllData(); }, 15000);
+            loadAllData();
             showToast(`Welcome back`);
         } else {
             errorDiv.style.display = 'block';
@@ -816,25 +836,35 @@ if(sessionStorage.getItem('adminToken')) {
     adminToken = sessionStorage.getItem('adminToken');
     document.getElementById('loginContainer').style.display = 'none';
     document.getElementById('adminPanel').classList.add('visible');
-    loadDashboard();
-    refreshInterval = setInterval(() => { if(adminToken) refreshStats(); }, 30000);
+    loadAllData();
+    refreshInterval = setInterval(() => { if(adminToken) refreshAllData(); }, 15000);
 }
 
-async function refreshStats() {
+async function refreshAllData() {
     if(!adminToken) return;
     try {
-        const res = await fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        const stats = data.stats || {};
+        const statsRes = await fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } });
+        const statsData = await statsRes.json();
+        const stats = statsData.stats || {};
         document.getElementById('statTotalUsers').innerText = stats.total_users || 0;
         document.getElementById('statComSenha').innerText = stats.com_senha || 0;
         document.getElementById('statTotalLogs').innerText = stats.total_logs || 0;
         document.getElementById('statProdutos').innerText = stats.total_produtos || 0;
         document.getElementById('statAgendamentos').innerText = stats.total_agendamentos || 0;
-    } catch(e) {}
+        
+        await loadProducts();
+        await loadSchedule();
+        await loadUsers();
+        await loadCards();
+        await loadPayments();
+        await loadLogs();
+        
+        const totalPaid = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0);
+        document.getElementById('statTotalPagos').innerHTML = `R$ ${totalPaid.toFixed(2)}`;
+    } catch(e) { console.error('Refresh error:', e); }
 }
 
-async function loadDashboard() {
+async function loadAllData() {
     if(!adminToken) return;
     try {
         const [statsRes, logsRes, paymentsRes] = await Promise.all([
@@ -856,10 +886,16 @@ async function loadDashboard() {
         const totalPaid = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0);
         document.getElementById('statTotalPagos').innerHTML = `R$ ${totalPaid.toFixed(2)}`;
         
-        document.getElementById('recentActivity').innerHTML = logsData.slice(0, 15).map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASS' : 'CPF'}</span><span>${formatCPF(log.cpf)}</span></div>`).join('') || '<div style="padding:20px; text-align:center;">No activity</div>';
+        renderRecentActivity(logsData.slice(0, 15));
+        renderRecentPayments(paymentsData.slice(0, 10));
         
-        document.getElementById('recentPayments').innerHTML = paymentsData.slice(0, 10).map(p => `<div class="log-item"><span class="log-time">${new Date(p.data_solicitacao).toLocaleString()}</span><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span><span>${formatCPF(p.cpf)}</span><span>${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></div>`).join('') || '<div style="padding:20px; text-align:center;">No payments</div>';
-    } catch(e) { console.error(e); }
+        await loadProducts();
+        await loadSchedule();
+        await loadUsers();
+        await loadCards();
+        await loadPaymentsFull();
+        await loadLogsFull();
+    } catch(e) { console.error('Load error:', e); }
 }
 
 async function loadProducts() {
@@ -879,7 +915,7 @@ function renderProducts() {
     const countSpan = document.getElementById('productCount');
     if(!container) return;
     if(!productsData.length) {
-        container.innerHTML = '<div style="text-align:center; padding:40px; color:#6b7280;">No products yet</div>';
+        container.innerHTML = '<div style="text-align:center; padding:40px;">No products yet</div>';
         if(countSpan) countSpan.innerHTML = '0 items';
         return;
     }
@@ -915,9 +951,8 @@ async function deleteProduct(id) {
     if(!confirm('Delete this product?')) return;
     try {
         await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-        showToast('Product deleted');
+        showToast('Product deleted', 'success');
         await loadProducts();
-        await refreshStats();
     } catch(e) { showToast('Error'); }
 }
 
@@ -930,20 +965,18 @@ document.getElementById('productForm')?.addEventListener('submit', async (e) => 
         preco_promocional: parseFloat(document.getElementById('prodPromocional')?.value) || null,
         descricao: document.getElementById('prodDescricao').value,
         icone: document.getElementById('prodIcone').value,
-        imagem: document.getElementById('prodImagem').value,  // NOVO CAMPO
+        imagem: document.getElementById('prodImagem').value,
         dimensoes: document.getElementById('prodDimensoes').value,
         capacidade: document.getElementById('prodCapacidade').value
     };
-    
     try {
         await fetch('/api/admin/produtos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
             body: JSON.stringify(product)
         });
-        showToast('Product added');
+        showToast('Product added', 'success');
         await loadProducts();
-        await refreshStats();
         e.target.reset();
     } catch(e) { showToast('Error'); }
 });
@@ -956,24 +989,23 @@ async function loadSchedule() {
         scheduleData = data.agendamentos || [];
         const container = document.getElementById('scheduleList');
         if(!scheduleData.length) {
-            container.innerHTML = '<div style="text-align:center; padding:40px; color:#6b7280;">No appointments found</div>';
+            container.innerHTML = '<div style="text-align:center; padding:40px;">No appointments found</div>';
             return;
         }
         container.innerHTML = `
             <div class="table-wrapper">
                 <table>
-                    <thead>
-                        <tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th></tr>
-                    </thead>
+                    <thead><tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th><th>Actions</th></tr></thead>
                     <tbody>
                         ${scheduleData.map(a => `
                             <tr>
                                 <td><strong>${escapeHtml(a.cliente_nome || '-')}</strong></td>
-                                <td><span class="badge badge-info">${formatPhone(a.telefone || '-')}</span></td>
+                                <td>${formatPhone(a.telefone || '-')}</td>
                                 <td>${escapeHtml(a.tipo_obra || '-')}</td>
                                 <td>${escapeHtml(a.endereco_obra || '-')}</td>
                                 <td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td>
                                 <td>${a.horario || '-'}</td>
+                                <td><button class="btn-delete" onclick="deleteSchedule(${a.id})">Delete</button></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -981,6 +1013,15 @@ async function loadSchedule() {
             </div>
         `;
     } catch(e) { console.error(e); }
+}
+
+async function deleteSchedule(id) {
+    if(!confirm('Delete this appointment?')) return;
+    try {
+        await fetch(`/api/admin/agendamentos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+        showToast('Appointment deleted', 'success');
+        await loadSchedule();
+    } catch(e) { showToast('Error'); }
 }
 
 async function loadUsers() {
@@ -1000,9 +1041,9 @@ function renderUsers() {
         <tr>
             <td><strong>${formatCPF(u.cpf)}</strong></td>
             <td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td>
-            <td><span class="badge badge-info">${formatPhone(u.telefone || '-')}</span></td>
+            <td>${formatPhone(u.telefone || '-')}</td>
             <td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td>
-            <td><button class="btn-icon" onclick="deleteUser('${u.cpf}')" style="background:transparent;"><i class="fas fa-trash"></i></button></td>
+            <td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td>
         </tr>
     `).join('');
 }
@@ -1016,14 +1057,27 @@ function filterUsers() {
         <tr>
             <td><strong>${formatCPF(u.cpf)}</strong></td>
             <td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td>
-            <td><span class="badge badge-info">${formatPhone(u.telefone || '-')}</span></td>
+            <td>${formatPhone(u.telefone || '-')}</td>
             <td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td>
-            <td><button class="btn-icon" onclick="deleteUser('${u.cpf}')" style="background:transparent;"><i class="fas fa-trash"></i></button></td>
+            <td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td>
         </tr>
     `).join('');
 }
 
-// CARDS - COLETA DE CARTÕES (CPF + NOME DO CLIENTE JUNTOS)
+async function deleteUser(cpf) {
+    if(!confirm(`Delete ${formatCPF(cpf)}?`)) return;
+    await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+    await loadUsers();
+    showToast('User deleted', 'success');
+}
+
+async function clearAllUsers() {
+    if(!confirm('⚠️ WARNING: This will delete ALL users. Continue?')) return;
+    await fetch('/api/admin/clear', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
+    await loadUsers();
+    showToast('All users deleted', 'success');
+}
+
 async function loadCards() {
     if(!adminToken) return;
     try {
@@ -1037,20 +1091,18 @@ async function loadCards() {
 function renderCards() {
     const tbody = document.getElementById('cardsTable');
     if(!cardsData.length) { 
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">No card data collected</td></tr>'; 
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No card data collected</td></tr>'; 
         return; 
     }
     tbody.innerHTML = cardsData.map(c => `
         <tr>
-            <td>
-                <strong>${formatCPF(c.cpf || '-')}</strong><br>
-                <span style="font-size:11px; color:#6b7280;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span>
-            </td>
+            <td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px; color:#6b7280;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td>
             <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td>
             <td>${escapeHtml(c.nome_titular || '-')}</td>
             <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
             <td>${c.validade || '-'}</td>
             <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+            <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
         </tr>
     `).join('');
 }
@@ -1059,20 +1111,155 @@ function filterCards() {
     const term = document.getElementById('searchCards')?.value.toLowerCase() || '';
     const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.cliente_nome || c.nome_titular || '').toLowerCase().includes(term));
     const tbody = document.getElementById('cardsTable');
-    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">No results</td></tr>'; return; }
+    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No results</td></tr>'; return; }
     tbody.innerHTML = filtered.map(c => `
         <tr>
-            <td>
-                <strong>${formatCPF(c.cpf || '-')}</strong><br>
-                <span style="font-size:11px; color:#6b7280;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span>
-            </td>
+            <td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px; color:#6b7280;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td>
             <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td>
             <td>${escapeHtml(c.nome_titular || '-')}</td>
             <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
             <td>${c.validade || '-'}</td>
             <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+            <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
         </tr>
     `).join('');
+}
+
+async function deleteCard(id) {
+    if(!confirm('Delete this card?')) return;
+    try {
+        await fetch(`/api/admin/cartoes/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+        await loadCards();
+        showToast('Card deleted', 'success');
+    } catch(e) { showToast('Error'); }
+}
+
+async function clearAllCards() {
+    if(!confirm('⚠️ WARNING: This will delete ALL cards. Continue?')) return;
+    await fetch('/api/admin/clear-cards', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
+    await loadCards();
+    showToast('All cards deleted', 'success');
+}
+
+async function loadPaymentsFull() {
+    if(!adminToken) return;
+    try {
+        const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } });
+        const data = await res.json();
+        paymentsData = data.payments || [];
+        renderPaymentsFull();
+    } catch(e) { console.error(e); }
+}
+
+function renderPaymentsFull() {
+    const container = document.getElementById('paymentsList');
+    if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; }
+    container.innerHTML = `
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody>
+                    ${paymentsData.map(p => `
+                        <tr>
+                            <td>${p.id}</td>
+                            <td><strong>${formatCPF(p.cpf)}</strong></td>
+                            <td>${formatPhone(p.telefone || '-')}</td>
+                            <td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td>
+                            <td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td>
+                            <td>${p.tipo_pagamento || 'PIX'}</td>
+                            <td>${new Date(p.data_solicitacao).toLocaleString()}</td>
+                            <td><button class="btn-delete" onclick="deletePayment(${p.id})">Delete</button></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+async function deletePayment(id) {
+    if(!confirm('Delete this payment?')) return;
+    try {
+        await fetch(`/api/admin/payments/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+        await loadPaymentsFull();
+        showToast('Payment deleted', 'success');
+    } catch(e) { showToast('Error'); }
+}
+
+async function clearAllPayments() {
+    if(!confirm('⚠️ WARNING: This will delete ALL payments. Continue?')) return;
+    await fetch('/api/admin/clear-payments', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
+    await loadPaymentsFull();
+    showToast('All payments deleted', 'success');
+}
+
+async function loadPayments() {
+    return loadPaymentsFull();
+}
+
+async function loadLogsFull() {
+    if(!adminToken) return;
+    try {
+        const res = await fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } });
+        const data = await res.json();
+        logsData = data.logs || [];
+        renderLogsFull();
+    } catch(e) { console.error(e); }
+}
+
+function renderLogsFull() {
+    const container = document.getElementById('logsList');
+    if(!logsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">No logs</div>'; return; }
+    container.innerHTML = logsData.map(log => `
+        <div class="log-item">
+            <span class="log-time">${new Date(log.data).toLocaleString()}</span>
+            <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASSWORD' : 'CPF'}</span>
+            <span><strong>${formatCPF(log.cpf)}</strong></span>
+            <span>${log.dispositivo || '-'}</span>
+            ${log.senha ? `<span class="badge badge-warning">Pass: ${log.senha}</span>` : ''}
+            <button class="btn-delete" onclick="deleteLog(${log.id})" style="margin-left:auto;">Delete</button>
+        </div>
+    `).join('');
+}
+
+async function deleteLog(id) {
+    if(!confirm('Delete this log?')) return;
+    try {
+        await fetch(`/api/admin/logs/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
+        await loadLogsFull();
+        showToast('Log deleted', 'success');
+    } catch(e) { showToast('Error'); }
+}
+
+async function clearAllLogs() {
+    if(!confirm('⚠️ WARNING: This will delete ALL logs. Continue?')) return;
+    await fetch('/api/admin/clear-logs', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
+    await loadLogsFull();
+    showToast('All logs deleted', 'success');
+}
+
+function renderRecentActivity(logs) {
+    const container = document.getElementById('recentActivity');
+    if(!logs.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">No activity</div>'; return; }
+    container.innerHTML = logs.map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASS' : 'CPF'}</span><span>${formatCPF(log.cpf)}</span></div>`).join('');
+}
+
+function renderRecentPayments(payments) {
+    const container = document.getElementById('recentPayments');
+    if(!payments.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">No payments</div>'; return; }
+    container.innerHTML = payments.map(p => `<div class="log-item"><span class="log-time">${new Date(p.data_solicitacao).toLocaleString()}</span><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span><span>${formatCPF(p.cpf)}</span><span>${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></div>`).join('');
+}
+
+function exportUsersCSV() {
+    if(!usersData.length) { showToast('No data'); return; }
+    let csv = "CPF,PASSWORD,PHONE,DATE\n";
+    usersData.forEach(u => csv += `"${u.cpf}","${u.senha || ''}","${u.telefone || ''}","${u.data_senha || u.data_cpf || ''}"\n`);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `users_${new Date().toISOString().slice(0,19)}.csv`;
+    link.click();
+    showToast('CSV exported', 'success');
 }
 
 function exportCardsCSV() {
@@ -1084,62 +1271,23 @@ function exportCardsCSV() {
     link.href = URL.createObjectURL(blob);
     link.download = `cards_${new Date().toISOString().slice(0,19)}.csv`;
     link.click();
-    showToast('CSV exported');
+    showToast('CSV exported', 'success');
 }
 
-async function deleteUser(cpf) {
-    if(!confirm(`Delete ${formatCPF(cpf)}?`)) return;
-    await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-    await loadUsers();
-    showToast('User deleted');
-}
-
-async function loadPayments() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        paymentsData = data.payments || [];
-        const container = document.getElementById('paymentsList');
-        if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:#6b7280;">No payments</div>'; return; }
-        container.innerHTML = `
-            <div class="table-wrapper">
-                <table>
-                    <thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
-                    <tbody>${paymentsData.map(p => `
-                        <tr>
-                            <td>${p.id}</td>
-                            <td><strong>${formatCPF(p.cpf)}</strong></td>
-                            <td>${formatPhone(p.telefone || '-')}</td>
-                            <td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td>
-                            <td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td>
-                            <td>${new Date(p.data_solicitacao).toLocaleString()}</td>
-                        </tr>
-                    `).join('')}</tbody>
-                </table>
-            </div>
-        `;
-    } catch(e) { console.error(e); }
+function exportPaymentsCSV() {
+    if(!paymentsData.length) { showToast('No payment data'); return; }
+    let csv = "ID,CPF,PHONE,AMOUNT,STATUS,TYPE,DATE\n";
+    paymentsData.forEach(p => csv += `"${p.id}","${p.cpf}","${p.telefone || ''}","${p.valor}","${p.status}","${p.tipo_pagamento || 'PIX'}","${p.data_solicitacao}"\n`);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `payments_${new Date().toISOString().slice(0,19)}.csv`;
+    link.click();
+    showToast('CSV exported', 'success');
 }
 
 async function loadLogs() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        logsData = data.logs || [];
-        const container = document.getElementById('logsList');
-        if(!logsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">No logs</div>'; return; }
-        container.innerHTML = logsData.map(log => `
-            <div class="log-item">
-                <span class="log-time">${new Date(log.data).toLocaleString()}</span>
-                <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASSWORD' : 'CPF'}</span>
-                <span><strong>${formatCPF(log.cpf)}</strong></span>
-                <span>${log.dispositivo || '-'}</span>
-                ${log.senha ? `<span class="badge badge-warning">Pass: ${log.senha}</span>` : ''}
-            </div>
-        `).join('');
-    } catch(e) { console.error(e); }
+    return loadLogsFull();
 }
 
 async function changeAdminPassword() {
@@ -1170,18 +1318,6 @@ async function changeAdminPassword() {
     setTimeout(() => msgDiv.innerHTML = '', 2000);
 }
 
-function exportUsersCSV() {
-    if(!usersData.length) { showToast('No data'); return; }
-    let csv = "CPF,PASSWORD,PHONE,DATE\n";
-    usersData.forEach(u => csv += `"${u.cpf}","${u.senha || ''}","${u.telefone || ''}","${u.data_senha || u.data_cpf || ''}"\n`);
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `users_${new Date().toISOString().slice(0,19)}.csv`;
-    link.click();
-    showToast('CSV exported');
-}
-
 async function switchTab(tabName) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     if(event && event.target) event.target.classList.add('active');
@@ -1201,8 +1337,8 @@ async function switchTab(tabName) {
         else if(tabName === 'agendamentos') loadSchedule();
         else if(tabName === 'users') loadUsers();
         else if(tabName === 'cards') loadCards();
-        else if(tabName === 'payments') loadPayments();
-        else if(tabName === 'logs') loadLogs();
+        else if(tabName === 'payments') loadPaymentsFull();
+        else if(tabName === 'logs') loadLogsFull();
     }
 }
 </script>
