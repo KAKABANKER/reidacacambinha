@@ -24,7 +24,7 @@ app.use(express.static('public'));
 app.use('/admin', express.static('admin'));
 
 const pool = new Pool({
-    connectionString: 'postgresql://nuitbanker_db_user:Gbnwn5eEqlrKkx4xjduxGis0DchI1aXy@dpg-d8h40ccvikkc73erecng-a/nuitbanker_db',
+    connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
