@@ -201,12 +201,25 @@
         }
         
         async function gerarPix() {
-            try {
-                const response = await fetch('/api/pix', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ valor: produtoPreco })
-                });
+    try {
+        const response = await fetch('/api/create-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                amount: produtoPreco,
+                customer_name: clienteNome,
+                customer_cpf: clienteCpf,
+                customer_phone: clienteTelefone
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            // mostra o QR Code
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+    }
+}
                 const data = await response.json();
                 if (data.success) {
                     document.getElementById('qrcodeImg').innerHTML = `
