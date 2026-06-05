@@ -8,16 +8,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { background: #000; font-family: 'Outfit', sans-serif; min-height: 100vh; overflow-x: hidden; }
+        
+        /* TEMA PADRÃO (AMARELO) */
+        body { 
+            --primary: #ffd700;
+            --primary-dark: #ccaa00;
+            --primary-light: #ffed4a;
+            --primary-rgb: 255, 215, 0;
+            --bg-card: rgba(0,0,0,0.6);
+            --bg-sidebar: rgba(0,0,0,0.7);
+            --border-color: rgba(255,255,255,0.08);
+            --text-primary: #fff;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-muted: rgba(255,255,255,0.45);
+        }
+        
+        /* TEMA AZUL */
+        body.theme-blue {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --primary-rgb: 59, 130, 246;
+        }
+        
+        /* TEMA VERMELHO */
+        body.theme-red {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #f87171;
+            --primary-rgb: 239, 68, 68;
+        }
+        
+        /* TEMA VERDE */
+        body.theme-green {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            --primary-rgb: 16, 185, 129;
+        }
+        
+        /* TEMA BRANCO */
+        body.theme-white {
+            --primary: #ffffff;
+            --primary-dark: #e5e7eb;
+            --primary-light: #f3f4f6;
+            --primary-rgb: 255, 255, 255;
+            --bg-card: rgba(255,255,255,0.1);
+            --bg-sidebar: rgba(255,255,255,0.15);
+            --text-primary: #fff;
+            --text-secondary: rgba(255,255,255,0.85);
+            --text-muted: rgba(255,255,255,0.6);
+        }
+        
+        /* TEMA ROXO */
+        body.theme-purple {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #a78bfa;
+            --primary-rgb: 139, 92, 246;
+        }
+        
+        body, html { 
+            background: #000; 
+            font-family: 'Outfit', sans-serif; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        }
+        
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         
-        /* Temas - afetam apenas cores do admin, NÃO as estrelas */
-        body.theme-default { --primary: #ffd700; --primary-light: #ffed4a; --primary-dark: #ccaa00; }
-        body.theme-blue { --primary: #3b82f6; --primary-light: #60a5fa; --primary-dark: #2563eb; }
-        body.theme-red { --primary: #ef4444; --primary-light: #f87171; --primary-dark: #dc2626; }
-        body.theme-green { --primary: #10b981; --primary-light: #34d399; --primary-dark: #059669; }
-        body.theme-white { --primary: #ffffff; --primary-light: #f3f4f6; --primary-dark: #e5e7eb; }
-        
+        /* LOADING SCREEN */
         .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
         .loading-screen.hidden { opacity: 0; visibility: hidden; }
         .loader { position: absolute; top: 50%; left: 50%; margin-left: -50px; animation: speeder 0.4s linear infinite; }
@@ -58,83 +118,131 @@
         .cloud4 { width: 100px; height: 80px; top: 70%; left: 1100px; animation-duration: 3s; }
         .cloud5 { width: 170px; height: 50px; top: 80%; left: 1500px; animation-duration: 2s; }
         @keyframes moveClouds { 0% { transform: translateX(0); } 100% { transform: translateX(-2000px); } }
+        
+        /* LOGIN SCREEN */
         .page-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .container { width: 100%; max-width: 380px; }
         .logo { text-align: center; margin-bottom: 20px; }
-        .logo h1 { color: rgba(255,255,255,0.9); font-size: 32px; font-weight: 700; letter-spacing: -1px; }
-        .logo p { color: rgba(255,255,255,0.45); font-size: 13px; }
-        .card { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 28px 24px; backdrop-filter: blur(10px); }
-        .card h1 { color: rgba(255,255,255,0.9); font-size: 20px; font-weight: 500; text-align: center; margin-bottom: 6px; }
-        .subtitle { color: rgba(255,255,255,0.45); font-size: 13px; text-align: center; margin-bottom: 24px; }
+        .logo h1 { color: var(--primary); font-size: 32px; font-weight: 700; letter-spacing: -1px; }
+        .logo p { color: var(--text-muted); font-size: 13px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 28px 24px; backdrop-filter: blur(10px); }
+        .card h1 { color: var(--text-primary); font-size: 20px; font-weight: 500; text-align: center; margin-bottom: 6px; }
+        .subtitle { color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 24px; }
         .alert { padding: 12px 14px; border-radius: 8px; font-size: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #f87171; }
         .form-group { margin-bottom: 16px; }
-        label { display: block; color: rgba(255,255,255,0.5); font-size: 12px; margin-bottom: 6px; }
-        input { width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; }
-        input:focus { outline: none; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
-        .btn { width: 100%; padding: 12px 20px; border: none; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s ease; margin-top: 20px; }
-        .btn-primary { background: linear-gradient(135deg, #fff 0%, #e8e8e8 100%); color: #0a0a0a; }
-        .btn-primary:hover { background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%); transform: translateY(-1px); }
-        .security-badge { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; color: rgba(255,255,255,0.25); font-size: 11px; }
+        label { display: block; color: var(--text-muted); font-size: 12px; margin-bottom: 6px; }
+        input { width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; }
+        input:focus { outline: none; border-color: var(--primary); background: rgba(255,255,255,0.08); }
+        .btn { width: 100%; padding: 12px 20px; border: none; border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s ease; margin-top: 20px; background: var(--primary); color: #000; }
+        .btn-primary { background: var(--primary); color: #0a0a0a; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .security-badge { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; color: var(--text-muted); font-size: 11px; }
+        
+        /* ADMIN PANEL */
         .admin-panel { display: none; position: relative; z-index: 10; min-height: 100vh; }
         .admin-panel.visible { display: block; }
-        .sidebar { position: fixed; left: 0; top: 0; width: 280px; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.06); padding: 32px 20px; z-index: 100; overflow-y: auto; }
-        .sidebar-logo { text-align: center; margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .sidebar-logo h2 { color: rgba(255,255,255,0.9); font-size: 24px; font-weight: 700; }
-        .sidebar-logo p { color: rgba(255,255,255,0.35); font-size: 11px; margin-top: 6px; }
+        
+        /* SIDEBAR COM TOGGLE */
+        .sidebar { position: fixed; left: 0; top: 0; width: 280px; height: 100vh; background: var(--bg-sidebar); backdrop-filter: blur(20px); border-right: 1px solid var(--border-color); padding: 32px 20px; z-index: 100; overflow-y: auto; transition: transform 0.3s ease; }
+        .sidebar.collapsed { transform: translateX(-280px); }
+        .sidebar-logo { text-align: center; margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo h2 { color: var(--primary); font-size: 24px; font-weight: 700; }
+        .sidebar-logo p { color: var(--text-muted); font-size: 11px; margin-top: 6px; }
         .sidebar-menu { list-style: none; }
         .sidebar-menu li { margin-bottom: 8px; }
-        .sidebar-menu a { display: flex; align-items: center; gap: 14px; padding: 12px 18px; color: rgba(255,255,255,0.5); text-decoration: none; border-radius: 12px; transition: all 0.2s; font-size: 14px; cursor: pointer; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 14px; padding: 12px 18px; color: var(--text-secondary); text-decoration: none; border-radius: 12px; transition: all 0.2s; font-size: 14px; cursor: pointer; }
         .sidebar-menu a i { width: 24px; }
-        .sidebar-menu a:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.9); }
-        .sidebar-menu a.active { background: rgba(255,255,255,0.1); color: #fff; }
-        .main-content { margin-left: 280px; padding: 28px 36px; min-height: 100vh; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding: 16px 24px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 16px; }
-        .admin-header h1 { font-size: 18px; margin: 0; color: rgba(255,255,255,0.9); }
+        .sidebar-menu a:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
+        .sidebar-menu a.active { background: rgba(var(--primary-rgb), 0.15); color: var(--primary); border-left: 3px solid var(--primary); }
+        
+        /* TOGGLE BUTTON */
+        .sidebar-toggle-btn { position: fixed; left: 290px; top: 20px; width: 40px; height: 40px; background: var(--bg-sidebar); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; z-index: 101; display: flex; align-items: center; justify-content: center; transition: left 0.3s ease; color: var(--primary); font-size: 20px; }
+        .sidebar-toggle-btn.collapsed { left: 20px; }
+        .sidebar-toggle-btn:hover { background: rgba(var(--primary-rgb), 0.2); transform: scale(1.05); }
+        
+        /* MAIN CONTENT */
+        .main-content { margin-left: 280px; padding: 28px 36px; min-height: 100vh; transition: margin-left 0.3s ease; }
+        .main-content.expanded { margin-left: 20px; }
+        
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding: 16px 24px; background: var(--bg-card); backdrop-filter: blur(10px); border-radius: 14px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 16px; }
+        .admin-header h1 { font-size: 18px; margin: 0; color: var(--text-primary); }
+        .admin-header h1 span { color: var(--primary); }
         .header-actions { display: flex; gap: 12px; }
-        .logout-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 8px 20px; border-radius: 8px; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 13px; transition: all 0.2s; }
-        .logout-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .logout-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .logout-btn:hover { background: rgba(var(--primary-rgb), 0.15); color: var(--primary); }
+        
+        /* STATS */
         .stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; margin-bottom: 32px; }
-        .stat-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 20px; }
-        .stat-value { font-size: 28px; font-weight: 700; color: #fff; }
-        .stat-label { color: rgba(255,255,255,0.45); font-size: 12px; margin-top: 8px; }
+        .stat-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; transition: all 0.2s; }
+        .stat-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .stat-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+        .stat-label { color: var(--text-muted); font-size: 12px; margin-top: 8px; }
+        
+        /* TABS */
         .tabs { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
-        .tab { padding: 10px 24px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.6); font-weight: 500; cursor: pointer; border-radius: 8px; font-size: 13px; transition: all 0.2s; }
-        .tab:hover { border-color: rgba(255,255,255,0.15); color: #fff; }
-        .tab.active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.15); }
-        .section-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 24px; margin-bottom: 28px; }
-        .section-title { font-size: 14px; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .tab { padding: 10px 24px; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); font-weight: 500; cursor: pointer; border-radius: 8px; font-size: 13px; transition: all 0.2s; }
+        .tab:hover { border-color: var(--primary); color: var(--primary); }
+        .tab.active { background: rgba(var(--primary-rgb), 0.15); color: var(--primary); border-color: var(--primary); }
+        
+        /* CARDS */
+        .section-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 14px; padding: 24px; margin-bottom: 28px; transition: all 0.2s; }
+        .section-title { font-size: 14px; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        
+        /* TABLES */
         .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        th { color: rgba(255,255,255,0.5); font-size: 11px; text-transform: uppercase; }
-        td { color: rgba(255,255,255,0.7); font-size: 13px; }
+        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
+        td { color: var(--text-secondary); font-size: 13px; }
+        
+        /* BADGES */
         .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; }
         .badge-success { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
         .badge-danger { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
         .badge-warning { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        
+        /* BUTTONS */
         .btn-danger { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); padding: 6px 12px; border-radius: 8px; color: #f87171; cursor: pointer; font-size: 12px; }
         .btn-clear { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); padding: 8px 16px; border-radius: 8px; color: #f59e0b; cursor: pointer; }
         .btn-whatsapp { background: rgba(37,211,102,0.15); border: 1px solid rgba(37,211,102,0.3); padding: 6px 12px; border-radius: 8px; color: #25d366; cursor: pointer; font-size: 12px; }
-        .search-box { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; }
+        .btn-save { background: var(--primary); color: #0a0a0a; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        
+        .search-box { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 12px; }
         .search-box input { background: transparent; border: none; padding: 4px 8px; width: 180px; color: #fff; }
-        .search-box i { color: rgba(255,255,255,0.5); }
-        .log-item { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-        .log-time { font-family: monospace; font-size: 11px; color: rgba(255,255,255,0.4); min-width: 150px; }
-        .toast { position: fixed; bottom: 30px; right: 30px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); border-left: 3px solid; padding: 12px 20px; border-radius: 8px; color: #fff; z-index: 2000; animation: slideToast 0.3s ease; }
+        .search-box i { color: var(--text-muted); }
+        
+        .log-item { padding: 12px; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .log-time { font-family: monospace; font-size: 11px; color: var(--text-muted); min-width: 150px; }
+        
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--bg-card); backdrop-filter: blur(20px); border-left: 3px solid var(--primary); padding: 12px 20px; border-radius: 8px; color: #fff; z-index: 2000; animation: slideToast 0.3s ease; }
         @keyframes slideToast { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
-        .footer { text-align: center; padding: 20px; color: rgba(255,255,255,0.3); font-size: 11px; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 20px; }
+        
+        .footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border-color); margin-top: 20px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeUp 0.2s ease; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px; }
-        .btn-save { background: linear-gradient(135deg, var(--primary, #ffd700) 0%, var(--primary-dark, #ccaa00) 100%); color: #1a1a2e; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-        textarea, select { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: #fff; font-family: 'Outfit', sans-serif; }
-        .theme-option { display: inline-block; width: 30px; height: 30px; border-radius: 50%; margin: 0 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
-        .theme-option:hover { transform: scale(1.1); }
-        .theme-option.selected { border-color: #fff; transform: scale(1.1); }
-        @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 260px; transition: transform 0.3s ease; z-index: 200; } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .stat-value { font-size: 22px; } .tabs { gap: 8px; } .tab { padding: 8px 16px; font-size: 12px; } .admin-header { flex-direction: column; align-items: flex-start; } .menu-toggle { display: flex; position: fixed; bottom: 20px; left: 20px; z-index: 201; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); padding: 12px; border-radius: 50%; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); } .menu-toggle i { color: white; font-size: 20px; } }
-        @media (min-width: 769px) { .menu-toggle { display: none; } }
+        textarea, select { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-family: 'Outfit', sans-serif; }
+        
+        .theme-option { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 12px; margin: 0 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; font-size: 20px; }
+        .theme-option:hover { transform: scale(1.1); border-color: #fff; }
+        .theme-option.selected { border-color: #fff; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-280px); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .sidebar-toggle-btn { left: 20px; }
+            .sidebar-toggle-btn.mobile-toggle { left: 240px; }
+            .main-content { margin-left: 20px; padding: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .stat-value { font-size: 22px; }
+            .tabs { gap: 8px; }
+            .tab { padding: 8px 16px; font-size: 12px; }
+            .admin-header { flex-direction: column; align-items: flex-start; }
+        }
+        
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
@@ -143,10 +251,66 @@
 <body class="theme-default">
 <canvas id="bgCanvas"></canvas>
 <div class="loading-screen" id="loadingScreen"><div class="clouds"><div class="cloud cloud1"></div><div class="cloud cloud2"></div><div class="cloud cloud3"></div><div class="cloud cloud4"></div><div class="cloud cloud5"></div></div><div class="loader"><span><span></span><span></span><span></span><span></span></span><div class="base"><span></span><div class="face"></div></div></div><div class="longfazers"><span></span><span></span><span></span><span></span></div></div>
+
 <div id="loginScreen" class="page-container"><div class="container"><div class="logo"><h1>ATIVA CAÇAMBAS</h1><p>Admin Control Center</p></div><div class="card"><h1>ACCESS CONSOLE</h1><div class="subtitle">Restricted administrative area</div><div id="loginError" class="alert alert-error" style="display:none"><i class="fas fa-exclamation-triangle"></i> Invalid credentials</div><div class="form-group"><label>USERNAME</label><input type="text" id="loginUser" placeholder="username"></div><div class="form-group"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="••••••••"></div><button class="btn btn-primary" onclick="handleLogin()"><i class="fas fa-arrow-right"></i> ENTRAR</button><div class="security-badge"><i class="fas fa-shield-alt"></i> Secure Connection</div></div></div></div>
-<div id="adminPanel" class="admin-panel"><div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div><aside class="sidebar" id="sidebar"><div class="sidebar-logo"><h2>ATIVA CAÇAMBAS</h2><p>SECURE CONSOLE</p></div><ul class="sidebar-menu"><li><a data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li><li><a data-tab="produtos"><i class="fas fa-dumpster"></i> Produtos</a></li><li><a data-tab="agendamentos"><i class="fas fa-calendar"></i> Agendamentos</a></li><li><a data-tab="users"><i class="fas fa-users"></i> Usuarios</a></li><li><a data-tab="payments"><i class="fas fa-credit-card"></i> Pagamentos</a></li><li><a data-tab="logs"><i class="fas fa-history"></i> Logs</a></li><li><a data-tab="security"><i class="fas fa-shield-alt"></i> Seguranca</a></li><li><a data-tab="settings"><i class="fas fa-cog"></i> Configuracoes</a></li></ul></aside><main class="main-content"><div class="admin-header"><h1>ATIVA<span style="color:var(--primary, #ffd700)">CAÇAMBAS</span></h1><div class="header-actions"><a href="/" target="_blank" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:8px 16px; border-radius:8px; color:rgba(255,255,255,0.7); text-decoration:none; margin-right:10px;"><i class="fas fa-home"></i> SITE</a><button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> EXIT</button></div></div><div class="stats-grid"><div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">Total Usuarios</div></div><div class="stat-card"><div class="stat-value" id="statComSenha">0</div><div class="stat-label">Com Senha</div></div><div class="stat-card"><div class="stat-value" id="statTotalLogs">0</div><div class="stat-label">Total Logs</div></div><div class="stat-card"><div class="stat-value" id="statProdutos">0</div><div class="stat-label">Produtos</div></div><div class="stat-card"><div class="stat-value" id="statAgendamentos">0</div><div class="stat-label">Agendamentos</div></div><div class="stat-card"><div class="stat-value" id="statTotalPagos">R$ 0</div><div class="stat-label">Total Arrecadado</div></div></div><div class="tabs"><div class="tab active" onclick="switchTab('dashboard')">DASHBOARD</div><div class="tab" onclick="switchTab('produtos')">PRODUTOS</div><div class="tab" onclick="switchTab('agendamentos')">AGENDAMENTOS</div><div class="tab" onclick="switchTab('users')">USUARIOS</div><div class="tab" onclick="switchTab('payments')">PAGAMENTOS</div><div class="tab" onclick="switchTab('logs')">LOGS</div><div class="tab" onclick="switchTab('security')">SEGURANCA</div><div class="tab" onclick="switchTab('settings')">CONFIG</div></div><div id="tabDashboard" class="tab-content active"><div class="section-card"><div class="section-title">ULTIMAS ATIVIDADES</div><div id="ultimasAtividades"></div></div><div class="section-card"><div class="section-title">ULTIMOS PAGAMENTOS</div><div id="ultimosPagamentos"></div></div></div><div id="tabProdutos" class="tab-content"><div class="section-card"><div class="section-title">ADICIONAR PRODUTO</div><form id="formProduto"><div class="form-row"><div class="form-group"><label>Nome</label><input type="text" id="prodNome" required placeholder="Ex: Caçamba 3m³"></div><div class="form-group"><label>Tipo</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div><div class="form-group"><label>Preço (R$)</label><input type="number" step="0.01" id="prodPreco" required></div><div class="form-group"><label>Preço Promocional</label><input type="number" step="0.01" id="prodPromocional"></div></div><div class="form-row"><div class="form-group"><label>Ícone (FontAwesome)</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div><div class="form-group"><label>Dimensões</label><input type="text" id="prodDimensoes" placeholder="2.0m x 1.5m x 1.0m"></div><div class="form-group"><label>Capacidade</label><input type="text" id="prodCapacidade" placeholder="3m³"></div></div><div class="form-group"><label>Descrição</label><textarea id="prodDescricao" rows="2"></textarea></div><button type="submit" class="btn-save">SALVAR PRODUTO</button></form></div><div class="section-card"><div class="section-title">LISTA DE PRODUTOS</div><div id="listaProdutos"></div></div></div><div id="tabAgendamentos" class="tab-content"><div class="section-card"><div class="section-title">AGENDAMENTOS DE CAÇAMBAS</div><div id="listaAgendamentos"></div></div></div><div id="tabUsers" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE USUARIOS COLETADOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Buscar CPF..." onkeyup="filterUsers()"></div><button class="btn-clear" onclick="exportarCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparTodosDados()"><i class="fas fa-trash"></i> LIMPAR</button></div></div><div class="table-wrapper"><table><thead><tr><th>CPF</th><th>SENHA</th><th>TELEFONE</th><th>IP</th><th>Dispositivo</th><th>Data</th><th>Acao</th><th>Cobranca</th></tr></thead><tbody id="usersTable"></tbody></table></div></div></div><div id="tabPayments" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE PAGAMENTOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchPayments" placeholder="Buscar CPF..." onkeyup="filterPayments()"></div><button class="btn-clear" onclick="exportarPaymentsCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparPagamentos()"><i class="fas fa-trash"></i> LIMPAR PAGAMENTOS</button></div></div><div class="table-wrapper"></table><thead><tr><th>ID</th><th>CPF</th><th>TELEFONE</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead><tbody id="paymentsTable"></tbody></table></div></div></div><div id="tabLogs" class="tab-content"><div class="section-card"><div class="section-title">HISTORICO COMPLETO<div style="display:flex;gap:10px"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchLogs" placeholder="Buscar..." onkeyup="filterLogs()"></div><button class="btn-danger" onclick="limparLogs()">LIMPAR LOGS</button></div></div><div id="logsList"></div></div></div><div id="tabSecurity" class="tab-content"><div class="section-card"><div class="section-title">TENTATIVAS DE ACESSO AO ADMIN<button class="btn-danger" onclick="limparTentativas()">LIMPAR TENTATIVAS</button></div><div class="table-wrapper"></tr><thead><tr><th>IP</th><th>Tentativa</th><th>Data</th></tr></thead><tbody id="tentativasTable"></tbody></table></div></div></div><div id="tabSettings" class="tab-content"><div class="section-card"><div class="section-title">APARENCIA - TEMAS</div><div style="text-align:center; padding:20px;"><div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;"><div class="theme-option" style="background:#ffd700;" onclick="setTheme('default')" title="Amarelo Padrão"></div><div class="theme-option" style="background:#3b82f6;" onclick="setTheme('blue')" title="Azul"></div><div class="theme-option" style="background:#ef4444;" onclick="setTheme('red')" title="Vermelho"></div><div class="theme-option" style="background:#10b981;" onclick="setTheme('green')" title="Verde"></div><div class="theme-option" style="background:#ffffff;" onclick="setTheme('white')" title="Branco"></div></div><p style="margin-top:15px; color:rgba(255,255,255,0.5); font-size:12px;">Selecione uma cor para o tema do painel<br>As estrelas de fundo permanecem inalteradas</p></div><div class="section-title" style="margin-top:20px;">ALTERAR SENHA DO ADMIN</div><div style="display:flex;flex-direction:column;gap:15px"><input type="password" id="senhaAntigaAdmin" placeholder="Senha atual"><input type="password" id="novaSenhaAdmin" placeholder="Nova senha (minimo 6 caracteres)"><input type="password" id="confirmarSenhaAdmin" placeholder="Confirmar nova senha"><button class="btn-save" onclick="alterarSenhaAdmin()">ALTERAR SENHA</button></div><div id="senhaMsg" style="margin-top:15px"></div></div></div><div class="footer">ATIVA CAÇAMBAS v2.0 | SECURE ADMIN SYSTEM</div></main></div>
+
+<div id="adminPanel" class="admin-panel">
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo"><h2>ATIVA CAÇAMBAS</h2><p>SECURE CONSOLE</p></div>
+        <ul class="sidebar-menu">
+            <li><a data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a data-tab="produtos"><i class="fas fa-dumpster"></i> Produtos</a></li>
+            <li><a data-tab="agendamentos"><i class="fas fa-calendar"></i> Agendamentos</a></li>
+            <li><a data-tab="users"><i class="fas fa-users"></i> Usuarios</a></li>
+            <li><a data-tab="payments"><i class="fas fa-credit-card"></i> Pagamentos</a></li>
+            <li><a data-tab="logs"><i class="fas fa-history"></i> Logs</a></li>
+            <li><a data-tab="security"><i class="fas fa-shield-alt"></i> Seguranca</a></li>
+            <li><a data-tab="settings"><i class="fas fa-cog"></i> Configuracoes</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+        <div class="admin-header">
+            <h1>ATIVA<span>CAÇAMBAS</span></h1>
+            <div class="header-actions"><a href="/" target="_blank" style="background:rgba(255,255,255,0.05); border:1px solid var(--border-color); padding:8px 16px; border-radius:8px; color:var(--text-secondary); text-decoration:none; margin-right:10px;"><i class="fas fa-home"></i> SITE</a><button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> EXIT</button></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">Total Usuarios</div></div>
+            <div class="stat-card"><div class="stat-value" id="statComSenha">0</div><div class="stat-label">Com Senha</div></div>
+            <div class="stat-card"><div class="stat-value" id="statTotalLogs">0</div><div class="stat-label">Total Logs</div></div>
+            <div class="stat-card"><div class="stat-value" id="statProdutos">0</div><div class="stat-label">Produtos</div></div>
+            <div class="stat-card"><div class="stat-value" id="statAgendamentos">0</div><div class="stat-label">Agendamentos</div></div>
+            <div class="stat-card"><div class="stat-value" id="statTotalPagos">R$ 0</div><div class="stat-label">Total Arrecadado</div></div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('dashboard')">DASHBOARD</div>
+            <div class="tab" onclick="switchTab('produtos')">PRODUTOS</div>
+            <div class="tab" onclick="switchTab('agendamentos')">AGENDAMENTOS</div>
+            <div class="tab" onclick="switchTab('users')">USUARIOS</div>
+            <div class="tab" onclick="switchTab('payments')">PAGAMENTOS</div>
+            <div class="tab" onclick="switchTab('logs')">LOGS</div>
+            <div class="tab" onclick="switchTab('security')">SEGURANCA</div>
+            <div class="tab" onclick="switchTab('settings')">CONFIG</div>
+        </div>
+
+        <div id="tabDashboard" class="tab-content active"><div class="section-card"><div class="section-title">ULTIMAS ATIVIDADES</div><div id="ultimasAtividades"></div></div><div class="section-card"><div class="section-title">ULTIMOS PAGAMENTOS</div><div id="ultimosPagamentos"></div></div></div>
+        <div id="tabProdutos" class="tab-content"><div class="section-card"><div class="section-title">ADICIONAR PRODUTO</div><form id="formProduto"><div class="form-row"><div class="form-group"><label>Nome</label><input type="text" id="prodNome" required placeholder="Ex: Caçamba 3m³"></div><div class="form-group"><label>Tipo</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div><div class="form-group"><label>Preço (R$)</label><input type="number" step="0.01" id="prodPreco" required></div><div class="form-group"><label>Preço Promocional</label><input type="number" step="0.01" id="prodPromocional"></div></div><div class="form-row"><div class="form-group"><label>Ícone</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div><div class="form-group"><label>Dimensões</label><input type="text" id="prodDimensoes" placeholder="2.0m x 1.5m x 1.0m"></div><div class="form-group"><label>Capacidade</label><input type="text" id="prodCapacidade" placeholder="3m³"></div></div><div class="form-group"><label>Descrição</label><textarea id="prodDescricao" rows="2"></textarea></div><button type="submit" class="btn-save">SALVAR PRODUTO</button></form></div><div class="section-card"><div class="section-title">LISTA DE PRODUTOS</div><div id="listaProdutos"></div></div></div>
+        <div id="tabAgendamentos" class="tab-content"><div class="section-card"><div class="section-title">AGENDAMENTOS DE CAÇAMBAS</div><div id="listaAgendamentos"></div></div></div>
+        <div id="tabUsers" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE USUARIOS COLETADOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Buscar CPF..." onkeyup="filterUsers()"></div><button class="btn-clear" onclick="exportarCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparTodosDados()"><i class="fas fa-trash"></i> LIMPAR</button></div></div><div class="table-wrapper"><table><thead><tr><th>CPF</th><th>SENHA</th><th>TELEFONE</th><th>IP</th><th>Dispositivo</th><th>Data</th><th>Acao</th><th>Cobranca</th></tr></thead><tbody id="usersTable"></tbody></table></div></div></div>
+        <div id="tabPayments" class="tab-content"><div class="section-card"><div class="section-title"><span>LISTA DE PAGAMENTOS</span><div style="display:flex;gap:10px;flex-wrap:wrap"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchPayments" placeholder="Buscar CPF..." onkeyup="filterPayments()"></div><button class="btn-clear" onclick="exportarPaymentsCSV()"><i class="fas fa-download"></i> CSV</button><button class="btn-danger" onclick="limparPagamentos()"><i class="fas fa-trash"></i> LIMPAR PAGAMENTOS</button></div></div><div class="table-wrapper"><table><thead><tr><th>ID</th><th>CPF</th><th>TELEFONE</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead><tbody id="paymentsTable"></tbody></table></div></div></div>
+        <div id="tabLogs" class="tab-content"><div class="section-card"><div class="section-title">HISTORICO COMPLETO<div style="display:flex;gap:10px"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchLogs" placeholder="Buscar..." onkeyup="filterLogs()"></div><button class="btn-danger" onclick="limparLogs()">LIMPAR LOGS</button></div></div><div id="logsList"></div></div></div>
+        <div id="tabSecurity" class="tab-content"><div class="section-card"><div class="section-title">TENTATIVAS DE ACESSO AO ADMIN<button class="btn-danger" onclick="limparTentativas()">LIMPAR TENTATIVAS</button></div><div class="table-wrapper"><table><thead><tr><th>IP</th><th>Tentativa</th><th>Data</th></tr></thead><tbody id="tentativasTable"></tbody></table></div></div></div>
+        <div id="tabSettings" class="tab-content"><div class="section-card"><div class="section-title">APARENCIA - TEMAS</div><div style="text-align:center; padding:20px;"><div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap;"><div class="theme-option" style="background:#ffd700; color:#000;" onclick="setTheme('default')" title="Amarelo">🌟</div><div class="theme-option" style="background:#3b82f6;" onclick="setTheme('blue')" title="Azul">💙</div><div class="theme-option" style="background:#ef4444;" onclick="setTheme('red')" title="Vermelho">❤️</div><div class="theme-option" style="background:#10b981;" onclick="setTheme('green')" title="Verde">💚</div><div class="theme-option" style="background:#ffffff; color:#000;" onclick="setTheme('white')" title="Branco">🤍</div><div class="theme-option" style="background:#8b5cf6;" onclick="setTheme('purple')" title="Roxo">💜</div></div><p style="margin-top:15px; color:var(--text-muted); font-size:12px;">Selecione uma cor para o tema do painel<br>As estrelas de fundo permanecem inalteradas</p></div><div class="section-title" style="margin-top:20px;">ALTERAR SENHA DO ADMIN</div><div style="display:flex;flex-direction:column;gap:15px"><input type="password" id="senhaAntigaAdmin" placeholder="Senha atual"><input type="password" id="novaSenhaAdmin" placeholder="Nova senha (minimo 6 caracteres)"><input type="password" id="confirmarSenhaAdmin" placeholder="Confirmar nova senha"><button class="btn-save" onclick="alterarSenhaAdmin()">ALTERAR SENHA</button></div><div id="senhaMsg" style="margin-top:15px"></div></div></div>
+        <div class="footer">ATIVA CAÇAMBAS v2.0 | SECURE ADMIN SYSTEM</div>
+    </main>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// THREE.JS BACKGROUND
 (function(){
     const canvas = document.getElementById('bgCanvas');
     const scene = new THREE.Scene();
@@ -172,28 +336,53 @@
     setTimeout(() => document.getElementById('loadingScreen')?.classList.add('hidden'), 1000);
 })();
 
+// ADMIN LOGIC
 let adminToken = null, refreshInterval = null;
 let cache = { users: [], logs: [], payments: [], produtos: [], agendamentos: [] };
 let loadedTabs = { produtos: false, agendamentos: false, users: false, payments: false, logs: false, security: false };
+let sidebarCollapsed = false;
 
+// TOGGLE SIDEBAR
+function toggleSidebar(){
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const toggleBtn = document.getElementById('sidebarToggleBtn');
+    
+    if(window.innerWidth <= 768){
+        sidebar.classList.toggle('mobile-open');
+        toggleBtn.classList.toggle('mobile-toggle');
+    } else {
+        sidebarCollapsed = !sidebarCollapsed;
+        if(sidebarCollapsed){
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('expanded');
+            toggleBtn.classList.add('collapsed');
+        } else {
+            sidebar.classList.remove('collapsed');
+            mainContent.classList.remove('expanded');
+            toggleBtn.classList.remove('collapsed');
+        }
+    }
+}
+
+// SET THEME
 function setTheme(theme){
-    document.body.classList.remove('theme-default', 'theme-blue', 'theme-red', 'theme-green', 'theme-white');
+    document.body.classList.remove('theme-default', 'theme-blue', 'theme-red', 'theme-green', 'theme-white', 'theme-purple');
     document.body.classList.add(`theme-${theme}`);
     localStorage.setItem('adminTheme', theme);
     document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('selected'));
-    event.target.classList.add('selected');
+    if(event && event.target) event.target.classList.add('selected');
 }
 
 function loadSavedTheme(){
     const saved = localStorage.getItem('adminTheme');
-    if(saved && saved !== 'default'){
+    if(saved){
         document.body.classList.add(`theme-${saved}`);
     }
 }
 loadSavedTheme();
 
-function toggleSidebar() { document.getElementById('sidebar')?.classList.toggle('open'); }
-function showToast(msg, type='info'){ let t=document.createElement('div'); t.className='toast'; t.style.borderLeftColor=type==='success'?'#10b981':type==='error'?'#ef4444':'#fff'; t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':type==='error'?'exclamation-circle':'info-circle'}"></i> ${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+function showToast(msg, type='info'){ let t=document.createElement('div'); t.className='toast'; t.style.borderLeftColor=type==='success'?'#10b981':type==='error'?'#ef4444':'var(--primary)'; t.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':type==='error'?'exclamation-circle':'info-circle'}"></i> ${msg}`; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
 function formatarCPF(cpf){ if(!cpf) return ''; cpf=cpf.toString(); if(cpf.length===11) return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,'$1.$2.$3-$4'); return cpf; }
 
 async function handleLogin(){
@@ -309,7 +498,11 @@ function switchTab(tabName){
     
     const sidebarLink=Array.from(document.querySelectorAll('.sidebar-menu a')).find(a=>a.getAttribute('data-tab')===tabName);
     if(sidebarLink){ document.querySelectorAll('.sidebar-menu a').forEach(l=>l.classList.remove('active')); sidebarLink.classList.add('active'); }
-    if(window.innerWidth<=768) document.getElementById('sidebar')?.classList.remove('open');
+    
+    if(window.innerWidth <= 768){
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        document.getElementById('sidebarToggleBtn').classList.remove('mobile-toggle');
+    }
     
     loadTabData(tabName);
 }
@@ -325,7 +518,7 @@ function renderAgendamentos(){
     const container=document.getElementById('listaAgendamentos');
     if(!container) return;
     if(!cache.agendamentos.length){ container.innerHTML='<div style="text-align:center;padding:40px">Nenhum agendamento</div>'; return; }
-    container.innerHTML=`<table><thead><tr><th>Cliente</th><th>Telefone</th><th>Obra</th><th>Endereço</th><th>Data</th><th>Horário</th></tr></thead><tbody>${cache.agendamentos.map(a=>`<tr><td>${a.cliente_nome||'-'}</td><td>${a.telefone||'-'}</td><td>${a.tipo_obra||'-'}</td><td>${a.endereco_obra||'-'}</td><td>${new Date(a.data_agendamento).toLocaleDateString()}</td><td>${a.horario||'-'}</td></tr>`).join('')}</tbody><table>`;
+    container.innerHTML=`<table><thead><tr><th>Cliente</th><th>Telefone</th><th>Obra</th><th>Endereço</th><th>Data</th><th>Horário</th></tr></thead><tbody>${cache.agendamentos.map(a=>`<tr><td>${a.cliente_nome||'-'}</td><td>${a.telefone||'-'}</td><td>${a.tipo_obra||'-'}</td><td>${a.endereco_obra||'-'}</td><td>${new Date(a.data_agendamento).toLocaleDateString()}</td><td>${a.horario||'-'}</td></tr>`).join('')}</tbody></table>`;
 }
 
 async function excluirProduto(id){ if(!confirm('Excluir produto?')) return; try{ await fetch(`/api/admin/produtos/${id}`,{method:'DELETE',headers:{'Authorization':`Bearer ${adminToken}`}}); showToast('Produto excluído','success'); cache.produtos = cache.produtos.filter(p=>p.id!==id); renderProdutos(); } catch(e){ showToast('Erro','error'); } }
