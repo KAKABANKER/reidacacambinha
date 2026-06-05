@@ -519,24 +519,29 @@
             <div class="card"><div class="card-header">Recent Payments</div><div id="recentPayments"></div></div>
         </div>
 
-        <div id="tabProdutos" class="tab-content">
-            <div class="card">
-                <div class="card-header">Add Product</div>
-                <form id="productForm">
-                    <div class="form-row">
-                        <div class="form-group"><label>Name</label><input type="text" id="prodNome" required></div>
-                        <div class="form-group"><label>Type</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div>
-                        <div class="form-group"><label>Price</label><input type="number" step="0.01" id="prodPreco" required></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Icon</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div>
-                        <div class="form-group"><label>Dimensions</label><input type="text" id="prodDimensoes"></div>
-                        <div class="form-group"><label>Capacity</label><input type="text" id="prodCapacidade"></div>
-                    </div>
-                    <div class="form-group"><label>Description</label><textarea id="prodDescricao" rows="2"></textarea></div>
-                    <button type="submit" class="btn-primary">Save Product</button>
-                </form>
+       <div id="tabProdutos" class="tab-content">
+    <div class="card">
+        <div class="card-header">Add Product</div>
+        <form id="productForm">
+            <div class="form-row">
+                <div class="form-group"><label>Name</label><input type="text" id="prodNome" required></div>
+                <div class="form-group"><label>Type</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div>
+                <div class="form-group"><label>Price</label><input type="number" step="0.01" id="prodPreco" required></div>
             </div>
+            <div class="form-row">
+                <div class="form-group"><label>Promotional Price</label><input type="number" step="0.01" id="prodPromocional" placeholder="Opcional"></div>
+                <div class="form-group"><label>Dimensions</label><input type="text" id="prodDimensoes" placeholder="Ex: 2.0m x 1.5m x 1.0m"></div>
+                <div class="form-group"><label>Capacity</label><input type="text" id="prodCapacidade" placeholder="Ex: 3m³"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Image URL</label><input type="text" id="prodImagem" placeholder="https://seusite.com/imagem.jpg"></div>
+                <div class="form-group"><label>Icon (fallback)</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div>
+            </div>
+            <div class="form-group"><label>Description</label><textarea id="prodDescricao" rows="2"></textarea></div>
+            <button type="submit" class="btn-primary">Save Product</button>
+        </form>
+    </div>
+           
             <div class="card">
                 <div class="card-header"><span>Product List</span><span id="productCount" style="font-size:12px; color:#6b7280;"></span></div>
                 <div id="productList" class="products-container"></div>
