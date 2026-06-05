@@ -930,9 +930,11 @@ document.getElementById('productForm')?.addEventListener('submit', async (e) => 
         preco_promocional: parseFloat(document.getElementById('prodPromocional')?.value) || null,
         descricao: document.getElementById('prodDescricao').value,
         icone: document.getElementById('prodIcone').value,
+        imagem: document.getElementById('prodImagem').value,  // NOVO CAMPO
         dimensoes: document.getElementById('prodDimensoes').value,
         capacidade: document.getElementById('prodCapacidade').value
     };
+    
     try {
         await fetch('/api/admin/produtos', {
             method: 'POST',
