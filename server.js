@@ -542,6 +542,22 @@ app.post('/api/admin/add-user', verificarAdminToken, async (req, res) => {
 });
 
 // ============ ROTAS DELETE ============
+
+// DELETE para PRODUTOS (ESTÁ FALTANDO!)
+app.delete('/api/admin/produtos/:id', verificarAdminToken, async (req, res) => {
+    try { 
+        const result = await pool.query('DELETE FROM produtos WHERE id = $1 RETURNING id', [req.params.id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Produto não encontrado' });
+        }
+        res.json({ success: true }); 
+    } catch (err) { 
+        console.error('Erro ao deletar produto:', err);
+        res.status(500).json({ erro: err.message }); 
+    }
+});
+
+// DELETE para AGENDAMENTOS
 app.delete('/api/admin/agendamentos/:id', verificarAdminToken, async (req, res) => {
     try { 
         await pool.query('DELETE FROM agendamentos WHERE id = $1', [req.params.id]); 
@@ -551,6 +567,7 @@ app.delete('/api/admin/agendamentos/:id', verificarAdminToken, async (req, res) 
     }
 });
 
+// DELETE para PAYMENTS
 app.delete('/api/admin/payments/:id', verificarAdminToken, async (req, res) => {
     try { 
         await pool.query('DELETE FROM payments WHERE id = $1', [req.params.id]); 
@@ -560,6 +577,7 @@ app.delete('/api/admin/payments/:id', verificarAdminToken, async (req, res) => {
     }
 });
 
+// DELETE para LOGS
 app.delete('/api/admin/logs/:id', verificarAdminToken, async (req, res) => {
     try { 
         await pool.query('DELETE FROM logs WHERE id = $1', [req.params.id]); 
