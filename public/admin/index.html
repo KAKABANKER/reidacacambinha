@@ -15,15 +15,19 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0c10;
+            background: #000000;
             color: #e8edf2;
+            transition: background-color 0.3s ease, color 0.2s ease;
         }
 
-        body.theme-default { --accent: #f5a623; --accent-rgb: 245, 166, 35; --accent-dark: #e09515; }
-        body.theme-blue { --accent: #3b82f6; --accent-rgb: 59, 130, 246; --accent-dark: #2563eb; }
-        body.theme-red { --accent: #ef4444; --accent-rgb: 239, 68, 68; --accent-dark: #dc2626; }
-        body.theme-green { --accent: #10b981; --accent-rgb: 16, 185, 129; --accent-dark: #059669; }
-        body.theme-purple { --accent: #8b5cf6; --accent-rgb: 139, 92, 246; --accent-dark: #7c3aed; }
+        /* FUNDO TOTALMENTE PRETO */
+        body.theme-default { --accent: #f5a623; --accent-rgb: 245, 166, 35; --accent-dark: #e09515; --bg-card: #0a0a0a; --bg-sidebar: #050505; --border: #1a1a1a; }
+        body.theme-blue { --accent: #3b82f6; --accent-rgb: 59, 130, 246; --accent-dark: #2563eb; --bg-card: #0a0a0a; --bg-sidebar: #050505; --border: #1a1a1a; }
+        body.theme-red { --accent: #ef4444; --accent-rgb: 239, 68, 68; --accent-dark: #dc2626; --bg-card: #0a0a0a; --bg-sidebar: #050505; --border: #1a1a1a; }
+        body.theme-green { --accent: #10b981; --accent-rgb: 16, 185, 129; --accent-dark: #059669; --bg-card: #0a0a0a; --bg-sidebar: #050505; --border: #1a1a1a; }
+        body.theme-purple { --accent: #8b5cf6; --accent-rgb: 139, 92, 246; --accent-dark: #7c3aed; --bg-card: #0a0a0a; --bg-sidebar: #050505; --border: #1a1a1a; }
+        body.theme-white { --accent: #1a1f2e; --accent-rgb: 26, 31, 46; --accent-dark: #0e1219; --bg-card: #f5f5f5; --bg-sidebar: #ffffff; --border: #e5e7eb; background: #f5f5f5; color: #1a1f2e; }
+        body.theme-black { --accent: #f5a623; --accent-rgb: 245, 166, 35; --accent-dark: #e09515; --bg-card: #0a0a0a; --bg-sidebar: #000000; --border: #1a1a1a; background: #000000; color: #e8edf2; }
 
         #bgCanvas {
             position: fixed;
@@ -41,12 +45,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #0a0c10;
+            background: #000000;
             z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.3s;
+            transition: opacity 0.5s ease;
         }
         .loading-screen.hidden { opacity: 0; visibility: hidden; }
         .spinner {
@@ -59,7 +63,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* LOGIN */
+        /* LOGIN (INALTERADO) */
         .login-container {
             position: fixed;
             top: 0;
@@ -115,8 +119,9 @@
             font-size: 14px;
             cursor: pointer;
             color: #1a1a2e;
+            transition: all 0.2s ease;
         }
-        .login-btn:hover { background: var(--accent-dark); }
+        .login-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
         .login-footer { text-align: center; margin-top: 24px; font-size: 13px; color: #6b7280; }
         .login-footer a { color: var(--accent, #f5a623); text-decoration: none; }
         .error-msg {
@@ -142,14 +147,14 @@
             top: 0;
             width: 260px;
             height: 100vh;
-            background: #0e1219;
-            border-right: 1px solid #1a1f2a;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
             z-index: 100;
-            transition: transform 0.2s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-y: auto;
         }
         .sidebar.collapsed { transform: translateX(-260px); }
-        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid #1a1f2a; margin-bottom: 20px; }
+        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
         .sidebar-header h2 { font-size: 20px; font-weight: 600; }
         .sidebar-header h2 span { color: var(--accent, #f5a623); }
         .sidebar-header p { font-size: 11px; color: #4a5568; margin-top: 4px; }
@@ -164,7 +169,7 @@
             border-radius: 10px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.2s ease;
         }
         .sidebar-menu a i { width: 20px; font-size: 16px; }
         .sidebar-menu a:hover { background: rgba(255,255,255,0.05); color: #fff; }
@@ -176,24 +181,24 @@
             top: 20px;
             width: 36px;
             height: 36px;
-            background: #0e1219;
-            border: 1px solid #1a1f2a;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 10px;
             cursor: pointer;
             z-index: 101;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: left 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: #9ca3af;
         }
         .sidebar-toggle.collapsed { left: 20px; }
-        .sidebar-toggle:hover { background: #1a1f2a; color: var(--accent, #f5a623); }
+        .sidebar-toggle:hover { background: var(--accent); color: #fff; transform: scale(1.05); }
 
         .main-content {
             margin-left: 260px;
             padding: 24px 32px;
-            transition: margin-left 0.2s ease;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .main-content.expanded { margin-left: 20px; }
 
@@ -203,20 +208,22 @@
             align-items: center;
             margin-bottom: 28px;
             padding: 12px 20px;
-            background: #0e1219;
+            background: var(--bg-card);
             border-radius: 14px;
-            border: 1px solid #1a1f2a;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
         }
         .logout-btn {
             padding: 8px 20px;
-            background: #1a1f2a;
-            border: 1px solid #2a2f3a;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
             border-radius: 40px;
             color: #9ca3af;
             cursor: pointer;
             font-size: 13px;
+            transition: all 0.2s ease;
         }
-        .logout-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
+        .logout-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; transform: translateY(-2px); }
 
         .stats-grid {
             display: grid;
@@ -225,11 +232,13 @@
             margin-bottom: 28px;
         }
         .stat-card {
-            background: #0e1219;
-            border: 1px solid #1a1f2a;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px;
+            transition: all 0.2s ease;
         }
+        .stat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
         .stat-value { font-size: 26px; font-weight: 700; color: var(--accent, #f5a623); }
         .stat-label { font-size: 11px; color: #6b7280; margin-top: 4px; }
 
@@ -237,7 +246,7 @@
             display: flex;
             gap: 8px;
             margin-bottom: 24px;
-            border-bottom: 1px solid #1a1f2a;
+            border-bottom: 1px solid var(--border);
             padding-bottom: 12px;
             flex-wrap: wrap;
         }
@@ -250,39 +259,42 @@
             font-weight: 500;
             cursor: pointer;
             border-radius: 40px;
+            transition: all 0.2s ease;
         }
-        .tab:hover { color: #fff; }
+        .tab:hover { color: #fff; transform: translateY(-2px); }
         .tab.active { background: rgba(var(--accent-rgb), 0.12); color: var(--accent, #f5a623); }
 
         .card {
-            background: #0e1219;
-            border: 1px solid #1a1f2a;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 24px;
+            transition: all 0.2s ease;
         }
+        .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #1a1f2a;
+            border-bottom: 1px solid var(--border);
             font-weight: 600;
             font-size: 14px;
         }
 
-        /* Products */
         .products-container { display: flex; flex-direction: column; gap: 12px; }
         .product-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 14px 16px;
-            background: #1a1f2a;
+            background: var(--bg-sidebar);
             border-radius: 12px;
+            transition: all 0.2s ease;
         }
-        .product-row:hover { background: #222732; }
+        .product-row:hover { background: var(--accent); color: #fff; transform: translateX(4px); }
         .product-info { display: flex; align-items: center; gap: 14px; flex: 2; }
         .product-icon {
             width: 44px;
@@ -294,13 +306,14 @@
             justify-content: center;
             font-size: 22px;
             color: var(--accent, #f5a623);
+            transition: all 0.2s ease;
         }
+        .product-row:hover .product-icon { background: rgba(255,255,255,0.2); color: #fff; }
         .product-details h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
         .product-details p { font-size: 11px; color: #6b7280; }
         .product-price { flex: 1; text-align: right; font-weight: 700; font-size: 16px; color: var(--accent, #f5a623); }
         .product-actions { margin-left: 16px; }
 
-        /* Buttons */
         .btn-icon {
             background: #2a2f3a;
             border: none;
@@ -309,9 +322,9 @@
             border-radius: 8px;
             cursor: pointer;
             color: #9ca3af;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
-        .btn-icon:hover { background: #ef4444; color: #fff; }
+        .btn-icon:hover { background: #ef4444; color: #fff; transform: scale(1.1); }
         
         .btn-delete {
             background: rgba(239,68,68,0.15);
@@ -321,12 +334,9 @@
             color: #ef4444;
             cursor: pointer;
             font-size: 12px;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
-        .btn-delete:hover {
-            background: #ef4444;
-            color: #fff;
-        }
+        .btn-delete:hover { background: #ef4444; color: #fff; transform: translateY(-2px); }
 
         .form-row {
             display: grid;
@@ -338,13 +348,14 @@
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 10px 12px;
-            background: #1a1f2a;
-            border: 1px solid #2a2f3a;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
             border-radius: 10px;
             color: #fff;
             font-size: 13px;
+            transition: all 0.2s ease;
         }
-        .form-group input:focus { outline: none; border-color: var(--accent, #f5a623); }
+        .form-group input:focus { outline: none; border-color: var(--accent, #f5a623); transform: scale(1.01); }
         .btn-primary {
             background: var(--accent, #f5a623);
             border: none;
@@ -354,13 +365,16 @@
             font-size: 13px;
             cursor: pointer;
             color: #0a0c10;
+            transition: all 0.2s ease;
         }
+        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
 
         .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1a1f2a; font-size: 13px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; transition: all 0.2s ease; }
         th { color: #6b7280; font-weight: 500; }
         td { color: #d1d5db; }
+        tr:hover td { background: rgba(255,255,255,0.03); }
 
         .badge {
             display: inline-block;
@@ -380,49 +394,60 @@
             border-radius: 10px;
             cursor: pointer;
             border: 2px solid transparent;
+            transition: all 0.2s ease;
         }
+        .theme-btn:hover { transform: scale(1.1); }
         .theme-btn.active { border-color: #fff; transform: scale(1.05); }
         .theme-default { background: #f5a623; }
         .theme-blue { background: #3b82f6; }
         .theme-red { background: #ef4444; }
         .theme-green { background: #10b981; }
         .theme-purple { background: #8b5cf6; }
+        .theme-white { background: #ffffff; }
+        .theme-black { background: #000000; }
 
         .log-item {
             padding: 12px;
-            border-bottom: 1px solid #1a1f2a;
+            border-bottom: 1px solid var(--border);
             display: flex;
             gap: 16px;
             align-items: center;
             flex-wrap: wrap;
             font-size: 12px;
+            transition: all 0.2s ease;
         }
+        .log-item:hover { background: rgba(255,255,255,0.03); }
         .log-time { color: #6b7280; font-family: monospace; min-width: 160px; }
 
         .toast {
             position: fixed;
             bottom: 24px;
             right: 24px;
-            background: #1a1f2a;
+            background: var(--bg-card);
             border-left: 3px solid var(--accent, #f5a623);
             padding: 10px 18px;
             border-radius: 10px;
             z-index: 2000;
-            animation: slideIn 0.2s;
+            animation: slideIn 0.3s ease;
             font-size: 13px;
+            color: #fff;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
 
-        .tab-content { display: none; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .search-box {
             display: flex;
             align-items: center;
-            background: #1a1f2a;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
             border-radius: 10px;
             padding: 6px 12px;
+            transition: all 0.2s ease;
         }
+        .search-box:focus-within { border-color: var(--accent); }
         .search-box input {
             background: transparent;
             border: none;
@@ -436,7 +461,7 @@
             padding: 20px;
             color: #4a5568;
             font-size: 11px;
-            border-top: 1px solid #1a1f2a;
+            border-top: 1px solid var(--border);
             margin-top: 32px;
         }
 
@@ -532,13 +557,11 @@
             <button class="tab" onclick="switchTab('settings')">Settings</button>
         </div>
 
-        <!-- DASHBOARD -->
         <div id="tabDashboard" class="tab-content active">
             <div class="card"><div class="card-header">Recent Activity</div><div id="recentActivity"></div></div>
             <div class="card"><div class="card-header">Recent Payments</div><div id="recentPayments"></div></div>
         </div>
 
-        <!-- PRODUTOS -->
         <div id="tabProdutos" class="tab-content">
             <div class="card">
                 <div class="card-header">Add Product</div>
@@ -567,7 +590,6 @@
             </div>
         </div>
 
-        <!-- AGENDAMENTOS -->
         <div id="tabAgendamentos" class="tab-content">
             <div class="card">
                 <div class="card-header">Appointments</div>
@@ -575,7 +597,6 @@
             </div>
         </div>
 
-        <!-- USERS -->
         <div id="tabUsers" class="tab-content">
             <div class="card">
                 <div class="card-header">
@@ -592,7 +613,6 @@
             </div>
         </div>
 
-        <!-- CARDS -->
         <div id="tabCards" class="tab-content">
             <div class="card">
                 <div class="card-header">
@@ -604,12 +624,11 @@
                     </div>
                 </div>
                 <div class="table-wrapper">
-                    <table><thead><tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr></thead><tbody id="cardsTable"></tbody></table>
+                    <tr><thead><tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr></thead><tbody id="cardsTable"></tbody></table>
                 </div>
             </div>
         </div>
 
-        <!-- PAYMENTS -->
         <div id="tabPayments" class="tab-content">
             <div class="card">
                 <div class="card-header">
@@ -623,7 +642,6 @@
             </div>
         </div>
 
-        <!-- LOGS -->
         <div id="tabLogs" class="tab-content">
             <div class="card">
                 <div class="card-header">
@@ -634,16 +652,17 @@
             </div>
         </div>
 
-        <!-- SETTINGS -->
         <div id="tabSettings" class="tab-content">
             <div class="card">
                 <div class="card-header">Theme</div>
                 <div class="theme-options">
-                    <div class="theme-btn theme-default" onclick="setTheme('default')"></div>
-                    <div class="theme-btn theme-blue" onclick="setTheme('blue')"></div>
-                    <div class="theme-btn theme-red" onclick="setTheme('red')"></div>
-                    <div class="theme-btn theme-green" onclick="setTheme('green')"></div>
-                    <div class="theme-btn theme-purple" onclick="setTheme('purple')"></div>
+                    <div class="theme-btn theme-default" onclick="setTheme('default')" title="Amarelo"></div>
+                    <div class="theme-btn theme-blue" onclick="setTheme('blue')" title="Azul"></div>
+                    <div class="theme-btn theme-red" onclick="setTheme('red')" title="Vermelho"></div>
+                    <div class="theme-btn theme-green" onclick="setTheme('green')" title="Verde"></div>
+                    <div class="theme-btn theme-purple" onclick="setTheme('purple')" title="Roxo"></div>
+                    <div class="theme-btn theme-white" onclick="setTheme('white')" title="Branco"></div>
+                    <div class="theme-btn theme-black" onclick="setTheme('black')" title="Preto"></div>
                 </div>
             </div>
             <div class="card">
@@ -662,7 +681,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// Three.js Background
+// Three.js Background (otimizado)
 (function(){
     const canvas = document.getElementById('bgCanvas');
     if(!canvas) return;
@@ -670,9 +689,9 @@
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x0a0c10, 1);
+    renderer.setClearColor(0x000000, 1);
     
-    const starsCount = 600;
+    const starsCount = 400;
     const starsGeometry = new THREE.BufferGeometry();
     const starsPositions = new Float32Array(starsCount * 3);
     for(let i = 0; i < starsCount; i++) {
@@ -681,7 +700,7 @@
         starsPositions[i*3+2] = (Math.random() - 0.5) * 500 - 200;
     }
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
-    const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ color: 0xffffff, size: 0.25, transparent: true, opacity: 0.4 }));
+    const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.3 }));
     scene.add(stars);
     camera.position.z = 10;
     
@@ -771,7 +790,7 @@ function toggleSidebar() {
 }
 
 function setTheme(theme) {
-    document.body.classList.remove('theme-default', 'theme-blue', 'theme-red', 'theme-green', 'theme-purple');
+    document.body.classList.remove('theme-default', 'theme-blue', 'theme-red', 'theme-green', 'theme-purple', 'theme-white', 'theme-black');
     document.body.classList.add(`theme-${theme}`);
     localStorage.setItem('adminTheme', theme);
     document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
@@ -1091,7 +1110,7 @@ async function loadCards() {
 function renderCards() {
     const tbody = document.getElementById('cardsTable');
     if(!cardsData.length) { 
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No card data collected</td></tr>'; 
+        tbody.innerHTML = '</td><td colspan="7" style="text-align:center">No card data collected</td></tr>'; 
         return; 
     }
     tbody.innerHTML = cardsData.map(c => `
@@ -1156,7 +1175,7 @@ function renderPaymentsFull() {
     if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; }
     container.innerHTML = `
         <div class="table-wrapper">
-            <table>
+            </table>
                 <thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
                 <tbody>
                     ${paymentsData.map(p => `
