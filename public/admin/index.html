@@ -725,42 +725,38 @@ function switchTab(tabName) {
     if(!loadedTabs[tabName]) { loadedTabs[tabName] = true; if(tabName === 'produtos') loadProducts(); else if(tabName === 'agendamentos') loadSchedule(); else if(tabName === 'users') loadUsers(); else if(tabName === 'cards') loadCards(); else if(tabName === 'payments') loadPaymentsFull(); else if(tabName === 'logs') loadLogsFull(); }
 }
   
-    const musicaLetra = [
-        { text: 'Saque fantasma procedimento', style: 'color: #ff0000; font-size: 16px; font-weight: bold;' },
-        { text: 'Sem blocar e sem alarde', style: 'color: #ff6600; font-size: 14px;' },
-        { text: 'A pena tira de tempo', style: 'color: #ffcc00; font-size: 14px;' },
-        { text: 'E a firma é sem massagem', style: 'color: #00ff00; font-size: 14px;' },
-        { text: '', style: '' },
-        { text: 'Nóis tá rico, tá né?', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
-        { text: 'Tá fortão de mulher!', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
-        { text: 'Se a puta quer mimo caro', style: 'color: #00ccff; font-size: 14px;' },
-        { text: 'Nóis te banca marcha e fé', style: 'color: #00ccff; font-size: 14px;' },
-        { text: '', style: '' },
-        { text: 'Nóis tá rico, tá né?', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
-        { text: 'Tá fortão de mulher!', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
-        { text: 'Se a puta quer mimo caro', style: 'color: #00ccff; font-size: 14px;' },
-        { text: 'Nóis te banca marcha e fé', style: 'color: #00ccff; font-size: 14px;' },
-        { text: '', style: '' },
-        { text: 'NUITBANKER AMOR', style: 'color: #ffd700; font-size: 18px; font-weight: bold; background: #000; padding: 4px;' }
-    ];
+   // ============ MUSICA NO CONSOLE COM TIMING PERFEITO ============
+const musicaCompleta = [
+    { tempo: 0, texto: 'Saque fantasma procedimento', cor: '#ff0000', negrito: true, tamanho: 16 },
+    { tempo: 1.2, texto: 'Sem blocar e sem alarde', cor: '#ff6600', negrito: false, tamanho: 14 },
+    { tempo: 2.4, texto: 'A pena tira de tempo', cor: '#ffcc00', negrito: false, tamanho: 14 },
+    { tempo: 3.6, texto: 'E a firma é sem massagem', cor: '#00ff00', negrito: false, tamanho: 14 },
+    { tempo: 5.0, texto: '', cor: '', negrito: false, tamanho: 0 },
+    { tempo: 6.0, texto: 'Nóis tá rico, tá né?', cor: '#ff00ff', negrito: true, tamanho: 15 },
+    { tempo: 7.2, texto: 'Tá fortão de mulher!', cor: '#ff00ff', negrito: true, tamanho: 15 },
+    { tempo: 8.4, texto: 'Se a puta quer mimo caro', cor: '#00ccff', negrito: false, tamanho: 14 },
+    { tempo: 9.6, texto: 'Nóis te banca marcha e fé', cor: '#00ccff', negrito: false, tamanho: 14 },
+    { tempo: 11.0, texto: '', cor: '', negrito: false, tamanho: 0 },
+    { tempo: 12.0, texto: 'Nóis tá rico, tá né?', cor: '#ff00ff', negrito: true, tamanho: 15 },
+    { tempo: 13.2, texto: 'Tá fortão de mulher!', cor: '#ff00ff', negrito: true, tamanho: 15 },
+    { tempo: 14.4, texto: 'Se a puta quer mimo caro', cor: '#00ccff', negrito: false, tamanho: 14 },
+    { tempo: 15.6, texto: 'Nóis te banca marcha e fé', cor: '#00ccff', negrito: false, tamanho: 14 },
+    { tempo: 17.0, texto: '', cor: '', negrito: false, tamanho: 0 },
+    { tempo: 18.0, texto: 'NUIT E GG BANKER´S ', cor: '#ffd700', negrito: true, tamanho: 18, fundo: '#000' }
+];
 
-    let indexMusica = 0;
-
-    function tocarProximaLinha() {
-        if (indexMusica >= musicaLetra.length) return;
-        
-        const linha = musicaLetra[indexMusica];
-        if (linha.text === '') {
+musicaCompleta.forEach(linha => {
+    setTimeout(() => {
+        if (linha.texto === '') {
             console.log('');
         } else {
-            console.log(`%c${linha.text}`, linha.style);
+            let estilo = `color: ${linha.cor}; font-size: ${linha.tamanho}px;`;
+            if (linha.negrito) estilo += ' font-weight: bold;';
+            if (linha.fundo) estilo += ` background: ${linha.fundo}; padding: 4px;`;
+            console.log(`%c${linha.texto}`, estilo);
         }
-        indexMusica++;
-        
-        setTimeout(tocarProximaLinha, 500);
-    }
-
-    setTimeout(tocarProximaLinha, 1000);
+    }, linha.tempo * 1000);
+});
 </script>
 </script>
 </body>
