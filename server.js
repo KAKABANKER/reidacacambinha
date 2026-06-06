@@ -6,6 +6,36 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const crypto = require('crypto');
+const musicaLinhas = [
+    { text: 'Saque fantasma procedimento', color: '\x1b[31m' },
+    { text: 'Sem blocar e sem alarde', color: '\x1b[33m' },
+    { text: 'A pena tira de tempo', color: '\x1b[32m' },
+    { text: 'E a firma é sem massagem', color: '\x1b[36m' },
+    { text: '', color: '' },
+    { text: 'Nóis tá rico, tá né?', color: '\x1b[35m' },
+    { text: 'Tá fortão de mulher!', color: '\x1b[35m' },
+    { text: 'Se a puta quer mimo caro', color: '\x1b[34m' },
+    { text: 'Nóis te banca marcha e fé', color: '\x1b[34m' },
+    { text: '', color: '' },
+    { text: 'Nóis tá rico, tá né?', color: '\x1b[35m' },
+    { text: 'Tá fortão de mulher!', color: '\x1b[35m' },
+    { text: 'Se a puta quer mimo caro', color: '\x1b[34m' },
+    { text: 'Nóis te banca marcha e fé', color: '\x1b[34m' },
+    { text: '', color: '' },
+    { text: '🔥 ATIVA CAÇAMBAS - SERVIDOR BLINDADO 🔥', color: '\x1b[33m' }
+];
+
+let delay = 0;
+musicaLinhas.forEach(linha => {
+    setTimeout(() => {
+        if (linha.text === '') {
+            console.log('');
+        } else {
+            console.log(`${linha.color}%s\x1b[0m`, linha.text);
+        }
+    }, delay);
+    delay += 500;
+});
 
 const app = express();
 
