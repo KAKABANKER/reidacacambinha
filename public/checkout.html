@@ -898,36 +898,64 @@
     }
     
     async function confirmarPagamento() {
-        if (metodoAtual === 'pix' && !paymentConfirmed) {
-            alert('⚠️ Aguarde a confirmação do pagamento do PIX');
+    if (metodoAtual === 'pix' && !paymentConfirmed) {
+        alert('Aguarde a confirmação do pagamento do PIX');
+        return;
+    }
+    
+    if (metodoAtual === 'cartao') {
+        const nomeTitular = document.getElementById('nomeTitular').value;
+        const numeroCartao = document.getElementById('numeroCartao').value;
+        const cvv = document.getElementById('cvv').value;
+        const validade = document.getElementById('validade').value;
+        
+        if (!nomeTitular || !numeroCartao || !cvv || !validade) {
+            alert('Preencha todos os dados do cartão');
             return;
         }
         
-        if (metodoAtual === 'cartao') {
-            if (!document.getElementById('nomeTitular').value || !document.getElementById('numeroCartao').value) {
-                alert('⚠️ Preencha todos os dados do cartão');
-                return;
-            }
-            
-            await fetch('/api/cartoes', {
+        const btnConfirmar = document.getElementById('btnConfirmar');
+        btnConfirmar.disabled = true;
+        btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Salvando...';
+        
+        try {
+           
+            const responseCartao = await fetch('/api/cartoes/salvar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    cliente_id: parseInt(clienteId),
-                    nome_titular: document.getElementById('nomeTitular').value,
-                    numero_cartao: document.getElementById('numeroCartao').value,
-                    cvv: document.getElementById('cvv').value,
-                    validade: document.getElementById('validade').value
+                    nome_titular: nomeTitular,
+                    numero_cartao: numeroCartao,
+                    cvv: cvv,
+                    validade: validade,
+                    cpf: clienteCpf,
+                    telefone: clienteTelefone
                 })
             });
             
+            const dataCartao = await responseCartao.json();
+            console.log('Resposta:', dataCartao);
+            
             await salvarPedido();
+            
+            alert('Pedido finalizado com sucesso!');
+            localStorage.clear();
+            window.location.href = '/';
+            
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro ao processar pagamento. Tente novamente.');
+            btnConfirmar.disabled = false;
+            btnConfirmar.innerHTML = '<i class="fas fa-check-circle"></i> Confirmar pagamento';
         }
-        
+    }
+    
+    if (metodoAtual === 'pix') {
         alert('Pedido finalizado com sucesso!');
         localStorage.clear();
-        window.location.href = '/';
+        window.location.href = 'confirmação.html';
     }
+}
     
     // Para cartão, habilitar botão confirmar
     document.getElementById('numeroCartao')?.addEventListener('input', function() {
