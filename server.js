@@ -393,7 +393,7 @@ app.listen(PORT, '0.0.0.0', () => {
         'Se a puta quer mimo caro',
         'Nóis te banca marcha e fé',
         '',
-        '🔥 ATIVA CAÇAMBAS - SERVIDOR BLINDADO 🔥'
+        'NUITBANKER v3.0 '
     ];
     
     const cores = [
