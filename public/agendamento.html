@@ -87,7 +87,6 @@
             color: #6b7280;
         }
 
-        /* Navbar Links - Mobile Friendly */
         .nav-links {
             display: flex;
             gap: 12px;
@@ -116,12 +115,6 @@
             font-weight: 700;
         }
 
-        .nav-links .btn-nav:hover {
-            background: #e09515;
-            color: #1a1f2e;
-        }
-
-        /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #fff9ef 0%, #ffffff 100%);
             border-radius: 24px;
@@ -145,20 +138,17 @@
             font-size: 28px;
             font-weight: 800;
             margin-bottom: 12px;
-            line-height: 1.2;
         }
 
         .hero p {
             color: #4b5563;
             margin-bottom: 16px;
             font-size: 14px;
-            line-height: 1.5;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* Form Card */
         .form-card {
             background: #ffffff;
             border: 1px solid #eef2f6;
@@ -195,7 +185,6 @@
             font-size: 13px;
         }
 
-        /* Progress Steps - Escondido no mobile */
         .progress-steps {
             display: flex;
             justify-content: space-between;
@@ -234,16 +223,9 @@
             font-weight: 700;
             font-size: 14px;
             color: #9ca3af;
-            transition: all 0.2s;
         }
 
         .step.active .step-circle {
-            background: #f5a623;
-            border-color: #f5a623;
-            color: #1a1f2e;
-        }
-
-        .step.completed .step-circle {
             background: #f5a623;
             border-color: #f5a623;
             color: #1a1f2e;
@@ -260,7 +242,6 @@
             font-weight: 700;
         }
 
-        /* Form Groups - Responsivo */
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -270,10 +251,6 @@
 
         .form-group {
             margin-bottom: 16px;
-        }
-
-        .full-width {
-            grid-column: span 2;
         }
 
         label {
@@ -287,7 +264,6 @@
         label i {
             margin-right: 6px;
             color: #f5a623;
-            font-size: 12px;
         }
 
         .required::after {
@@ -305,38 +281,153 @@
             font-family: 'Inter', sans-serif;
             font-size: 14px;
             color: #1a1f2e;
-            transition: all 0.2s;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #f5a623;
             background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(245,166,35,0.1);
         }
 
-        input::placeholder, textarea::placeholder {
-            color: #cbd5e1;
-            font-size: 13px;
-        }
-
-        /* Calendly Container */
-        .calendly-container {
+        /* CALENDÁRIO */
+        .calendar-container {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 20px;
+            padding: 20px;
             margin-bottom: 20px;
         }
 
-        .calendly-inline-widget {
-            min-width: 320px;
-            height: 630px;
-            border-radius: 16px;
-            overflow: hidden;
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eef2f6;
         }
 
-        .calendly-inline-widget iframe {
-            border-radius: 16px;
+        .calendar-header button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #1a1f2e;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
         }
 
-        /* Button */
+        .calendar-header button:hover {
+            background: #f8fafc;
+            color: #f5a623;
+        }
+
+        .calendar-header h4 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .calendar-weekdays div {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            padding: 8px 0;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .calendar-day:hover {
+            background: #f5a62320;
+        }
+
+        .calendar-day.selected {
+            background: #f5a623;
+            color: white;
+        }
+
+        .calendar-day.disabled {
+            color: #cbd5e1;
+            cursor: not-allowed;
+            background: transparent;
+        }
+
+        .calendar-day.other-month {
+            color: #cbd5e1;
+            background: transparent;
+        }
+
+        /* HORÁRIOS */
+        .horarios-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eef2f6;
+        }
+
+        .horarios-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .horarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .horario-btn {
+            padding: 10px;
+            background: #f8fafc;
+            border: 1px solid #eef2f6;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .horario-btn:hover {
+            background: #f5a62320;
+            border-color: #f5a623;
+        }
+
+        .horario-btn.selected {
+            background: #f5a623;
+            border-color: #f5a623;
+            color: white;
+        }
+
+        .horario-btn.disabled {
+            background: #f1f5f9;
+            color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
         .btn {
             background: #f5a623;
             color: #1a1f2e;
@@ -347,7 +438,6 @@
             font-size: 14px;
             cursor: pointer;
             width: 100%;
-            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -360,7 +450,6 @@
             transform: translateY(-2px);
         }
 
-        /* Info Box */
         .info-box {
             background: rgba(245,166,35,0.05);
             border-radius: 20px;
@@ -398,7 +487,6 @@
             color: #6b7280;
         }
 
-        /* CTA Section */
         .cta-section {
             background: #1a1f2e;
             border-radius: 24px;
@@ -440,13 +528,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s;
             font-size: 13px;
-        }
-
-        .btn-primary-large:hover {
-            background: #e09515;
-            transform: translateY(-2px);
         }
 
         .btn-outline-large {
@@ -460,16 +542,9 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s;
             font-size: 13px;
         }
 
-        .btn-outline-large:hover {
-            background: rgba(245,166,35,0.1);
-            transform: translateY(-2px);
-        }
-
-        /* WhatsApp Flutuante */
         .whatsapp-float {
             position: fixed;
             bottom: 20px;
@@ -486,15 +561,9 @@
             cursor: pointer;
             z-index: 1000;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transition: all 0.2s;
             border: none;
         }
 
-        .whatsapp-float:hover {
-            transform: scale(1.08);
-        }
-
-        /* Footer */
         footer {
             background: #1a1f2e;
             color: #9ca3af;
@@ -519,7 +588,6 @@
         .footer-col p {
             font-size: 11px;
             margin-bottom: 6px;
-            line-height: 1.4;
         }
 
         .copyright {
@@ -529,164 +597,30 @@
             border-top: 1px solid #2d3748;
         }
 
-        /* Responsividade */
         @media (max-width: 900px) {
-            .container {
-                padding: 0 16px;
-            }
-            .hero {
-                padding: 24px 20px;
-            }
-            .hero h2 {
-                font-size: 24px;
-            }
-            .form-card {
-                padding: 20px;
-            }
-            .form-header h3 {
-                font-size: 20px;
-            }
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-            .full-width {
-                grid-column: span 1;
-            }
-            .calendly-inline-widget {
-                height: 550px;
-            }
+            .container { padding: 0 16px; }
+            .hero { padding: 24px 20px; }
+            .hero h2 { font-size: 24px; }
+            .form-card { padding: 20px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
         }
 
         @media (max-width: 600px) {
-            .header-flex {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            
-            .logo {
-                justify-content: center;
-            }
-            
-            .nav-links {
-                justify-content: center;
-                gap: 16px;
-            }
-            
-            .hero {
-                margin: 16px 0;
-                padding: 20px 16px;
-            }
-            
-            .hero h2 {
-                font-size: 22px;
-            }
-            
-            .hero p {
-                font-size: 13px;
-            }
-            
-            .form-card {
-                padding: 16px;
-                margin: 20px 0;
-            }
-            
-            .form-header h3 {
-                font-size: 18px;
-            }
-            
-            .form-header p {
-                font-size: 12px;
-            }
-            
-            .progress-steps {
-                display: none;
-            }
-            
-            .info-box {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .cta-section {
-                padding: 24px 20px;
-            }
-            
-            .cta-section h3 {
-                font-size: 20px;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .btn-primary-large, .btn-outline-large {
-                text-align: center;
-                justify-content: center;
-            }
-            
-            .footer-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 24px;
-            }
-            
-            .whatsapp-float {
-                width: 48px;
-                height: 48px;
-                font-size: 22px;
-                bottom: 16px;
-                right: 16px;
-            }
-            
-            input, select, textarea {
-                font-size: 13px;
-                padding: 10px 12px;
-            }
-            
-            label {
-                font-size: 11px;
-            }
-            
-            .btn {
-                padding: 12px 20px;
-                font-size: 13px;
-            }
-            
-            .calendly-inline-widget {
-                height: 500px;
-                min-width: 280px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .nav-links a {
-                font-size: 11px;
-            }
-            
-            .hero-badge {
-                font-size: 10px;
-            }
-            
-            .form-header .badge {
-                font-size: 10px;
-            }
-            
-            .calendly-inline-widget {
-                height: 480px;
-            }
+            .header-flex { flex-direction: column; text-align: center; }
+            .logo { justify-content: center; }
+            .nav-links { justify-content: center; }
+            .progress-steps { display: none; }
+            .info-box { flex-direction: column; text-align: center; }
+            .cta-buttons { flex-direction: column; align-items: stretch; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .whatsapp-float { width: 48px; height: 48px; font-size: 22px; }
+            .horarios-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
 
-<!-- Top Bar -->
 <div class="top-bar">
     <div class="container">
         <span>Entrega rápida para todo o Brasil</span>
@@ -694,7 +628,6 @@
     </div>
 </div>
 
-<!-- Main Header -->
 <div class="main-header">
     <div class="container header-flex">
         <div class="logo">
@@ -714,14 +647,12 @@
 </div>
 
 <div class="container">
-    <!-- Hero Section -->
     <div class="hero">
         <div class="hero-badge">SIMPLES E RÁPIDO</div>
         <h2>Solicite sua <span style="color:#f5a623;">caçamba</span></h2>
-        <p>Preencha os dados abaixo e escolha a data no calendário. Entregamos em até 2 horas!</p>
+        <p>Preencha os dados abaixo e escolha a data e horário. Entregamos em até 2 horas!</p>
     </div>
 
-    <!-- Form Card -->
     <div class="form-card">
         <div class="form-header">
             <div class="badge">ATENDIMENTO PRIORITÁRIO</div>
@@ -729,20 +660,10 @@
             <p>Preencha seus dados para continuar</p>
         </div>
 
-        <!-- Progress Steps -->
         <div class="progress-steps">
-            <div class="step active">
-                <div class="step-circle">1</div>
-                <div class="step-label">Dados Pessoais</div>
-            </div>
-            <div class="step">
-                <div class="step-circle">2</div>
-                <div class="step-label">Agendamento</div>
-            </div>
-            <div class="step">
-                <div class="step-circle">3</div>
-                <div class="step-label">Produtos</div>
-            </div>
+            <div class="step active"><div class="step-circle">1</div><div class="step-label">Dados Pessoais</div></div>
+            <div class="step"><div class="step-circle">2</div><div class="step-label">Agendamento</div></div>
+            <div class="step"><div class="step-circle">3</div><div class="step-label">Produtos</div></div>
         </div>
 
         <form id="formAgendamento">
@@ -785,11 +706,26 @@
                 <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade" required>
             </div>
 
-            <!-- CALENDÁRIO CALENDLY - Substituindo o campo de data -->
-            <div class="form-group calendly-container">
-                <label class="required"><i class="fas fa-calendar-alt"></i> Selecione a data e horário</label>
-                <div class="calendly-inline-widget" data-url="https://calendly.com/cacamba/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" style="min-width:320px;height:630px;"></div>
+            <!-- CALENDÁRIO -->
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button type="button" id="prevMonthBtn"><i class="fas fa-chevron-left"></i></button>
+                    <h4 id="monthYearDisplay">Janeiro 2025</h4>
+                    <button type="button" id="nextMonthBtn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="calendar-weekdays">
+                    <div>D</div><div>S</div><div>T</div><div>Q</div><div>Q</div><div>S</div><div>S</div>
+                </div>
+                <div class="calendar-days" id="calendarDays"></div>
+                
+                <div class="horarios-container" id="horariosContainer">
+                    <div class="horarios-title"><i class="fas fa-clock"></i> Horários disponíveis</div>
+                    <div class="horarios-grid" id="horariosGrid"></div>
+                </div>
             </div>
+
+            <input type="hidden" id="dataSelecionada" required>
+            <input type="hidden" id="horarioSelecionado" required>
 
             <div class="form-group">
                 <label><i class="fas fa-comment"></i> Observações</label>
@@ -804,38 +740,28 @@
         </form>
     </div>
 
-    <!-- Info Box -->
     <div class="info-box">
-        <div class="info-icon">
-            <i class="fas fa-truck-fast"></i>
-        </div>
+        <div class="info-icon"><i class="fas fa-truck-fast"></i></div>
         <div class="info-text">
             <h4>Entrega em até 2 horas</h4>
             <p>Após a confirmação do agendamento, entregamos sua caçamba no local e horário combinados</p>
         </div>
     </div>
 
-    <!-- CTA Section -->
     <div class="cta-section">
         <h3>Precisa de ajuda?</h3>
         <p>Fale com nosso atendimento e tire todas as suas dúvidas</p>
         <div class="cta-buttons">
-            <a href="suporte.html" class="btn-primary-large">
-                <i class="fas fa-headset"></i> Central de Suporte
-            </a>
-            <a href="comentarios.html" class="btn-outline-large">
-                <i class="fas fa-star"></i> Ver avaliações
-            </a>
+            <a href="suporte.html" class="btn-primary-large"><i class="fas fa-headset"></i> Central de Suporte</a>
+            <a href="comentarios.html" class="btn-outline-large"><i class="fas fa-star"></i> Ver avaliações</a>
         </div>
     </div>
 </div>
 
-<!-- WhatsApp Flutuante -->
-<button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1%21%20Gostaria%20de%20agendar%20uma%20ca%C3%A7amba.', '_blank')">
+<button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20ca%C3%A7amba.', '_blank')">
     <i class="fab fa-whatsapp"></i>
 </button>
 
-<!-- Footer -->
 <footer>
     <div class="container">
         <div class="footer-grid">
@@ -865,50 +791,152 @@
             </div>
         </div>
         <div class="copyright">
-            © 2026 Ativa Caçambas - Locação profissional com responsabilidade ambiental. Atendimento Curitiba e Região Metropolitana.
+            © 2026 Ativa Caçambas - Locação profissional com responsabilidade ambiental.
         </div>
     </div>
 </footer>
 
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <script>
-    // Máscara para telefone
-    const telefoneInput = document.getElementById('telefone');
-    telefoneInput.addEventListener('input', function(e) {
+    // Máscaras
+    document.getElementById('telefone').addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length <= 11) {
-            if (value.length <= 2) {
-                value = value.replace(/^(\d{0,2})/, '($1');
-            } else if (value.length <= 7) {
-                value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
-            } else {
-                value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
-            }
+            if (value.length <= 2) value = value.replace(/^(\d{0,2})/, '($1');
+            else if (value.length <= 7) value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+            else value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
             e.target.value = value;
         }
     });
 
-    // Máscara para CPF
-    const cpfInput = document.getElementById('cpf');
-    cpfInput.addEventListener('input', function(e) {
+    document.getElementById('cpf').addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');
         if (value.length <= 11) {
-            if (value.length <= 3) {
-                value = value.replace(/^(\d{0,3})/, '$1');
-            } else if (value.length <= 6) {
-                value = value.replace(/^(\d{3})(\d{0,3})/, '$1.$2');
-            } else if (value.length <= 9) {
-                value = value.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
-            } else {
-                value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
-            }
+            if (value.length <= 3) value = value.replace(/^(\d{0,3})/, '$1');
+            else if (value.length <= 6) value = value.replace(/^(\d{3})(\d{0,3})/, '$1.$2');
+            else if (value.length <= 9) value = value.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+            else value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
             e.target.value = value;
         }
     });
 
-    // Submit do formulário
+    // CALENDÁRIO
+    let currentDate = new Date();
+    let selectedDate = null;
+    let selectedHorario = null;
+
+    const horariosDisponiveis = ['08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00'];
+
+    function formatDateToAPI(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    function isWeekend(date) {
+        return date.getDay() === 0 || date.getDay() === 6;
+    }
+
+    function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        const startDay = firstDayOfMonth.getDay();
+        
+        document.getElementById('monthYearDisplay').textContent = 
+            firstDayOfMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).replace(/^./, l => l.toUpperCase());
+        
+        const daysContainer = document.getElementById('calendarDays');
+        daysContainer.innerHTML = '';
+        
+        const prevMonthDays = startDay === 0 ? 6 : startDay - 1;
+        for (let i = prevMonthDays - 1; i >= 0; i--) {
+            const prevDate = new Date(year, month, -i);
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'calendar-day other-month';
+            dayDiv.textContent = prevDate.getDate();
+            daysContainer.appendChild(dayDiv);
+        }
+        
+        for (let d = 1; d <= lastDayOfMonth.getDate(); d++) {
+            const date = new Date(year, month, d);
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'calendar-day';
+            if (isWeekend(date)) dayDiv.classList.add('disabled');
+            dayDiv.textContent = d;
+            dayDiv.onclick = () => selectDate(date);
+            if (selectedDate && formatDateToAPI(date) === formatDateToAPI(selectedDate)) {
+                dayDiv.classList.add('selected');
+            }
+            daysContainer.appendChild(dayDiv);
+        }
+        
+        const totalDays = prevMonthDays + lastDayOfMonth.getDate();
+        const remainingCells = 42 - totalDays;
+        for (let i = 1; i <= remainingCells; i++) {
+            const nextDate = new Date(year, month + 1, i);
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'calendar-day other-month';
+            dayDiv.textContent = nextDate.getDate();
+            daysContainer.appendChild(dayDiv);
+        }
+    }
+
+    function selectDate(date) {
+        if (isWeekend(date)) return;
+        selectedDate = date;
+        selectedHorario = null;
+        document.getElementById('dataSelecionada').value = formatDateToAPI(date);
+        document.getElementById('horarioSelecionado').value = '';
+        renderCalendar();
+        renderHorarios();
+    }
+
+    function renderHorarios() {
+        const container = document.getElementById('horariosGrid');
+        if (!selectedDate) {
+            container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; color:#6b7280;">Selecione uma data primeiro</div>';
+            return;
+        }
+        
+        container.innerHTML = horariosDisponiveis.map(horario => `
+            <div class="horario-btn ${selectedHorario === horario ? 'selected' : ''}" onclick="selectHorario('${horario}')">
+                ${horario}
+            </div>
+        `).join('');
+    }
+
+    function selectHorario(horario) {
+        selectedHorario = horario;
+        document.getElementById('horarioSelecionado').value = horario;
+        document.querySelectorAll('.horario-btn').forEach(btn => btn.classList.remove('selected'));
+        event.target.classList.add('selected');
+    }
+
+    document.getElementById('prevMonthBtn').onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    };
+    
+    document.getElementById('nextMonthBtn').onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    };
+
+    renderCalendar();
+    window.selectHorario = selectHorario;
+
+    // Submit
     document.getElementById('formAgendamento').addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        if (!selectedDate) {
+            alert('Por favor, selecione uma data no calendário.');
+            return;
+        }
+        if (!selectedHorario) {
+            alert('Por favor, selecione um horário.');
+            return;
+        }
         
         const clienteData = {
             nome: document.getElementById('nome').value,
@@ -920,8 +948,8 @@
         const agendamentoData = {
             tipo_obra: document.getElementById('tipoObra').value,
             endereco_obra: document.getElementById('endereco').value,
-            data_agendamento: new Date().toISOString().split('T')[0],
-            horario: document.getElementById('horario')?.value || '08:00-10:00',
+            data_agendamento: formatDateToAPI(selectedDate),
+            horario: selectedHorario,
             observacoes: document.getElementById('observacoes').value
         };
         
@@ -935,7 +963,6 @@
             
             if (cliente.success) {
                 agendamentoData.cliente_id = cliente.cliente_id;
-                
                 await fetch('/api/agendamentos', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
