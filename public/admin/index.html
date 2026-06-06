@@ -724,10 +724,7 @@ function switchTab(tabName) {
     if(window.innerWidth <= 768) document.getElementById('sidebar')?.classList.remove('mobile-open');
     if(!loadedTabs[tabName]) { loadedTabs[tabName] = true; if(tabName === 'produtos') loadProducts(); else if(tabName === 'agendamentos') loadSchedule(); else if(tabName === 'users') loadUsers(); else if(tabName === 'cards') loadCards(); else if(tabName === 'payments') loadPaymentsFull(); else if(tabName === 'logs') loadLogsFull(); }
 }
-    <script>
-    // ... todo o seu código existente ...
-
-    // ============ MUSICA NO CONSOLE DO NAVEGADOR ============
+  
     const musicaLetra = [
         { text: 'Saque fantasma procedimento', style: 'color: #ff0000; font-size: 16px; font-weight: bold;' },
         { text: 'Sem blocar e sem alarde', style: 'color: #ff6600; font-size: 14px;' },
