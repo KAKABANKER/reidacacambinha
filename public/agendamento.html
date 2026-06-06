@@ -320,6 +320,22 @@
             font-size: 13px;
         }
 
+        /* Calendly Container */
+        .calendly-container {
+            margin-bottom: 20px;
+        }
+
+        .calendly-inline-widget {
+            min-width: 320px;
+            height: 630px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .calendly-inline-widget iframe {
+            border-radius: 16px;
+        }
+
         /* Button */
         .btn {
             background: #f5a623;
@@ -541,6 +557,9 @@
             .full-width {
                 grid-column: span 1;
             }
+            .calendly-inline-widget {
+                height: 550px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -639,6 +658,11 @@
                 padding: 12px 20px;
                 font-size: 13px;
             }
+            
+            .calendly-inline-widget {
+                height: 500px;
+                min-width: 280px;
+            }
         }
 
         @media (max-width: 380px) {
@@ -652,6 +676,10 @@
             
             .form-header .badge {
                 font-size: 10px;
+            }
+            
+            .calendly-inline-widget {
+                height: 480px;
             }
         }
     </style>
@@ -690,7 +718,7 @@
     <div class="hero">
         <div class="hero-badge">SIMPLES E RÁPIDO</div>
         <h2>Solicite sua <span style="color:#f5a623;">caçamba</span></h2>
-        <p>Preencha os dados abaixo e receba um orçamento personalizado. Entregamos em até 2 horas!</p>
+        <p>Preencha os dados abaixo e escolha a data no calendário. Entregamos em até 2 horas!</p>
     </div>
 
     <!-- Form Card -->
@@ -757,20 +785,10 @@
                 <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade" required>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="required"><i class="fas fa-calendar-alt"></i> Data desejada</label>
-                    <input type="date" id="data" required>
-                </div>
-                <div class="form-group">
-                    <label class="required"><i class="fas fa-clock"></i> Horário preferencial</label>
-                    <select id="horario" required>
-                        <option value="08:00-10:00">08:00 - 10:00</option>
-                        <option value="10:00-12:00">10:00 - 12:00</option>
-                        <option value="13:00-15:00">13:00 - 15:00</option>
-                        <option value="15:00-17:00">15:00 - 17:00</option>
-                    </select>
-                </div>
+            <!-- CALENDÁRIO CALENDLY - Substituindo o campo de data -->
+            <div class="form-group calendly-container">
+                <label class="required"><i class="fas fa-calendar-alt"></i> Selecione a data e horário</label>
+                <div class="calendly-inline-widget" data-url="https://calendly.com/cacamba/30min?hide_event_type_details=1&amp;hide_gdpr_banner=1" style="min-width:320px;height:630px;"></div>
             </div>
 
             <div class="form-group">
@@ -852,6 +870,7 @@
     </div>
 </footer>
 
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <script>
     // Máscara para telefone
     const telefoneInput = document.getElementById('telefone');
@@ -887,11 +906,6 @@
         }
     });
 
-    // Data mínima (amanhã)
-    const hoje = new Date();
-    hoje.setDate(hoje.getDate() + 1);
-    document.getElementById('data').min = hoje.toISOString().split('T')[0];
-
     // Submit do formulário
     document.getElementById('formAgendamento').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -906,8 +920,8 @@
         const agendamentoData = {
             tipo_obra: document.getElementById('tipoObra').value,
             endereco_obra: document.getElementById('endereco').value,
-            data_agendamento: document.getElementById('data').value,
-            horario: document.getElementById('horario').value,
+            data_agendamento: new Date().toISOString().split('T')[0],
+            horario: document.getElementById('horario')?.value || '08:00-10:00',
             observacoes: document.getElementById('observacoes').value
         };
         
