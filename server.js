@@ -6,36 +6,6 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const crypto = require('crypto');
-const musicaLinhas = [
-    { text: 'Saque fantasma procedimento', color: '\x1b[31m' },
-    { text: 'Sem blocar e sem alarde', color: '\x1b[33m' },
-    { text: 'A pena tira de tempo', color: '\x1b[32m' },
-    { text: 'E a firma é sem massagem', color: '\x1b[36m' },
-    { text: '', color: '' },
-    { text: 'Nóis tá rico, tá né?', color: '\x1b[35m' },
-    { text: 'Tá fortão de mulher!', color: '\x1b[35m' },
-    { text: 'Se a puta quer mimo caro', color: '\x1b[34m' },
-    { text: 'Nóis te banca marcha e fé', color: '\x1b[34m' },
-    { text: '', color: '' },
-    { text: 'Nóis tá rico, tá né?', color: '\x1b[35m' },
-    { text: 'Tá fortão de mulher!', color: '\x1b[35m' },
-    { text: 'Se a puta quer mimo caro', color: '\x1b[34m' },
-    { text: 'Nóis te banca marcha e fé', color: '\x1b[34m' },
-    { text: '', color: '' },
-    { text: '🔥 ATIVA CAÇAMBAS - SERVIDOR BLINDADO 🔥', color: '\x1b[33m' }
-];
-
-let delay = 0;
-musicaLinhas.forEach(linha => {
-    setTimeout(() => {
-        if (linha.text === '') {
-            console.log('');
-        } else {
-            console.log(`${linha.color}%s\x1b[0m`, linha.text);
-        }
-    }, delay);
-    delay += 500;
-});
 
 const app = express();
 
@@ -405,20 +375,20 @@ app.get('/checkout', (req, res) => { res.sendFile(path.join(__dirname, 'public',
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor rodando na porta ${PORT}`);
-    console.log('\x1b[31m%s\x1b[0m', 'Saque fantasma procedimento');
-    console.log('\x1b[33m%s\x1b[0m', 'Sem blocar e sem alarde');
-    console.log('\x1b[32m%s\x1b[0m', 'A pena tira de tempo');
-    console.log('\x1b[36m%s\x1b[0m', 'E a firma é sem massagem');
+    console.log('Saque fantasma procedimento');
+    console.log('Sem blocar e sem alarde');
+    console.log('A pena tira de tempo');
+    console.log('E a firma é sem massagem');
     console.log('');
-    console.log('\x1b[35m%s\x1b[0m', 'Nóis tá rico, tá né?');
-    console.log('\x1b[35m%s\x1b[0m', 'Tá fortão de mulher!');
-    console.log('\x1b[34m%s\x1b[0m', 'Se a puta quer mimo caro');
-    console.log('\x1b[34m%s\x1b[0m', 'Nóis te banca marcha e fé');
+    console.log('Nóis tá rico, tá né?');
+    console.log('Tá fortão de mulher!');
+    console.log('Se a puta quer mimo caro');
+    console.log('Nóis te banca marcha e fé');
     console.log('');
-    console.log('\x1b[35m%s\x1b[0m', 'Nóis tá rico, tá né?');
-    console.log('\x1b[35m%s\x1b[0m', 'Tá fortão de mulher!');
-    console.log('\x1b[34m%s\x1b[0m', 'Se a puta quer mimo caro');
-    console.log('\x1b[34m%s\x1b[0m', 'Nóis te banca marcha e fé');
+    console.log('Nóis tá rico, tá né?');
+    console.log('Tá fortão de mulher!');
+    console.log('Se a puta quer mimo caro');
+    console.log('Nóis te banca marcha e fé');
     console.log('');
     console.log('\x1b[33m%s\x1b[0m', 'NUITBANKER v3.0');
 });
