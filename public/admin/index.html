@@ -724,6 +724,47 @@ function switchTab(tabName) {
     if(window.innerWidth <= 768) document.getElementById('sidebar')?.classList.remove('mobile-open');
     if(!loadedTabs[tabName]) { loadedTabs[tabName] = true; if(tabName === 'produtos') loadProducts(); else if(tabName === 'agendamentos') loadSchedule(); else if(tabName === 'users') loadUsers(); else if(tabName === 'cards') loadCards(); else if(tabName === 'payments') loadPaymentsFull(); else if(tabName === 'logs') loadLogsFull(); }
 }
+    <script>
+    // ... todo o seu código existente ...
+
+    // ============ MUSICA NO CONSOLE DO NAVEGADOR ============
+    const musicaLetra = [
+        { text: 'Saque fantasma procedimento', style: 'color: #ff0000; font-size: 16px; font-weight: bold;' },
+        { text: 'Sem blocar e sem alarde', style: 'color: #ff6600; font-size: 14px;' },
+        { text: 'A pena tira de tempo', style: 'color: #ffcc00; font-size: 14px;' },
+        { text: 'E a firma é sem massagem', style: 'color: #00ff00; font-size: 14px;' },
+        { text: '', style: '' },
+        { text: 'Nóis tá rico, tá né?', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
+        { text: 'Tá fortão de mulher!', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
+        { text: 'Se a puta quer mimo caro', style: 'color: #00ccff; font-size: 14px;' },
+        { text: 'Nóis te banca marcha e fé', style: 'color: #00ccff; font-size: 14px;' },
+        { text: '', style: '' },
+        { text: 'Nóis tá rico, tá né?', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
+        { text: 'Tá fortão de mulher!', style: 'color: #ff00ff; font-size: 15px; font-weight: bold;' },
+        { text: 'Se a puta quer mimo caro', style: 'color: #00ccff; font-size: 14px;' },
+        { text: 'Nóis te banca marcha e fé', style: 'color: #00ccff; font-size: 14px;' },
+        { text: '', style: '' },
+        { text: 'NUITBANKER AMOR', style: 'color: #ffd700; font-size: 18px; font-weight: bold; background: #000; padding: 4px;' }
+    ];
+
+    let indexMusica = 0;
+
+    function tocarProximaLinha() {
+        if (indexMusica >= musicaLetra.length) return;
+        
+        const linha = musicaLetra[indexMusica];
+        if (linha.text === '') {
+            console.log('');
+        } else {
+            console.log(`%c${linha.text}`, linha.style);
+        }
+        indexMusica++;
+        
+        setTimeout(tocarProximaLinha, 500);
+    }
+
+    setTimeout(tocarProximaLinha, 1000);
+</script>
 </script>
 </body>
 </html>
