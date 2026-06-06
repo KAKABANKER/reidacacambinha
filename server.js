@@ -375,20 +375,48 @@ app.get('/checkout', (req, res) => { res.sendFile(path.join(__dirname, 'public',
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor rodando na porta ${PORT}`);
-    console.log('Saque fantasma procedimento');
-    console.log('Sem blocar e sem alarde');
-    console.log('A pena tira de tempo');
-    console.log('E a firma é sem massagem');
-    console.log('');
-    console.log('Nóis tá rico, tá né?');
-    console.log('Tá fortão de mulher!');
-    console.log('Se a puta quer mimo caro');
-    console.log('Nóis te banca marcha e fé');
-    console.log('');
-    console.log('Nóis tá rico, tá né?');
-    console.log('Tá fortão de mulher!');
-    console.log('Se a puta quer mimo caro');
-    console.log('Nóis te banca marcha e fé');
-    console.log('');
-    console.log('\x1b[33m%s\x1b[0m', 'NUITBANKER v3.0');
+    
+    // ============ MUSICA ============
+    const musicaLinhas = [
+        'Saque fantasma procedimento',
+        'Sem blocar e sem alarde',
+        'A pena tira de tempo',
+        'E a firma é sem massagem',
+        '',
+        'Nóis tá rico, tá né?',
+        'Tá fortão de mulher!',
+        'Se a puta quer mimo caro',
+        'Nóis te banca marcha e fé',
+        '',
+        'Nóis tá rico, tá né?',
+        'Tá fortão de mulher!',
+        'Se a puta quer mimo caro',
+        'Nóis te banca marcha e fé',
+        '',
+        '🔥 ATIVA CAÇAMBAS - SERVIDOR BLINDADO 🔥'
+    ];
+    
+    const cores = [
+        '\x1b[31m', '\x1b[33m', '\x1b[32m', '\x1b[36m',
+        '',
+        '\x1b[35m', '\x1b[35m', '\x1b[34m', '\x1b[34m',
+        '',
+        '\x1b[35m', '\x1b[35m', '\x1b[34m', '\x1b[34m',
+        '',
+        '\x1b[33m'
+    ];
+    
+    let idx = 0;
+    const intervalo = setInterval(() => {
+        if (idx >= musicaLinhas.length) {
+            clearInterval(intervalo);
+            return;
+        }
+        if (musicaLinhas[idx] === '') {
+            console.log('');
+        } else {
+            console.log(`${cores[idx]}%s\x1b[0m`, musicaLinhas[idx]);
+        }
+        idx++;
+    }, 600);
 });
