@@ -396,6 +396,91 @@
         .badge-info { background: rgba(59,130,246,0.15); color: #3b82f6; }
         .badge-danger { background: rgba(239,68,68,0.15); color: #ef4444; }
 
+        /* Schedule Table Styles */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .schedule-table th {
+            text-align: left;
+            padding: 14px 12px;
+            background: rgba(59,130,246,0.08);
+            color: var(--accent);
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent);
+        }
+        .schedule-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
+        }
+        .schedule-table tr:hover td {
+            background: rgba(59,130,246,0.05);
+        }
+        .client-cell .client-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+        .client-cell .client-cpf {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+        .service-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .service-construcao { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .service-reforma { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .service-outro { background: rgba(16,185,129,0.15); color: #10b981; }
+        .btn-delete-sm {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .btn-delete-sm:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+        /* Toggle Card Number Button */
+        .toggle-card-btn {
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+        .toggle-card-btn:hover {
+            background: #3b82f6;
+            color: #fff;
+        }
+        .card-number-hidden {
+            filter: blur(4px);
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+        .card-number-hidden:hover {
+            filter: blur(0);
+        }
+        .toggle-icon {
+            margin-right: 8px;
+        }
+
         .theme-options { display: flex; gap: 12px; flex-wrap: wrap; }
         .theme-btn {
             width: 40px;
@@ -475,6 +560,7 @@
             .product-row { flex-direction: column; align-items: flex-start; }
             .product-actions { margin-left: 0; }
             .product-price { text-align: left; }
+            .schedule-table { min-width: 700px; }
         }
     </style>
 </head>
@@ -582,19 +668,49 @@
             </div>
         </div>
 
-        <div id="tabAgendamentos" class="tab-content"><div class="card"><div class="card-header">Appointments</div><div class="table-wrapper" id="scheduleList"></div></div></div>
+        <!-- APPOINTMENTS - PROFISSIONAL -->
+        <div id="tabAgendamentos" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-calendar-check"></i> Agendamentos de Caçambas</span>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchSchedule" placeholder="Buscar cliente..." onkeyup="filterSchedule()">
+                    </div>
+                </div>
+                <div class="table-wrapper" id="scheduleList">
+                    <div style="text-align:center; padding:40px; color:var(--text-muted);">
+                        <i class="fas fa-spinner fa-pulse"></i> Carregando agendamentos...
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <div id="tabUsers" class="tab-content">
             <div class="card">
                 <div class="card-header"><span>User Data</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Search CPF..." onkeyup="filterUsers()"></div><button class="btn-primary" onclick="exportUsersCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllUsers()">Clear All</button></div></div>
-                <div class="table-wrapper"><table><thead><tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+                <div class="table-wrapper"><tr><thead><tr><th>CPF</th><th>Password</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div>
             </div>
         </div>
 
+        <!-- CARDS COM BOTÃO DE SEGURANÇA -->
         <div id="tabCards" class="tab-content">
             <div class="card">
-                <div class="card-header"><span>Card Data - Full Collection</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()"></div><button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllCards()">Clear All</button></div></div>
-                <div class="table-wrapper" id="cardsTableContainer">
+                <div class="card-header">
+                    <span><i class="fas fa-credit-card"></i> Card Data - Full Collection</span>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button class="toggle-card-btn" onclick="toggleCardVisibility()">
+                            <i class="fas fa-eye toggle-icon"></i> Mostrar números
+                        </button>
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchCards" placeholder="Search CPF..." onkeyup="filterCards()">
+                        </div>
+                        <button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button>
+                        <button class="btn-delete" onclick="clearAllCards()">Clear All</button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr><th>Client (CPF + Name)</th><th>Card Number</th><th>Cardholder</th><th>CVV</th><th>Expiry</th><th>Date</th><th>Actions</th></tr>
@@ -651,6 +767,7 @@ let adminToken = null;
 let refreshInterval = null;
 let productsData = [], usersData = [], cardsData = [], paymentsData = [], logsData = [], scheduleData = [];
 let loadedTabs = { dashboard: true };
+let showCardNumbers = false; // Controle de segurança para cartões
 
 function showToast(msg, type = 'info') {
     const toast = document.createElement('div'); toast.className = 'toast'; toast.style.borderLeftColor = type === 'success' ? '#10b981' : '#3b82f6'; toast.innerHTML = msg; document.body.appendChild(toast); setTimeout(() => toast.remove(), 2500);
@@ -659,6 +776,28 @@ function formatCPF(cpf) { if(!cpf) return ''; cpf = cpf.toString(); if(cpf.lengt
 function formatPhone(phone) { if(!phone) return '-'; phone = phone.toString(); if(phone.length === 11) return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'); if(phone.length === 10) return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); return phone; }
 function formatCardNumber(num) { if(!num) return '****'; let str = num.toString().replace(/\s/g, ''); if(str.length >= 16) return str.slice(0,4) + ' **** **** ' + str.slice(-4); return str; }
 function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+
+function toggleCardVisibility() {
+    showCardNumbers = !showCardNumbers;
+    const btn = document.querySelector('.toggle-card-btn');
+    if(showCardNumbers) {
+        btn.innerHTML = '<i class="fas fa-eye-slash toggle-icon"></i> Ocultar números';
+    } else {
+        btn.innerHTML = '<i class="fas fa-eye toggle-icon"></i> Mostrar números';
+    }
+    renderCards(); // Recarregar a tabela com a nova visibilidade
+}
+
+function getDisplayCardNumber(num) {
+    if(!num) return '****';
+    if(showCardNumbers) {
+        return num;
+    } else {
+        let str = num.toString().replace(/\s/g, '');
+        if(str.length >= 16) return '•••• •••• •••• ' + str.slice(-4);
+        return '•••• •••• •••• ' + str.slice(-4);
+    }
+}
 
 let sidebarCollapsed = false;
 function toggleSidebar() {
@@ -689,11 +828,28 @@ function renderProducts() { const container = document.getElementById('productLi
 async function deleteProduct(id) { if(!confirm('Delete this product?')) return; try { await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Product deleted', 'success'); await loadProducts(); } catch(e) { showToast('Error'); } }
 document.getElementById('productForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const product = { nome: document.getElementById('prodNome').value, tipo: document.getElementById('prodTipo').value, preco: parseFloat(document.getElementById('prodPreco').value), preco_promocional: parseFloat(document.getElementById('prodPromocional')?.value) || null, descricao: document.getElementById('prodDescricao').value, icone: document.getElementById('prodIcone').value, imagem: document.getElementById('prodImagem').value, dimensoes: document.getElementById('prodDimensoes').value, capacidade: document.getElementById('prodCapacidade').value }; try { await fetch('/api/admin/produtos', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify(product) }); showToast('Product added', 'success'); await loadProducts(); e.target.reset(); } catch(e) { showToast('Error'); } });
 
-async function loadSchedule() { if(!adminToken) return; try { const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); scheduleData = data.agendamentos || []; const container = document.getElementById('scheduleList'); if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No appointments</div>'; return; } container.innerHTML = `<div class="table-wrapper"></table><thead><tr><th>Client</th><th>Phone</th><th>Type</th><th>Address</th><th>Date</th><th>Time</th><th>Actions</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td><strong>${escapeHtml(a.cliente_nome || '-')}</strong></td><td>${formatPhone(a.telefone || '-')}</td><td>${escapeHtml(a.tipo_obra || '-')}</td><td>${escapeHtml(a.endereco_obra || '-')}</td><td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td><td>${a.horario || '-'}</td><td><button class="btn-delete" onclick="deleteSchedule(${a.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; } catch(e) { console.error(e); } }
+// SCHEDULE - PROFISSIONAL
+async function loadSchedule() { if(!adminToken) return; try { const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); scheduleData = data.agendamentos || []; renderSchedule(); } catch(e) { console.error(e); } }
+function getTipoObraLabel(tipo) {
+    const tipos = { 'construcao': 'Construção', 'obra_construcao': 'Construção', 'reforma': 'Reforma', 'jardinagem': 'Jardinagem', 'terreno': 'Limpeza de terreno', 'entulho': 'Remoção de entulho' };
+    return tipos[tipo] || tipo || 'Serviço';
+}
+function renderSchedule() {
+    const container = document.getElementById('scheduleList');
+    if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-calendar-times"></i> Nenhum agendamento encontrado</div>'; return; }
+    container.innerHTML = `<table class="schedule-table"><thead><tr><th><i class="fas fa-user"></i> Cliente</th><th><i class="fas fa-phone-alt"></i> Telefone</th><th><i class="fas fa-hard-hat"></i> Tipo</th><th><i class="fas fa-map-marker-alt"></i> Endereço</th><th><i class="fas fa-calendar-day"></i> Data</th><th><i class="fas fa-clock"></i> Horário</th><th><i class="fas fa-tools"></i> Ações</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td class="client-cell"><div class="client-name">${escapeHtml(a.cliente_nome || '-')}</div><div class="client-cpf">${formatCPF(a.cpf) || ''}</div></td><td class="phone-cell">${formatPhone(a.telefone || '-')}</td><td class="service-cell"><span class="service-badge ${a.tipo_obra === 'construcao' ? 'service-construcao' : a.tipo_obra === 'reforma' ? 'service-reforma' : 'service-outro'}">${getTipoObraLabel(a.tipo_obra)}</span></td><td class="address-cell" title="${escapeHtml(a.endereco_obra || '-')}">${escapeHtml(a.endereco_obra ? a.endereco_obra.substring(0, 40) + (a.endereco_obra.length > 40 ? '...' : '') : '-')}</td><td class="date-cell">${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString('pt-BR') : '-'}</td><td class="time-cell">${a.horario || '-'}</td><td class="actions-cell"><button class="btn-delete-sm" onclick="deleteSchedule(${a.id})"><i class="fas fa-trash-alt"></i></button></td></tr>`).join('')}</tbody></table>`;
+}
+function filterSchedule() {
+    const term = document.getElementById('searchSchedule')?.value.toLowerCase() || '';
+    const filtered = scheduleData.filter(a => (a.cliente_nome || '').toLowerCase().includes(term) || (a.telefone || '').toLowerCase().includes(term) || (a.cpf || '').toLowerCase().includes(term));
+    const container = document.getElementById('scheduleList');
+    if(!filtered.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-muted);"><i class="fas fa-search"></i> Nenhum resultado encontrado</div>'; return; }
+    container.innerHTML = `<table class="schedule-table"><thead><tr><th><i class="fas fa-user"></i> Cliente</th><th><i class="fas fa-phone-alt"></i> Telefone</th><th><i class="fas fa-hard-hat"></i> Tipo</th><th><i class="fas fa-map-marker-alt"></i> Endereço</th><th><i class="fas fa-calendar-day"></i> Data</th><th><i class="fas fa-clock"></i> Horário</th><th><i class="fas fa-tools"></i> Ações</th></tr></thead><tbody>${filtered.map(a => `<tr><td class="client-cell"><div class="client-name">${escapeHtml(a.cliente_nome || '-')}</div><div class="client-cpf">${formatCPF(a.cpf) || ''}</div></td><td class="phone-cell">${formatPhone(a.telefone || '-')}</td><td class="service-cell"><span class="service-badge ${a.tipo_obra === 'construcao' ? 'service-construcao' : a.tipo_obra === 'reforma' ? 'service-reforma' : 'service-outro'}">${getTipoObraLabel(a.tipo_obra)}</span></td><td class="address-cell" title="${escapeHtml(a.endereco_obra || '-')}">${escapeHtml(a.endereco_obra ? a.endereco_obra.substring(0, 40) + (a.endereco_obra.length > 40 ? '...' : '') : '-')}</td><td class="date-cell">${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString('pt-BR') : '-'}</td><td class="time-cell">${a.horario || '-'}</td><td class="actions-cell"><button class="btn-delete-sm" onclick="deleteSchedule(${a.id})"><i class="fas fa-trash-alt"></i></button></td></tr>`).join('')}</tbody></table>`;
+}
 async function deleteSchedule(id) { if(!confirm('Delete this appointment?')) return; try { await fetch(`/api/admin/agendamentos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Appointment deleted', 'success'); await loadSchedule(); } catch(e) { showToast('Error'); } }
 
 async function loadUsers() { if(!adminToken) return; try { const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); usersData = data.users || []; renderUsers(); } catch(e) { console.error(e); } }
-function renderUsers() { const tbody = document.getElementById('usersTable'); if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5">No data<tr></td>'; return; } tbody.innerHTML = usersData.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
+function renderUsers() { const tbody = document.getElementById('usersTable'); if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5">No data</td></tr>'; return; } tbody.innerHTML = usersData.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
 function filterUsers() { const term = document.getElementById('searchUsers')?.value.toLowerCase() || ''; const filtered = usersData.filter(u => (u.cpf || '').toLowerCase().includes(term) || (u.telefone || '').toLowerCase().includes(term)); const tbody = document.getElementById('usersTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="5">No results</td></tr>'; return; } tbody.innerHTML = filtered.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge badge-warning" style="font-family:monospace;">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone || '-')}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleString() : (u.data_cpf ? new Date(u.data_cpf).toLocaleString() : '-')}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Delete</button></td></tr>`).join(''); }
 async function deleteUser(cpf) { if(!confirm(`Delete ${formatCPF(cpf)}?`)) return; await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('User deleted', 'success'); }
 async function clearAllUsers() { if(!confirm('WARNING: Delete ALL users?')) return; await fetch('/api/admin/clear', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('All users deleted', 'success'); }
@@ -702,46 +858,36 @@ async function loadCards() { if(!adminToken) return; try { const res = await fet
 
 function renderCards() { 
     const tbody = document.getElementById('cardsTable'); 
-    if(!tbody) { 
-        console.error('cardsTable not found');
-        return; 
-    } 
-    if(!cardsData.length) { 
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No card data collected</td></tr>'; 
-        return; 
-    } 
+    if(!tbody) { console.error('cardsTable not found'); return; } 
+    if(!cardsData.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No card data collected</td></tr>'; return; } 
     tbody.innerHTML = cardsData.map(c => `
         <tr>
             <td><strong>${formatCPF(c.cpf || '-')}</strong><br><small style="color:var(--text-muted);">${escapeHtml(c.nome_titular || '-')}</small></td>
-            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao)}</span></td>
+            <td><span class="badge badge-danger" style="font-family:monospace; ${!showCardNumbers ? 'filter: blur(4px); cursor: pointer;' : ''}" title="${!showCardNumbers ? 'Passe o mouse para ver' : ''}">${getDisplayCardNumber(c.numero_cartao)}</span></td>
             <td>${escapeHtml(c.nome_titular || '-')}</td>
-            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
+            <td><span class="badge badge-warning" style="font-family:monospace; ${!showCardNumbers ? 'filter: blur(4px);' : ''}">${!showCardNumbers ? '***' : (c.cvv || '***')}</span></td>
             <td>${c.validade || '-'}</td>
             <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
             <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
-        </tr>
+        <tr>
     `).join('');
-    console.log(`✅ ${cardsData.length} cartões renderizados`);
 }
 
 function filterCards() { 
     const term = document.getElementById('searchCards')?.value.toLowerCase() || ''; 
     const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.nome_titular || '').toLowerCase().includes(term)); 
     const tbody = document.getElementById('cardsTable'); 
-    if(!filtered.length) { 
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No results</td></tr>'; 
-        return; 
-    } 
+    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No results</td></tr>'; return; } 
     tbody.innerHTML = filtered.map(c => `
         <tr>
             <td><strong>${formatCPF(c.cpf || '-')}</strong><br><small style="color:var(--text-muted);">${escapeHtml(c.nome_titular || '-')}</small></td>
-            <td><span class="badge badge-danger" style="font-family:monospace;">${formatCardNumber(c.numero_cartao)}</span></td>
+            <td><span class="badge badge-danger" style="font-family:monospace; ${!showCardNumbers ? 'filter: blur(4px);' : ''}">${getDisplayCardNumber(c.numero_cartao)}</span></td>
             <td>${escapeHtml(c.nome_titular || '-')}</td>
-            <td><span class="badge badge-warning" style="font-family:monospace;">${c.cvv || '***'}</span></td>
+            <td><span class="badge badge-warning" style="font-family:monospace; ${!showCardNumbers ? 'filter: blur(4px);' : ''}">${!showCardNumbers ? '***' : (c.cvv || '***')}</span></td>
             <td>${c.validade || '-'}</td>
             <td>${c.created_at ? new Date(c.created_at).toLocaleString() : '-'}</td>
             <td><button class="btn-delete" onclick="deleteCard(${c.id})">Delete</button></td>
-        </tr>
+        </table>
     `).join(''); 
 }
 
@@ -749,7 +895,7 @@ async function deleteCard(id) { if(!confirm('Delete this card?')) return; try { 
 async function clearAllCards() { if(!confirm('WARNING: Delete ALL cards?')) return; await fetch('/api/admin/clear-cards', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('All cards deleted', 'success'); }
 
 async function loadPaymentsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); paymentsData = data.payments || []; renderPaymentsFull(); } catch(e) { console.error(e); } }
-function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; } container.innerHTML = `<div class="table-wrapper"></table><thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${p.id}</td><td><strong>${formatCPF(p.cpf)}</strong></td><td>${formatPhone(p.telefone || '-')}</td><td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td><td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td><td>${p.tipo_pagamento || 'PIX'}</td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; }
+function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">No payments</div>'; return; } container.innerHTML = `<div class="table-wrapper"><table><thead><tr><th>ID</th><th>CPF</th><th>Phone</th><th>Amount</th><th>Status</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${p.id}</td><td><strong>${formatCPF(p.cpf)}</strong></td><td>${formatPhone(p.telefone || '-')}</td><td><span class="badge badge-success">R$ ${parseFloat(p.valor).toFixed(2)}</span></td><td><span class="badge ${p.status === 'paid' ? 'badge-success' : 'badge-warning'}">${p.status === 'paid' ? 'PAID' : 'PENDING'}</span></td><td>${p.tipo_pagamento || 'PIX'}</td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Delete</button></td></tr>`).join('')}</tbody></div>`; }
 async function deletePayment(id) { if(!confirm('Delete this payment?')) return; try { await fetch(`/api/admin/payments/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); showToast('Payment deleted', 'success'); } catch(e) { showToast('Error'); } }
 async function clearAllPayments() { if(!confirm('WARNING: Delete ALL payments?')) return; await fetch('/api/admin/clear-payments', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); showToast('All payments deleted', 'success'); }
 async function loadPayments() { return loadPaymentsFull(); }
