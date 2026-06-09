@@ -290,6 +290,69 @@
             background: #ffffff;
         }
 
+        /* CEP Busca */
+        .cep-group {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 16px;
+        }
+        .cep-group .form-group {
+            flex: 2;
+            margin-bottom: 0;
+        }
+        .btn-cep {
+            background: #f5a623;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            color: #1a1f2e;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .btn-cep:hover {
+            background: #e09515;
+            transform: translateY(-1px);
+        }
+        .btn-cep:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+        .loading-cep {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #1a1f2e;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .address-info {
+            background: rgba(245,166,35,0.05);
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 8px;
+            border: 1px solid rgba(245,166,35,0.15);
+            font-size: 13px;
+        }
+        .address-info p {
+            margin: 4px 0;
+            color: #4b5563;
+        }
+        .address-info strong {
+            color: #1a1f2e;
+        }
+
         /* CALENDÁRIO */
         .calendar-container {
             background: #ffffff;
@@ -605,6 +668,8 @@
             .form-card { padding: 20px; }
             .footer-grid { grid-template-columns: repeat(2, 1fr); }
             .form-row { grid-template-columns: 1fr; gap: 0; }
+            .cep-group { flex-direction: column; gap: 8px; }
+            .btn-cep { width: 100%; justify-content: center; margin-bottom: 0; }
         }
 
         @media (max-width: 600px) {
@@ -702,9 +767,59 @@
                 </select>
             </div>
 
+            <!-- ENDEREÇO COM BUSCA DE CEP -->
             <div class="form-group">
                 <label class="required"><i class="fas fa-map-marker-alt"></i> Endereço da obra</label>
-                <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade" required>
+                <div class="cep-group">
+                    <div class="form-group">
+                        <input type="text" id="cep" placeholder="CEP (ex: 00000-000)" maxlength="9">
+                    </div>
+                    <button type="button" class="btn-cep" id="buscarCepBtn">
+                        <i class="fas fa-search"></i> Buscar CEP
+                    </button>
+                </div>
+            </div>
+
+            <div id="enderecoFields" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Logradouro</label>
+                        <input type="text" id="logradouro" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Número</label>
+                        <input type="text" id="numero" placeholder="Número da casa" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Complemento</label>
+                        <input type="text" id="complemento" placeholder="Apartamento, bloco, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label>Bairro</label>
+                        <input type="text" id="bairro" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cidade</label>
+                        <input type="text" id="cidade" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <input type="text" id="estado" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ponto de referência</label>
+                    <input type="text" id="pontoReferencia" placeholder="Ex: próximo ao supermercado, esquina com a rua X">
+                </div>
+            </div>
+
+            <div id="cepError" class="address-info" style="display: none; background: #fee2e2; border-color: #fecaca;">
+                <p><i class="fas fa-exclamation-triangle"></i> <strong>CEP não encontrado</strong></p>
+                <p>Verifique o CEP digitado ou preencha o endereço manualmente.</p>
             </div>
 
             <!-- CALENDÁRIO -->
@@ -820,6 +935,73 @@
         }
     });
 
+    // Máscara para CEP
+    const cepInput = document.getElementById('cep');
+    cepInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 5) {
+            value = value.replace(/^(\d{5})(\d{0,3})/, '$1-$2');
+        }
+        e.target.value = value.slice(0, 9);
+    });
+
+    // Buscar CEP
+    const buscarCepBtn = document.getElementById('buscarCepBtn');
+    const enderecoFields = document.getElementById('enderecoFields');
+    const cepError = document.getElementById('cepError');
+
+    async function buscarCep() {
+        let cep = cepInput.value.replace(/\D/g, '');
+        
+        if (cep.length !== 8) {
+            cepError.style.display = 'block';
+            cepError.innerHTML = '<p><i class="fas fa-exclamation-triangle"></i> <strong>CEP inválido</strong></p><p>Digite um CEP com 8 dígitos.</p>';
+            enderecoFields.style.display = 'none';
+            return;
+        }
+
+        buscarCepBtn.disabled = true;
+        buscarCepBtn.innerHTML = '<span class="loading-cep"></span> Buscando...';
+
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await response.json();
+
+            if (data.erro) {
+                cepError.style.display = 'block';
+                cepError.innerHTML = '<p><i class="fas fa-exclamation-triangle"></i> <strong>CEP não encontrado</strong></p><p>Verifique o CEP digitado ou preencha o endereço manualmente.</p>';
+                enderecoFields.style.display = 'none';
+            } else {
+                document.getElementById('logradouro').value = data.logradouro || '';
+                document.getElementById('bairro').value = data.bairro || '';
+                document.getElementById('cidade').value = data.localidade || '';
+                document.getElementById('estado').value = data.uf || '';
+                
+                enderecoFields.style.display = 'block';
+                cepError.style.display = 'none';
+                
+                // Focar no campo número
+                document.getElementById('numero').focus();
+            }
+        } catch (error) {
+            cepError.style.display = 'block';
+            cepError.innerHTML = '<p><i class="fas fa-exclamation-triangle"></i> <strong>Erro na busca</strong></p><p>Verifique sua conexão e tente novamente.</p>';
+            enderecoFields.style.display = 'none';
+        } finally {
+            buscarCepBtn.disabled = false;
+            buscarCepBtn.innerHTML = '<i class="fas fa-search"></i> Buscar CEP';
+        }
+    }
+
+    buscarCepBtn.addEventListener('click', buscarCep);
+    
+    // Buscar automaticamente quando CEP tiver 8 dígitos
+    cepInput.addEventListener('blur', function() {
+        if (cepInput.value.replace(/\D/g, '').length === 8) {
+            buscarCep();
+        }
+    });
+
     // CALENDÁRIO
     let currentDate = new Date();
     let selectedDate = null;
@@ -926,7 +1108,7 @@
     renderCalendar();
     window.selectHorario = selectHorario;
 
-    // Submit
+    // Submit do formulário com endereço completo
     document.getElementById('formAgendamento').addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -939,6 +1121,29 @@
             return;
         }
         
+        // Montar endereço completo
+        const logradouro = document.getElementById('logradouro').value;
+        const numero = document.getElementById('numero').value;
+        const complemento = document.getElementById('complemento').value;
+        const bairro = document.getElementById('bairro').value;
+        const cidade = document.getElementById('cidade').value;
+        const estado = document.getElementById('estado').value;
+        const pontoReferencia = document.getElementById('pontoReferencia').value;
+        const cep = document.getElementById('cep').value;
+        
+        let enderecoCompleto = '';
+        if (logradouro && numero) {
+            enderecoCompleto = `${logradouro}, ${numero}`;
+            if (complemento) enderecoCompleto += `, ${complemento}`;
+            if (bairro) enderecoCompleto += ` - ${bairro}`;
+            if (cidade && estado) enderecoCompleto += `, ${cidade}/${estado}`;
+            if (cep) enderecoCompleto += ` - CEP: ${cep}`;
+            if (pontoReferencia) enderecoCompleto += ` (Ref: ${pontoReferencia})`;
+        } else {
+            // Fallback para o campo de endereço antigo
+            enderecoCompleto = document.getElementById('endereco')?.value || '';
+        }
+        
         const clienteData = {
             nome: document.getElementById('nome').value,
             telefone: document.getElementById('telefone').value,
@@ -948,7 +1153,7 @@
         
         const agendamentoData = {
             tipo_obra: document.getElementById('tipoObra').value,
-            endereco_obra: document.getElementById('endereco').value,
+            endereco_obra: enderecoCompleto,
             data_agendamento: formatDateToAPI(selectedDate),
             horario: selectedHorario,
             observacoes: document.getElementById('observacoes').value
