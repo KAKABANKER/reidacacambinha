@@ -504,29 +504,66 @@
             border-top: 1px solid #2d3748;
         }
 
+        /* Melhorias para Mobile */
         @media (max-width: 900px) {
             .container { padding: 0 20px; }
-            .product-grid { grid-template-columns: 1fr; }
-            .product-info { padding: 32px; }
-            .product-image { padding: 32px; }
-            .footer-grid { grid-template-columns: repeat(2, 1fr); }
-            .info-grid { grid-template-columns: 1fr; }
+            .product-grid { grid-template-columns: 1fr; gap: 24px; }
+            .product-info { padding: 28px; }
+            .product-image { padding: 32px; min-height: 280px; }
+            .product-image img { max-height: 220px; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+            .info-grid { grid-template-columns: 1fr; gap: 12px; }
+            .current-price { font-size: 36px; }
+            .product-info h1 { font-size: 28px; }
+            .description { font-size: 14px; margin-bottom: 24px; }
+            .info-item { padding: 14px; }
+            .info-value { font-size: 14px; }
         }
 
         @media (max-width: 600px) {
-            .footer-grid { grid-template-columns: 1fr; }
-            .cta-buttons { flex-direction: column; align-items: center; }
-            .action-buttons { flex-direction: column; }
-            .whatsapp-float {
-                width: 48px;
-                height: 48px;
-                font-size: 24px;
-                bottom: 20px;
-                right: 20px;
-            }
+            .container { padding: 0 16px; }
+            .product-grid { border-radius: 20px; }
+            .product-image { padding: 24px; min-height: 220px; }
+            .product-image img { max-height: 180px; }
+            .product-info { padding: 20px; }
+            .product-badge { font-size: 10px; padding: 3px 12px; margin-bottom: 12px; }
+            .product-info h1 { font-size: 22px; margin-bottom: 12px; }
+            .price-section { margin: 16px 0; }
+            .current-price { font-size: 28px; }
+            .old-price { font-size: 14px; }
+            .installment { font-size: 11px; }
+            .description { font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
+            .info-item { padding: 12px; }
+            .info-label { font-size: 10px; }
+            .info-value { font-size: 13px; }
+            .action-buttons { flex-direction: column; gap: 12px; margin-top: 24px; }
+            .btn-primary, .btn-secondary { padding: 12px 20px; font-size: 14px; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 20px; }
+            .cta-section { padding: 32px 24px; margin: 32px 0; }
+            .cta-section h3 { font-size: 22px; }
+            .cta-section p { font-size: 12px; }
+            .cta-buttons { flex-direction: column; align-items: stretch; gap: 12px; }
+            .btn-primary-large, .btn-outline-large { padding: 12px 20px; font-size: 13px; justify-content: center; }
             .nav-links { display: none; }
-            .current-price { font-size: 32px; }
-            .product-info h1 { font-size: 24px; }
+            .whatsapp-float { width: 48px; height: 48px; font-size: 24px; bottom: 20px; right: 20px; }
+            .top-bar .container { flex-direction: column; text-align: center; gap: 4px; }
+            .top-bar { padding: 6px 0; font-size: 11px; }
+            .logo img { height: 40px; }
+            .logo-text h1 { font-size: 18px; }
+            .logo-text p { font-size: 8px; }
+            .breadcrumb { margin: 16px 0; font-size: 11px; }
+            .error-container { padding: 40px 20px; }
+            .error-container i { font-size: 48px; }
+            .error-container h3 { font-size: 18px; }
+        }
+
+        @media (max-width: 380px) {
+            .container { padding: 0 12px; }
+            .product-image { padding: 16px; min-height: 180px; }
+            .product-image img { max-height: 140px; }
+            .product-info { padding: 16px; }
+            .current-price { font-size: 24px; }
+            .info-item { padding: 10px; }
         }
     </style>
 </head>
@@ -535,7 +572,7 @@
 <!-- Top Bar -->
 <div class="top-bar">
     <div class="container">
-        <span>Entrega rápida para todo o BRASIL!</span>
+        <span>Entrega rápida para todo o Brasil</span>
         <span>Base: Hauer, Curitiba | Certificação SEMMA</span>
     </div>
 </div>
@@ -552,9 +589,9 @@
         </div>
         <div class="nav-links">
             <a href="index.html">Início</a>
-            <a href="agendamento.html">Agendar</a>
-            <a href="comentarios.htm">Avaliações</a>
-            <a href="suporte.htm">Suporte</a>
+            <a href="agendamento.html" class="btn-nav">Agendar</a>
+            <a href="comentarios.html">Avaliações</a>
+            <a href="suporte.html">Suporte</a>
         </div>
     </div>
 </div>
@@ -591,7 +628,7 @@
 </div>
 
 <!-- WhatsApp Flutuante -->
-<button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1%21%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20este%20produto.', '_blank')">
+<button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20este%20produto.', '_blank')">
     <i class="fab fa-whatsapp"></i>
 </button>
 
@@ -601,12 +638,12 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>Ativa Caçambas</h4>
-                <p>+1237 Lojas no Brasil.</p>
+                <p>Rua Irmã Maria Lúcia Roland, 410</p>
                 <p>Hauer, Curitiba - PR</p>
                 <p>CEP: 81.630-250</p>
             </div>
             <div class="footer-col">
-                <h4>Atendimento Central</h4>
+                <h4>Atendimento</h4>
                 <p>(41) 9 9287-8772</p>
                 <p>Segunda a Sábado: 7h às 20h</p>
                 <p>Domingo: Plantão 24h para emergências</p>
@@ -654,6 +691,16 @@
                 const hasImage = p.imagem && p.imagem.trim() !== '';
                 const categoryName = p.tipo === 'cacamba' ? 'Caçamba Estacionária' : 'Material de Construção';
                 
+                // Descrição melhorada se não tiver
+                let descricao = p.descricao;
+                if (!descricao) {
+                    if (p.tipo === 'cacamba') {
+                        descricao = `Caçamba estacionária de alta qualidade com capacidade para ${p.capacidade || 'até 1000kg'}. Estrutura reforçada em aço, pintura anticorrosiva e sistema de travamento seguro. Ideal para obras, reformas e limpezas. Entrega e retirada no local combinado.`;
+                    } else {
+                        descricao = `Material de construção de alta qualidade, ideal para sua obra ou reforma. Produto selecionado com os melhores padrões do mercado. Entrega rápida e segura.`;
+                    }
+                }
+                
                 // Gerar HTML do produto com imagem real
                 document.getElementById('detalhes').innerHTML = `
                     <div class="product-grid">
@@ -667,7 +714,7 @@
                             }
                         </div>
                         <div class="product-info">
-                            <div class="product-badge">DESTAQUE</div>
+                            <div class="product-badge">${p.tipo === 'cacamba' ? 'CAÇAMBA ESTACIONÁRIA' : 'MATERIAL DE CONSTRUÇÃO'}</div>
                             <h1>${p.nome}</h1>
                             <div class="price-section">
                                 <span class="current-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</span>
@@ -675,28 +722,28 @@
                                 <div class="installment">ou em até 3x sem juros no cartão</div>
                             </div>
                             <div class="description">
-                                ${p.descricao || 'Caçamba estacionária de alta qualidade, ideal para obras, reformas e limpezas. Com estrutura reforçada e pintura anticorrosiva, garante durabilidade e segurança para o transporte de entulhos.'}
+                                ${descricao}
                             </div>
                             <div class="info-grid">
                                 ${p.dimensoes ? `
                                 <div class="info-item">
-                                    <div class="info-label"><i class="fas fa-ruler"></i> DIMENSÕES</div>
+                                    <div class="info-label"><i class="fas fa-ruler-combined"></i> DIMENSÕES</div>
                                     <div class="info-value">${p.dimensoes}</div>
                                 </div>
                                 ` : ''}
                                 ${p.capacidade ? `
                                 <div class="info-item">
-                                    <div class="info-label"><i class="fas fa-cube"></i> CAPACIDADE</div>
+                                    <div class="info-label"><i class="fas fa-weight-hanging"></i> CAPACIDADE MÁXIMA</div>
                                     <div class="info-value">${p.capacidade}</div>
                                 </div>
                                 ` : ''}
                                 <div class="info-item">
-                                    <div class="info-label"><i class="fas fa-tag"></i> TIPO</div>
+                                    <div class="info-label"><i class="fas fa-tag"></i> CATEGORIA</div>
                                     <div class="info-value">${categoryName}</div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="info-label"><i class="fas fa-truck"></i> ENTREGA</div>
-                                    <div class="info-value">Em até 2h após confirmação</div>
+                                    <div class="info-label"><i class="fas fa-truck-fast"></i> PRAZO DE ENTREGA</div>
+                                    <div class="info-value">Em até 2 horas</div>
                                 </div>
                             </div>
                             <div class="action-buttons">
@@ -704,7 +751,7 @@
                                     <i class="fas fa-credit-card"></i> Continuar para pagamento
                                 </button>
                                 <a href="/agendamento.html" class="btn-secondary">
-                                    <i class="fas fa-calendar"></i> Agendar entrega
+                                    <i class="fas fa-calendar-alt"></i> Agendar entrega
                                 </a>
                             </div>
                         </div>
