@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Processando</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Bola laranja respirando - profissional */
+        .ball {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+            cursor: default;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orange-ball {
+            background: radial-gradient(circle at 35% 30%, #ffcc33, #ff9500);
+            box-shadow: 0 25px 40px rgba(255, 149, 0, 0.4);
+            animation: breatheProfessional 1.3s ease-in-out infinite alternate;
+        }
+
+        @keyframes breatheProfessional {
+            0% {
+                transform: scale(0.92);
+                background: radial-gradient(circle at 35% 30%, #ffc107, #ff8800);
+                box-shadow: 0 15px 30px rgba(255, 136, 0, 0.35);
+            }
+            100% {
+                transform: scale(1.1);
+                background: radial-gradient(circle at 35% 30%, #ffde5c, #ffaa22);
+                box-shadow: 0 35px 50px rgba(255, 170, 34, 0.55);
+            }
+        }
+
+        /* Bola verde de sucesso premium */
+        .success-ball {
+            background: radial-gradient(circle at 35% 30%, #00e676, #009624);
+            box-shadow: 0 25px 45px rgba(0, 150, 36, 0.45);
+            animation: gentlePop 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
+            transform: scale(1);
+        }
+
+        @keyframes gentlePop {
+            0% {
+                transform: scale(0.6);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.08);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Container do ícone SVG check - profissional e elegante */
+        .check-svg-container {
+            width: 70px;
+            height: 70px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .check-svg-container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* SVG do check - desenhado sob medida, traço elegante e arredondado */
+        .check-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+        }
+
+        .check-path {
+            stroke-dasharray: 80;
+            stroke-dashoffset: 80;
+            animation: drawCheck 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+        }
+
+        @keyframes drawCheck {
+            0% {
+                stroke-dashoffset: 80;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* OVERLAY DE COBERTURA TOTAL (tela inteira na cor verde premium) */
+        .green-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #00a650;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.55s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        /* Overlay ativo - cobre completamente a tela */
+        .green-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Dentro do overlay - esfera branca com check elegante */
+        .overlay-ball {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) 0.1s;
+            box-shadow: 0 30px 55px rgba(0, 0, 0, 0.2);
+        }
+
+        .green-overlay.active .overlay-ball {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* SVG grande dentro do overlay */
+        .overlay-svg {
+            width: 85px;
+            height: 85px;
+        }
+
+        .overlay-check-path {
+            stroke-dasharray: 80;
+            stroke-dashoffset: 80;
+            animation: drawOverlayCheck 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) 0.15s forwards;
+        }
+
+        @keyframes drawOverlayCheck {
+            0% {
+                stroke-dashoffset: 80;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* SEM TEXTOS EM LUGAR NENHUM */
+        .no-text {
+            font-size: 0;
+            line-height: 0;
+            text-indent: -9999px;
+        }
+
+        /* Garantia total: nenhum texto visível */
+        body::before, body::after, .container::before, .container::after,
+        .ball::before, .ball::after {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="ball" class="ball orange-ball"></div>
+    </div>
+
+    <!-- Overlay de tela inteira na cor verde premium -->
+    <div id="greenOverlay" class="green-overlay">
+        <div class="overlay-ball">
+            <svg class="overlay-svg" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="26" cy="26" r="24" stroke="#00a650" stroke-width="3" fill="white"/>
+                <path class="overlay-check-path" d="M15 26.5L23 34.5L38 18" stroke="#00a650" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const ball = document.getElementById('ball');
+            const overlay = document.getElementById('greenOverlay');
+            
+            // Após 3 segundos: transforma a bola laranja em bola verde profissional com SVG check
+            setTimeout(() => {
+                // Troca a classe da bola para verde premium
+                ball.classList.remove('orange-ball');
+                ball.classList.add('success-ball');
+                
+                // Remove qualquer conteúdo anterior dentro da bola
+                while (ball.firstChild) {
+                    ball.removeChild(ball.firstChild);
+                }
+                
+                // Cria o container do SVG check elegante
+                const svgContainer = document.createElement('div');
+                svgContainer.className = 'check-svg-container';
+                
+                // SVG profissional do check (traço fino, arredondado, sem emoji)
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 52 52');
+                svg.setAttribute('class', 'check-svg');
+                
+                // Círculo de fundo sutil (opcional, para dar contraste)
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', '26');
+                circle.setAttribute('cy', '26');
+                circle.setAttribute('r', '24');
+                circle.setAttribute('fill', 'white');
+                circle.setAttribute('stroke', '#ffffff');
+                circle.setAttribute('stroke-width', '2');
+                
+                // Path do check com traço elegante e pontas arredondadas
+                const checkPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                checkPath.setAttribute('d', 'M15 26.5L23 34.5L38 18');
+                checkPath.setAttribute('stroke', '#00a650');
+                checkPath.setAttribute('stroke-width', '4.2');
+                checkPath.setAttribute('stroke-linecap', 'round');
+                checkPath.setAttribute('stroke-linejoin', 'round');
+                checkPath.setAttribute('fill', 'none');
+                checkPath.classList.add('check-path');
+                
+                svg.appendChild(circle);
+                svg.appendChild(checkPath);
+                svgContainer.appendChild(svg);
+                ball.appendChild(svgContainer);
+                
+                // Ativa animação do container
+                setTimeout(() => {
+                    svgContainer.classList.add('show');
+                }, 30);
+                
+                // Pequeno delay para visualizar o check na bola verde, depois ATIVA OVERLAY TOTAL
+                setTimeout(() => {
+                    overlay.classList.add('active');
+                    
+                    // Tempo para apreciar a transição profissional (0.7s) e redirecionar
+                    setTimeout(() => {
+                        // REDIRECIONA PARA A PÁGINA COM O TEMA DO CHECKOUT
+                        // Altere o destino conforme sua necessidade
+                        window.location.href = "comprovante.html";
+                    }, 750);
+                    
+                }, 500);
+                
+            }, 3000); // 3 segundos exatos com bola laranja respirando
+        })();
+    </script>
+</body>
+</html>
