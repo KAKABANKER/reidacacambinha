@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Ativa Caçambas | Comprovante Oficial</title>
-    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="icon" type="image/jpeg" href="img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -336,13 +336,24 @@
             background: #fff7f5;
         }
 
+        .debug-info {
+            background: #fff3cd;
+            border: 1px solid #ffecb3;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 11px;
+            color: #856404;
+            display: none;
+        }
+
         @media print {
             body {
                 background: white;
                 padding: 0;
                 margin: 0;
             }
-            .acoes, .main-header, .nav-links, .btn {
+            .acoes, .main-header, .nav-links, .btn, .debug-info {
                 display: none !important;
             }
             .comprovante-wrapper {
@@ -399,7 +410,7 @@
         
         <div class="comprovante-body" id="comprovanteBody">
             <div style="text-align: center; padding: 40px; color: #6c7a91;">
-                Carregando informações do pedido...
+                <i class="fas fa-spinner fa-pulse"></i> Carregando informações do pedido...
             </div>
         </div>
     </div>
@@ -426,14 +437,135 @@
 </div>
 
 <script>
-    // Geração de protocolo único
-    function gerarProtocolo() {
-        const ano = new Date().getFullYear();
-        const random = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
-        return `ATV-${ano}-${random}`;
+    // Função para buscar qualquer chave no localStorage/sessionStorage
+    function getFromStorage(key) {
+        return localStorage.getItem(key) || sessionStorage.getItem(key) || '';
     }
 
-    // Formatar data BR
+    // Função para buscar dados de TODAS as possíveis chaves
+    function buscarDadosCompletos() {
+        // TENTAR TODAS AS CHAVES POSSÍVEIS
+        
+        // Nome do cliente - várias possibilidades
+        let clienteNome = getFromStorage('cliente_nome') || 
+                         getFromStorage('nome_cliente') ||
+                         getFromStorage('nome') ||
+                         getFromStorage('clienteName') ||
+                         getFromStorage('fullName') ||
+                         '';
+        
+        // CPF
+        let clienteCpf = getFromStorage('cliente_cpf') ||
+                        getFromStorage('cpf_cliente') ||
+                        getFromStorage('cpf') ||
+                        getFromStorage('documento') ||
+                        '';
+        
+        // Telefone
+        let clienteTelefone = getFromStorage('cliente_telefone') ||
+                             getFromStorage('telefone_cliente') ||
+                             getFromStorage('telefone') ||
+                             getFromStorage('whatsapp') ||
+                             getFromStorage('phone') ||
+                             '';
+        
+        // Email
+        let clienteEmail = getFromStorage('cliente_email') ||
+                          getFromStorage('email_cliente') ||
+                          getFromStorage('email') ||
+                          '';
+        
+        // Endereço
+        let enderecoCompleto = getFromStorage('endereco_obra') ||
+                               getFromStorage('endereco_completo') ||
+                               getFromStorage('endereco') ||
+                               getFromStorage('address') ||
+                               '';
+        
+        // Ponto de referência
+        let pontoReferencia = getFromStorage('ponto_referencia') ||
+                             getFromStorage('referencia') ||
+                             '';
+        
+        // Data de agendamento
+        let dataAgendamento = getFromStorage('data_agendamento') ||
+                             getFromStorage('agendamento_data') ||
+                             getFromStorage('data_entrega') ||
+                             getFromStorage('deliveryDate') ||
+                             '';
+        
+        // Horário
+        let horarioAgendamento = getFromStorage('horario_agendamento') ||
+                                getFromStorage('agendamento_horario') ||
+                                getFromStorage('horario') ||
+                                '';
+        
+        // Produto
+        let produtoNome = getFromStorage('produto_nome') ||
+                         getFromStorage('nome_produto') ||
+                         getFromStorage('produto') ||
+                         getFromStorage('productName') ||
+                         '';
+        
+        let produtoPreco = parseFloat(getFromStorage('produto_preco') || 
+                                     getFromStorage('preco_produto') ||
+                                     getFromStorage('valor') ||
+                                     '0');
+        
+        // Forma de pagamento
+        let formaPagamento = getFromStorage('tipo_pagamento') ||
+                            getFromStorage('forma_pagamento') ||
+                            getFromStorage('pagamento') ||
+                            '';
+        
+        // Se não encontrou dados, usar valores padrão para teste
+        if (!clienteNome) {
+            clienteNome = 'Cliente não encontrado';
+        }
+        
+        if (!produtoNome || produtoPreco === 0) {
+            produtoNome = 'Caçamba 5m³ - Locação';
+            produtoPreco = 450.00;
+        }
+        
+        if (!formaPagamento) {
+            formaPagamento = 'PIX';
+        }
+        
+        if (!dataAgendamento) {
+            const hoje = new Date();
+            hoje.setDate(hoje.getDate() + 1);
+            dataAgendamento = hoje.toISOString().split('T')[0];
+        }
+        
+        if (!horarioAgendamento) {
+            horarioAgendamento = '08:00 às 12:00';
+        }
+        
+        if (!enderecoCompleto) {
+            enderecoCompleto = 'Endereço não informado no agendamento';
+        }
+        
+        let ultimosDigitos = '';
+        if (formaPagamento.toLowerCase().includes('cartao') || formaPagamento.toLowerCase().includes('cartão')) {
+            ultimosDigitos = getFromStorage('cartao_ultimos') || getFromStorage('final_cartao') || '****';
+            formaPagamento = 'Cartão de crédito';
+        } else if (formaPagamento.toLowerCase().includes('pix')) {
+            ultimosDigitos = 'PIX identificado';
+            formaPagamento = 'PIX';
+        } else {
+            ultimosDigitos = 'Confirmado';
+        }
+        
+        return {
+            clienteNome, clienteCpf, clienteTelefone, clienteEmail,
+            enderecoCompleto, pontoReferencia,
+            dataAgendamento, horarioAgendamento,
+            produtoNome, produtoPreco,
+            formaPagamento, ultimosDigitos
+        };
+    }
+    
     function formatarDataBrasil(dataISO) {
         if (!dataISO) return 'Data não informada';
         try {
@@ -448,7 +580,7 @@
             return dataISO;
         } catch(e) { return dataISO; }
     }
-
+    
     function calcularRetirada(dataEntregaISO) {
         if (!dataEntregaISO) return '7 dias úteis após entrega';
         try {
@@ -460,7 +592,7 @@
         } catch(e) {}
         return '7 dias úteis após entrega';
     }
-
+    
     function escapeHtml(str) {
         if (!str) return '';
         return String(str).replace(/[&<>]/g, function(m) {
@@ -470,126 +602,27 @@
             return m;
         });
     }
-
-    // Buscar dados reais do localStorage (mesmas chaves usadas no checkout)
-    function getDadosReais() {
-        // DADOS DO CLIENTE
-        let clienteNome = localStorage.getItem('cliente_nome');
-        let clienteCpf = localStorage.getItem('cliente_cpf');
-        let clienteTelefone = localStorage.getItem('cliente_telefone');
-        let clienteEmail = localStorage.getItem('cliente_email');
-        
-        // Se não encontrar, tenta sessionStorage
-        if (!clienteNome) clienteNome = sessionStorage.getItem('cliente_nome');
-        if (!clienteCpf) clienteCpf = sessionStorage.getItem('cliente_cpf');
-        if (!clienteTelefone) clienteTelefone = sessionStorage.getItem('cliente_telefone');
-        if (!clienteEmail) clienteEmail = sessionStorage.getItem('cliente_email');
-        
-        // Fallback com valores padrão (caso não exista)
-        if (!clienteNome) clienteNome = 'Cliente não informado';
-        if (!clienteCpf) clienteCpf = '***.xxx.xxx-**';
-        if (!clienteTelefone) clienteTelefone = '(41) 9 9287-8772';
-        if (!clienteEmail) clienteEmail = 'cliente@ativacacambas.com.br';
-        
-        // ENDEREÇO
-        let enderecoCompleto = localStorage.getItem('endereco_obra') || localStorage.getItem('endereco_completo') || sessionStorage.getItem('endereco_obra');
-        let pontoReferencia = localStorage.getItem('ponto_referencia') || sessionStorage.getItem('ponto_referencia');
-        
-        if (!enderecoCompleto) {
-            enderecoCompleto = "Endereço não informado no agendamento";
-        }
-        
-        // DATA E HORÁRIO
-        let dataAgendamento = localStorage.getItem('data_agendamento') || sessionStorage.getItem('data_agendamento') || sessionStorage.getItem('agendamento_data');
-        let horarioAgendamento = localStorage.getItem('horario_agendamento') || sessionStorage.getItem('horario_agendamento') || sessionStorage.getItem('agendamento_horario');
-        
-        if (!dataAgendamento) {
-            const amanha = new Date();
-            amanha.setDate(amanha.getDate() + 1);
-            dataAgendamento = amanha.toISOString().split('T')[0];
-        }
-        if (!horarioAgendamento) {
-            horarioAgendamento = '08:00 às 12:00';
-        }
-        
-        // PRODUTO (do localStorage do checkout)
-        let produtoNome = localStorage.getItem('produto_nome') || sessionStorage.getItem('produto_nome');
-        let produtoPreco = parseFloat(localStorage.getItem('produto_preco') || sessionStorage.getItem('produto_preco'));
-        let produtoId = localStorage.getItem('produto_id') || sessionStorage.getItem('produto_id');
-        
-        let produtos = [];
-        let valorTotal = 0;
-        
-        if (produtoNome && !isNaN(produtoPreco)) {
-            produtos = [{
-                nome: produtoNome,
-                preco: produtoPreco,
-                quantidade: 1,
-                tipo: "Caçamba estacionária"
-            }];
-            valorTotal = produtoPreco;
-        } else {
-            // Tenta carregar do carrinho
-            try {
-                const carrinho = localStorage.getItem('carrinho_produtos');
-                if (carrinho) {
-                    produtos = JSON.parse(carrinho);
-                    valorTotal = produtos.reduce((sum, p) => sum + (p.preco * (p.quantidade || 1)), 0);
-                }
-            } catch(e) {}
-        }
-        
-        // Se ainda não tem produto, fallback
-        if (produtos.length === 0) {
-            produtos = [{
-                nome: "Caçamba 5m³ - Locação",
-                preco: 450.00,
-                quantidade: 1,
-                tipo: "Entulho / Construção"
-            }];
-            valorTotal = 450.00;
-        }
-        
-        // FORMA DE PAGAMENTO
-        let formaPagamento = localStorage.getItem('tipo_pagamento') || sessionStorage.getItem('tipo_pagamento');
-        if (!formaPagamento) {
-            formaPagamento = localStorage.getItem('forma_pagamento') || 'PIX';
-        }
-        
-        let ultimosDigitos = '';
-        if (formaPagamento === 'cartao' || formaPagamento === 'Cartão de crédito' || formaPagamento === 'Cartao de credito') {
-            ultimosDigitos = localStorage.getItem('cartao_ultimos') || sessionStorage.getItem('cartao_ultimos') || '7842';
-            formaPagamento = 'Cartão de crédito';
-        } else if (formaPagamento === 'pix' || formaPagamento === 'PIX') {
-            ultimosDigitos = 'PIX identificado';
-            formaPagamento = 'PIX';
-        } else {
-            ultimosDigitos = 'Confirmado';
-        }
-        
-        let valorPago = valorTotal;
-        
-        return {
-            clienteNome, clienteCpf, clienteTelefone, clienteEmail,
-            enderecoCompleto, pontoReferencia,
-            dataAgendamento, horarioAgendamento,
-            produtos, valorTotal,
-            formaPagamento, ultimosDigitos, valorPago
-        };
+    
+    function gerarProtocolo() {
+        const ano = new Date().getFullYear();
+        const random = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
+        return `ATV-${ano}-${random}`;
     }
-
-    // Montar HTML do comprovante com dados reais
-    function carregarDadosComprovante() {
-        const dados = getDadosReais();
+    
+    // Montar HTML do comprovante
+    function carregarComprovante() {
+        const dados = buscarDadosCompletos();
+        
+        const valorTotal = dados.produtoPreco;
         
         const htmlBody = `
             <div class="info-section">
                 <h3><i class="fas fa-user"></i> Dados do contratante</h3>
                 <div class="info-grid">
                     <div class="info-item"><span class="info-label">Nome completo</span><span class="info-value">${escapeHtml(dados.clienteNome)}</span></div>
-                    <div class="info-item"><span class="info-label">CPF / CNPJ</span><span class="info-value">${escapeHtml(dados.clienteCpf)}</span></div>
-                    <div class="info-item"><span class="info-label">Telefone</span><span class="info-value">${escapeHtml(dados.clienteTelefone)}</span></div>
-                    <div class="info-item"><span class="info-label">E-mail</span><span class="info-value">${escapeHtml(dados.clienteEmail)}</span></div>
+                    <div class="info-item"><span class="info-label">CPF / CNPJ</span><span class="info-value">${escapeHtml(dados.clienteCpf || 'Não informado')}</span></div>
+                    <div class="info-item"><span class="info-label">Telefone</span><span class="info-value">${escapeHtml(dados.clienteTelefone || 'Não informado')}</span></div>
+                    <div class="info-item"><span class="info-label">E-mail</span><span class="info-value">${escapeHtml(dados.clienteEmail || 'Não informado')}</span></div>
                 </div>
             </div>
             
@@ -617,18 +650,16 @@
                         <tr><th>Descrição</th><th>Tipo</th><th>Quantidade</th><th>Unitário</th><th>Subtotal</th></tr>
                     </thead>
                     <tbody>
-                        ${dados.produtos.map(prod => `
-                            <tr>
-                                <td>${escapeHtml(prod.nome)}</td>
-                                <td>${escapeHtml(prod.tipo || 'Caçamba')}</td>
-                                <td>${prod.quantidade || 1}</td>
-                                <td>${(prod.preco || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                                <td>${((prod.preco || 0) * (prod.quantidade || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                            </tr>
-                        `).join('')}
+                        <tr>
+                            <td>${escapeHtml(dados.produtoNome)}</td>
+                            <td>Caçamba estacionária</td>
+                            <td>1</td>
+                            <td>${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                            <td>${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                        </tr>
                         <tr class="total-row">
                             <td colspan="4" style="text-align: right; font-weight: 600;">VALOR TOTAL</td>
-                            <td style="font-weight: 700;">${dados.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                            <td style="font-weight: 700;">${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -639,7 +670,7 @@
                 <div class="info-grid">
                     <div class="info-item"><span class="info-label">Forma de pagamento</span><span class="info-value">${escapeHtml(dados.formaPagamento)}</span></div>
                     <div class="info-item"><span class="info-label">Identificação</span><span class="info-value">${escapeHtml(dados.ultimosDigitos)}</span></div>
-                    <div class="info-item"><span class="info-label">Valor pago</span><span class="info-value" style="color: #00a650; font-weight: 600;">${dados.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></div>
+                    <div class="info-item"><span class="info-label">Valor pago</span><span class="info-value" style="color: #00a650; font-weight: 600;">${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></div>
                     <div class="info-item"><span class="info-label">Situação</span><span class="badge-pago"><i class="fas fa-check"></i> CONFIRMADO</span></div>
                 </div>
                 <div style="margin-top: 16px; background: #f0fdf4; border-radius: 10px; padding: 12px; font-size: 11px; color: #2d6a4f;">
@@ -656,23 +687,7 @@
         const bodyDiv = document.getElementById('comprovanteBody');
         if (bodyDiv) bodyDiv.innerHTML = htmlBody;
     }
-
-    // Salvar dados após pagamento confirmado
-    function salvarDadosPosPagamento() {
-        // Garantir que os dados estejam sincronizados
-        const dados = getDadosReais();
-        localStorage.setItem('cliente_nome_comp', dados.clienteNome);
-        localStorage.setItem('cliente_cpf_comp', dados.clienteCpf);
-        localStorage.setItem('cliente_telefone_comp', dados.clienteTelefone);
-        localStorage.setItem('endereco_obra_comp', dados.enderecoCompleto);
-        localStorage.setItem('data_agendamento_comp', dados.dataAgendamento);
-        localStorage.setItem('horario_agendamento_comp', dados.horarioAgendamento);
-        localStorage.setItem('produto_nome_comp', dados.produtos[0]?.nome);
-        localStorage.setItem('produto_preco_comp', dados.valorTotal);
-        localStorage.setItem('forma_pagamento_comp', dados.formaPagamento);
-    }
-
-    // PDF
+    
     function baixarPDF() {
         const element = document.getElementById('comprovanteParaPDF');
         const opt = {
@@ -684,21 +699,20 @@
         };
         html2pdf().set(opt).from(element).save();
     }
-
+    
     // Eventos
     document.getElementById('btnImprimir')?.addEventListener('click', () => window.print());
     document.getElementById('btnBaixarPDF')?.addEventListener('click', baixarPDF);
     document.getElementById('btnVoltar')?.addEventListener('click', () => window.location.href = 'index.html');
     document.getElementById('btnWhats')?.addEventListener('click', () => {
         const protocolo = document.getElementById('protocoloDisplay')?.innerText || '';
-        const dados = getDadosReais();
-        const texto = `ATIVA CAÇAMBAS - Pagamento confirmado! Pedido: ${protocolo}. Produto: ${dados.produtos[0]?.nome || 'Caçamba'}. Entrega: ${formatarDataBrasil(dados.dataAgendamento)}. Valor: ${dados.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}. Obrigado!`;
+        const dados = buscarDadosCompletos();
+        const texto = `✅ ATIVA CAÇAMBAS - Pagamento confirmado! Pedido: ${protocolo}. Produto: ${dados.produtoNome}. Entrega: ${formatarDataBrasil(dados.dataAgendamento)}. Valor: ${dados.produtoPreco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}. Obrigado!`;
         window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
     });
-
+    
     // Executar
-    salvarDadosPosPagamento();
-    carregarDadosComprovante();
+    carregarComprovante();
     
     const protocoloFinal = gerarProtocolo();
     const protocoloElem = document.getElementById('protocoloDisplay');
