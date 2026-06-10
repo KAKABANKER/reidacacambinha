@@ -621,13 +621,13 @@
             .price-section { padding: 16px; }
         }
 
-        /* MOBILE - IMAGEM FULL WIDTH */
+        
         @media (max-width: 600px) {
             .container { padding: 0; }
             .product-section { margin: 0 0 40px 0; }
             .product-grid { border-radius: 0; gap: 0; border-left: none; border-right: none; }
             
-            /* Imagem ocupando toda largura */
+           
             .product-image {
                 padding: 0;
                 min-height: auto;
@@ -698,7 +698,7 @@
 </head>
 <body>
 
-<!-- Top Bar -->
+
 <div class="top-bar">
     <div class="container">
         <span>Entrega rápida para todo o Brasil</span>
@@ -706,7 +706,7 @@
     </div>
 </div>
 
-<!-- Main Header -->
+
 <div class="main-header">
     <div class="container header-flex">
         <div class="logo">
@@ -726,14 +726,14 @@
 </div>
 
 <div class="container">
-    <!-- Breadcrumb -->
+    
     <div class="breadcrumb">
         <a href="/produtos.html">Produtos</a>
         <span>›</span>
         <span class="current" id="produtoNome">Carregando...</span>
     </div>
 
-    <!-- Product Detail Section -->
+   
     <div id="detalhes" class="product-section">
         <div class="loading-container">
             <div class="loading-spinner"></div>
@@ -741,7 +741,7 @@
         </div>
     </div>
 
-    <!-- CTA Section -->
+    
     <div class="cta-section">
         <h3>Pronto para começar sua obra?</h3>
         <p>Solicite um orçamento sem compromisso e tenha sua caçamba no local em até 2 horas</p>
@@ -756,12 +756,12 @@
     </div>
 </div>
 
-<!-- WhatsApp Flutuante -->
+
 <button class="whatsapp-float" onclick="window.open('https://wa.me/5541992878772?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20este%20produto.', '_blank')">
     <i class="fab fa-whatsapp"></i>
 </button>
 
-<!-- Footer -->
+
 <footer>
     <div class="container">
         <div class="footer-grid">
@@ -800,7 +800,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const produtoId = urlParams.get('id');
     
-    // Contadores variáveis por produto (simulando dados do banco)
+    
     const contadoresAgendamentos = {
         1: { count: 147, label: 'pessoas já agendaram' },
         2: { count: 89, label: 'pessoas já agendaram' },
@@ -810,7 +810,7 @@
         6: { count: 78, label: 'pessoas já agendaram' }
     };
     
-    // Contadores de curtidas por produto
+   
     let curtidas = {
         1: { count: 45, liked: false },
         2: { count: 32, liked: false },
@@ -820,7 +820,7 @@
         6: { count: 28, liked: false }
     };
     
-    // Carregar curtidas salvas no localStorage
+    
     function carregarCurtidas() {
         const saved = localStorage.getItem('produtosCurtidas');
         if (saved) {
@@ -844,12 +844,12 @@
         }
         
         if (curtidas[produtoId].liked) {
-            // Descurtir
+           
             curtidas[produtoId].count--;
             curtidas[produtoId].liked = false;
             likeBtn.classList.remove('liked');
         } else {
-            // Curtir
+            
             curtidas[produtoId].count++;
             curtidas[produtoId].liked = true;
             likeBtn.classList.add('liked');
@@ -880,10 +880,10 @@
                 const hasImage = p.imagem && p.imagem.trim() !== '';
                 const categoryName = p.tipo === 'cacamba' ? 'Caçamba Estacionária' : 'Material de Construção';
                 
-                // Obter contador de agendamentos
+               
                 const agendamentoInfo = contadoresAgendamentos[id] || { count: 121, label: 'pessoas já agendaram' };
                 
-                // Obter contador de curtidas
+                
                 const likeInfo = curtidas[id] || { count: 0, liked: false };
                 
                 let descricao = p.descricao;
@@ -967,7 +967,7 @@
                 
                 document.getElementById('detalhes').innerHTML = produtoHTML;
                 
-                // Adicionar evento de like após renderizar
+               
                 const likeBtn = document.getElementById('likeBtn');
                 if (likeBtn) {
                     const likeCountSpan = document.getElementById('likeCount');
