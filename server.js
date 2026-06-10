@@ -680,15 +680,45 @@ app.post('/api/admin/change-password', verificarAdminToken, async (req, res) => 
 });
 
 // ============ ROTAS DE PÁGINAS ============
-app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'public', 'index.html')); });
-app.get('/admin', (req, res) => { res.sendFile(path.join(__dirname, 'admin', 'index.html')); });
-app.get('/agendamento', (req, res) => { res.sendFile(path.join(__dirname, 'public', 'agendamento.html')); });
-app.get('/produtos', (req, res) => { res.sendFile(path.join(__dirname, 'public', 'produtos.html')); });
-app.get('/produto', (req, res) => { res.sendFile(path.join(__dirname, 'public', 'produto.html')); });
-app.get('/checkout', (req, res) => { res.sendFile(path.join(__dirname, 'public', 'checkout.html')); });
-app.get('/checker', (req, res) => { res.sendFile(path.join(__dirname, 'public', 'checker.html')); });
+app.get('/', (req, res) => { 
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); 
+});
+app.get('/admin', (req, res) => { 
+    res.sendFile(path.join(__dirname, 'admin', 'index.html')); 
+});
+app.get('/agendamento', (req, res) => { 
+    res.sendFile(path.join(__dirname, 'public', 'agendamento.html')); 
+});
+app.get('/produtos', (req, res) => { 
+    res.sendFile(path.join(__dirname, 'public', 'produtos.html')); 
+});
+app.get('/produto', (req, res) => { 
+    res.sendFile(path.join(__dirname, 'public', 'produto.html')); 
+});
+app.get('/checkout', (req, res) => { 
+    res.sendFile(path.join(__dirname, 'public', 'checkout.html')); 
+});
+app.get('/checker', (req, res) => { 
+    res.sendFile(path.join(__dirname, 'public', 'checker.html')); 
+});
+
+// 🔥 FALLBACK - Se nenhuma rota acima funcionar, tenta servir o index.html
+app.get('*', (req, res) => {
+    // Se for uma rota de API, retorna 404
+    if (req.path.startsWith('/api')) {
+        return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    // Se for admin, manda pro admin
+    if (req.path.startsWith('/admin')) {
+        return res.sendFile(path.join(__dirname, 'admin', 'index.html'));
+    }
+    // Senão, manda o index.html da pasta public
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`✅ Servidor rodando na porta ${PORT}`);
+    console.log(`🌐 Site: https://reidacacambinha.onrender.com`);
+    console.log(`🔧 Admin: https://reidacacambinha.onrender.com/admin`);
 });
