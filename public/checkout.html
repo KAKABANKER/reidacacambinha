@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Ativa Caçambas | Checkout Seguro</title>
     <link rel="icon" type="image/jpeg" href="img/logo.png">  
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
@@ -17,31 +17,28 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f7fb;
+            background: #f0f2f5;
             color: #1a1f36;
             min-height: 100vh;
-            padding-bottom: 20px;
         }
 
-        /* Top Bar Otimizada */
         .top-bar {
             background: #ffffff;
-            padding: 14px 0;
+            border-bottom: 1px solid #e6e9f0;
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
 
         .top-bar-content {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
         }
 
         .logo-area {
@@ -51,14 +48,14 @@
         }
 
         .logo-icon {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             background: linear-gradient(135deg, #ffb800, #ff9500);
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(255,184,0,0.3);
+            overflow: hidden;
         }
 
         .logo-icon img {
@@ -68,7 +65,7 @@
         }
 
         .logo-text h2 {
-            font-size: 1.2rem;
+            font-size: 1.35rem;
             font-weight: 800;
             color: #1a1f36;
             letter-spacing: -0.3px;
@@ -79,73 +76,75 @@
         }
 
         .logo-text p {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #6b7280;
         }
 
         .secure-badge {
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: #f0fdf4;
-            padding: 6px 14px;
+            gap: 8px;
+            background: #f3f4f6;
+            padding: 8px 16px;
             border-radius: 40px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #059669;
         }
 
-        /* Container Responsivo */
         .checkout-container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 32px;
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 24px;
+            grid-template-columns: 1fr 440px;
+            gap: 32px;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1000px) {
             .checkout-container {
                 grid-template-columns: 1fr;
-                padding: 16px;
-                gap: 20px;
+                padding: 20px;
             }
         }
 
-        /* Cards */
-        .payment-section, .order-summary {
+        .payment-section {
             background: #ffffff;
             border-radius: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04);
             overflow: hidden;
         }
 
         .section-header {
-            padding: 20px 24px;
+            padding: 24px 32px;
             border-bottom: 1px solid #eef2f6;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .section-header i {
-            font-size: 20px;
+            font-size: 22px;
             color: #ffb800;
         }
 
         .section-header h3 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
+            color: #1a1f36;
         }
 
-        /* Métodos de Pagamento Estilo Mercado Livre */
+        .section-header p {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-left: auto;
+        }
+
         .payment-methods {
-            padding: 16px 20px;
+            padding: 24px 32px;
             display: flex;
-            gap: 12px;
+            gap: 16px;
             border-bottom: 1px solid #eef2f6;
             background: #fafbfc;
-            flex-wrap: wrap;
         }
 
         .method-option {
@@ -154,19 +153,18 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 12px 16px;
+            padding: 14px 20px;
             background: #ffffff;
             border: 1.5px solid #e1e5eb;
-            border-radius: 14px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 500;
             color: #4b5563;
         }
 
         .method-option i {
-            font-size: 18px;
+            font-size: 20px;
         }
 
         .method-option.active {
@@ -175,83 +173,161 @@
             color: #ffb800;
         }
 
-        /* PIX Content */
-        .pix-content, .card-content {
-            padding: 24px;
+        .method-option:hover {
+            border-color: #ffb800;
+        }
+
+        .pix-content {
+            padding: 32px;
+        }
+
+        .pix-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .pix-header .pix-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e8f5e9;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #2e7d32;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .pix-header h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1a1f36;
         }
 
         .qr-card {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 24px;
+            padding: 32px;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .qr-placeholder {
+            background: #fafbfc;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
         }
 
         #qrcode {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            background: white;
-            padding: 16px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
         }
 
-        #qrcode canvas, #qrcode img {
-            width: 180px !important;
-            height: 180px !important;
-            max-width: 100%;
+        #qrcode img {
+            width: 100%;
+            height: 100%;
         }
 
-        @media (max-width: 480px) {
-            #qrcode canvas, #qrcode img {
-                width: 140px !important;
-                height: 140px !important;
+        /* Otimização para celular */
+        @media (max-width: 600px) {
+            #qrcode {
+                width: 160px;
+                height: 160px;
+            }
+            .qr-card {
+                padding: 20px;
             }
         }
 
-        /* Cartão Preview */
+        .pix-code-card {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 20px;
+            text-align: left;
+            border: 1px solid #eef2f6;
+        }
+
+        .pix-code-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .pix-code-value {
+            font-family: monospace;
+            font-size: 0.75rem;
+            word-break: break-all;
+            color: #1a1f36;
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #eef2f6;
+            margin-bottom: 12px;
+        }
+
+        .payment-status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .status-waiting {
+            background: #fff8e1;
+            color: #f57c00;
+        }
+
+        .status-paid {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .card-content {
+            padding: 32px;
+        }
+
         .card-preview {
-            background: linear-gradient(135deg, #1a1f36, #2d3748);
+            background: linear-gradient(135deg, #1a1f36 0%, #2d3748 100%);
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
             color: white;
             position: relative;
-            min-height: 180px;
+            min-height: 200px;
         }
 
-        .card-brand-icon {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 40px;
+        .card-chip {
+            margin-bottom: 40px;
         }
 
-        .card-chip-icon {
-            margin-bottom: 30px;
-        }
-
-        .card-chip-icon i {
-            font-size: 28px;
+        .card-chip i {
+            font-size: 32px;
             color: #ffb800;
         }
 
-        .card-number-display {
-            font-size: 1rem;
+        .card-number-preview {
+            font-size: 1.2rem;
             letter-spacing: 2px;
             font-family: monospace;
-            margin-bottom: 16px;
-            word-break: break-all;
+            margin-bottom: 20px;
         }
 
-        .card-details-display {
+        .card-details-preview {
             display: flex;
             justify-content: space-between;
             font-size: 0.7rem;
-            opacity: 0.9;
         }
 
-        /* Formulário */
         .form-row {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .form-row label {
@@ -262,18 +338,18 @@
             margin-bottom: 6px;
         }
 
-        .form-row input, .form-row select {
+        .form-row input {
             width: 100%;
-            padding: 14px 14px;
+            padding: 14px 16px;
             background: #ffffff;
             border: 1.5px solid #e1e5eb;
-            border-radius: 14px;
+            border-radius: 12px;
             font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
             transition: all 0.2s;
         }
 
-        .form-row input:focus, .form-row select:focus {
+        .form-row input:focus {
             outline: none;
             border-color: #ffb800;
             box-shadow: 0 0 0 3px rgba(255,184,0,0.1);
@@ -282,53 +358,72 @@
         .double-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 16px;
         }
 
-        /* Resumo do Pedido */
-        .product-item-checkout {
-            padding: 20px;
+        .order-summary {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+        }
+
+        .summary-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .summary-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1f36;
+        }
+
+        .product-item {
+            padding: 20px 24px;
             display: flex;
             gap: 16px;
             border-bottom: 1px solid #eef2f6;
             align-items: center;
         }
 
-        .product-image-checkout {
+        .product-image {
             width: 70px;
             height: 70px;
-            background: linear-gradient(135deg, #fff8e8, #ffe4b5);
+            background: #f0f2f5;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            overflow: hidden;
         }
 
-        .product-image-checkout img {
-            width: 55px;
-            height: 55px;
-            object-fit: contain;
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .product-image-checkout i {
+        .product-image i {
             font-size: 38px;
             color: #ffb800;
         }
 
-        .product-info h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
+        .product-details h4 {
+            font-size: 1rem;
+            font-weight: 600;
             margin-bottom: 4px;
         }
 
-        .product-info p {
+        .product-details p {
             font-size: 0.7rem;
             color: #6b7280;
         }
 
         .price-details {
-            padding: 20px;
+            padding: 20px 24px;
         }
 
         .price-line {
@@ -347,6 +442,7 @@
             border-top: 1px solid #eef2f6;
             font-weight: 700;
             font-size: 1.1rem;
+            color: #1a1f36;
         }
 
         .total-line span:last-child {
@@ -355,24 +451,23 @@
         }
 
         .parcelas-select {
-            margin-top: 16px;
-            padding-top: 16px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px solid #eef2f6;
         }
 
         .parcelas-select select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border-radius: 12px;
             border: 1.5px solid #e1e5eb;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
-            background: white;
         }
 
         .btn-confirm {
-            margin: 0 20px 24px;
-            width: calc(100% - 40px);
+            margin: 0 24px 24px;
+            width: calc(100% - 48px);
             padding: 16px;
             background: #ffb800;
             border: none;
@@ -391,7 +486,11 @@
         .btn-confirm:disabled {
             background: #e5e7eb;
             cursor: not-allowed;
-            opacity: 0.6;
+        }
+
+        .btn-confirm:not(:disabled):hover {
+            background: #e6a600;
+            transform: translateY(-1px);
         }
 
         .btn-generate {
@@ -420,43 +519,41 @@
             display: none;
         }
 
-        .payment-status {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 12px;
+        .loading-state {
             text-align: center;
-            font-size: 0.8rem;
+            padding: 40px;
+            color: #ffb800;
         }
 
-        .status-waiting {
-            background: #fff8e1;
-            color: #f57c00;
-        }
-
-        .status-paid {
-            background: #e8f5e9;
-            color: #2e7d32;
+        .error-state {
+            text-align: center;
+            padding: 20px;
+            color: #dc2626;
+            background: #fef2f2;
+            border-radius: 16px;
         }
 
         .footer {
             text-align: center;
-            padding: 24px;
-            font-size: 0.65rem;
+            padding: 32px;
             color: #9ca3af;
+            font-size: 0.7rem;
+            border-top: 1px solid #eef2f6;
+            margin-top: 32px;
+            background: #ffffff;
         }
 
-        /* Badge PIX */
-        .pix-badge {
+        /* Badges estilo Mercado Livre */
+        .payment-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: #e8f5e9;
-            padding: 6px 16px;
-            border-radius: 40px;
+            gap: 6px;
+            background: #f0fdf4;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
             color: #2e7d32;
-            font-size: 0.75rem;
-            font-weight: 500;
-            margin-bottom: 16px;
+            margin-left: 8px;
         }
     </style>
 </head>
@@ -466,16 +563,17 @@
     <div class="top-bar-content">
         <div class="logo-area">
             <div class="logo-icon">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1f36'%3E%3Cpath d='M4 8h16v11c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V8z'/%3E%3Cpath d='M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v1c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V8c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E" alt="logo">
+                <!-- COLOCAR O LINK DA LOGO AQUI -->
+                <img src="img/logo.png" alt="Logo">
             </div>
             <div class="logo-text">
                 <h2>ATIVA <span>CAÇAMBAS</span></h2>
-                <p>Locação | Curitiba - PR</p>
+                <p>Locação de caçambas | Curitiba - PR</p>
             </div>
         </div>
         <div class="secure-badge">
             <i class="fas fa-lock"></i>
-            <span>Pagamento Seguro</span>
+            <span>Pagamento 100% seguro</span>
         </div>
     </div>
 </div>
@@ -484,146 +582,253 @@
     <div class="payment-section">
         <div class="section-header">
             <i class="fas fa-credit-card"></i>
-            <h3>Escolha a forma de pagamento</h3>
+            <h3>Forma de pagamento</h3>
+            <p>Escolha como deseja pagar</p>
         </div>
 
         <div class="payment-methods">
             <div class="method-option active" onclick="metodoPagamento('pix')">
-                <i class="fas fa-qrcode"></i> <span>PIX</span>
+                <i class="fas fa-qrcode"></i>
+                <span>PIX</span>
+                <span class="payment-badge"><i class="fas fa-bolt"></i> Instantâneo</span>
             </div>
             <div class="method-option" onclick="metodoPagamento('cartao')">
-                <i class="fas fa-credit-card"></i> <span>Cartão de Crédito</span>
+                <i class="fas fa-credit-card"></i>
+                <span>Cartão de crédito</span>
+                <span class="payment-badge"><i class="fas fa-lock"></i> Até 6x</span>
             </div>
         </div>
 
-        <!-- PIX -->
         <div id="pixSection" class="pix-content">
-            <div style="text-align:center;">
-                <div class="pix-badge"><i class="fas fa-bolt"></i> Instantâneo</div>
-                <div class="qr-card">
-                    <div id="pixLoading" class="loading-state" style="padding:20px;"><i class="fas fa-spinner fa-pulse"></i> Gerar PIX</div>
-                    <div id="qrcodeWrapper" class="hidden"><div id="qrcode"></div></div>
-                    <div id="pixCodeDiv" class="hidden" style="margin-top:16px;">
-                        <button class="btn-secondary" id="btnCopiarPix" onclick="copiarQrCode()"><i class="fas fa-copy"></i> Copiar código</button>
-                    </div>
-                    <div id="paymentStatus" class="payment-status hidden"></div>
-                    <button class="btn-generate" id="btnGerarPix" onclick="gerarPix()"><i class="fas fa-bolt"></i> Gerar PIX</button>
+            <div class="pix-header">
+                <div class="pix-badge">
+                    <i class="fas fa-bolt"></i>
+                    <span>Pagamento instantâneo</span>
+                </div>
+                <h4>Pague com PIX</h4>
+            </div>
+
+            <div class="qr-card">
+                <div id="pixLoading" class="loading-state">
+                    <i class="fas fa-spinner fa-pulse"></i>
+                    <p>Clique em gerar PIX</p>
+                </div>
+                <div id="pixError" class="error-state hidden"></div>
+                <div id="qrcodeWrapper" class="qr-placeholder hidden">
+                    <div id="qrcode"></div>
+                </div>
+                <div id="pixCodeDiv" class="pix-code-card hidden">
+                    <div class="pix-code-label">CÓDIGO PIX (COPIA E COLA)</div>
+                    <div class="pix-code-value" id="pixCodeValue"></div>
+                    <button class="btn-secondary" id="btnCopiarPix" onclick="copiarQrCode()">
+                        <i class="fas fa-copy"></i> Copiar código
+                    </button>
+                </div>
+                <div id="paymentStatus" class="payment-status hidden"></div>
+                <button class="btn-generate" id="btnGerarPix" onclick="gerarPix()">
+                    <i class="fas fa-bolt"></i> Gerar PIX
+                </button>
+            </div>
+        </div>
+
+        <div id="cartaoSection" class="card-content hidden">
+            <div class="card-preview">
+                <div class="card-chip">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="card-number-preview" id="cardNumberPreview">**** **** **** ****</div>
+                <div class="card-details-preview">
+                    <span id="cardNamePreview">NOME DO TITULAR</span>
+                    <span id="cardExpiryPreview">**/**</span>
                 </div>
             </div>
-        </div>
 
-        <!-- Cartão -->
-        <div id="cartaoSection" class="card-content hidden">
-            <div class="card-preview" id="cardPreview">
-                <div class="card-brand-icon" id="cardBrandIcon"><i class="fas fa-credit-card"></i></div>
-                <div class="card-chip-icon"><i class="fas fa-microchip"></i></div>
-                <div class="card-number-display" id="cardNumberPreview">**** **** **** ****</div>
-                <div class="card-details-display"><span id="cardNamePreview">NOME DO TITULAR</span><span id="cardExpiryPreview">**/**</span></div>
+            <div class="form-row">
+                <label>Número do cartão</label>
+                <input type="text" id="numeroCartao" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatarCartao(this)">
             </div>
-            <div class="form-row"><label>Número do cartão</label><input type="text" id="numeroCartao" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatarCartao(this)"></div>
-            <div class="form-row"><label>Nome no cartão</label><input type="text" id="nomeTitular" placeholder="Como está no cartão"></div>
-            <div class="double-row"><div class="form-row"><label>Validade</label><input type="text" id="validade" placeholder="MM/AA" maxlength="5" oninput="formatarValidade(this)"></div><div class="form-row"><label>CVV</label><input type="text" id="cvv" placeholder="123" maxlength="4"></div></div>
-            <div class="form-row"><label>CPF</label><input type="text" id="cpfTitular" placeholder="000.000.000-00"></div>
+            <div class="form-row">
+                <label>Nome no cartão</label>
+                <input type="text" id="nomeTitular" placeholder="Como está no cartão">
+            </div>
+            <div class="double-row">
+                <div class="form-row">
+                    <label>Validade</label>
+                    <input type="text" id="validade" placeholder="MM/AA" maxlength="5" oninput="formatarValidade(this)">
+                </div>
+                <div class="form-row">
+                    <label>CVV</label>
+                    <input type="text" id="cvv" placeholder="123" maxlength="4">
+                </div>
+            </div>
+            <div class="form-row">
+                <label>CPF do titular</label>
+                <input type="text" id="cpfTitular" placeholder="000.000.000-00">
+            </div>
         </div>
     </div>
 
-    <!-- Resumo -->
     <div class="order-summary">
-        <div class="section-header"><i class="fas fa-shopping-cart"></i><h3>Resumo do pedido</h3></div>
-        <div class="product-item-checkout">
-            <div class="product-image-checkout" id="produtoImg"><i class="fas fa-dumpster"></i></div>
-            <div class="product-info"><h4 id="produtoNome">Carregando...</h4><p id="produtoDesc">Lcação única</p></div>
+        <div class="summary-header">
+            <h3>Resumo do pedido</h3>
         </div>
+
+        <div class="product-item">
+            <div class="product-image" id="produtoImagem">
+                <!-- COLOCAR O LINK DA FOTO DO PRODUTO AQUI -->
+                <img src="img/logo.png" alt="Caçamba" id="produtoFoto" style="display: none;">
+                <i class="fas fa-dumpster" id="produtoIcone"></i>
+            </div>
+            <div class="product-details">
+                <h4 id="produtoNome">Carregando...</h4>
+                <p>Locação única · Entrega programada</p>
+            </div>
+        </div>
+
         <div class="price-details">
-            <div class="price-line"><span>Subtotal</span><span id="subtotal">R$ 0,00</span></div>
-            <div class="price-line"><span>Taxa de serviço (5%)</span><span id="taxaServico">R$ 0,00</span></div>
-            <div class="total-line"><span>Total</span><span id="totalValor">R$ 0,00</span></div>
-            <div class="parcelas-select"><label>Parcelamento</label><select id="parcelas" onchange="atualizarParcelamento()"><option value="1">1x de R$ 0,00</option><option value="2">2x de R$ 0,00</option><option value="3">3x de R$ 0,00</option><option value="4">4x de R$ 0,00</option><option value="5">5x de R$ 0,00</option><option value="6">6x de R$ 0,00</option></select></div>
+            <div class="price-line">
+                <span>Subtotal</span>
+                <span id="subtotal">R$ 0,00</span>
+            </div>
+            <div class="price-line">
+                <span>Taxa de serviço (5%)</span>
+                <span id="taxaServico">R$ 0,00</span>
+            </div>
+            <div class="total-line">
+                <span>Total</span>
+                <span id="totalValor">R$ 0,00</span>
+            </div>
+            
+            <div class="parcelas-select" id="parcelasDiv">
+                <label>Parcelamento</label>
+                <select id="parcelas" onchange="atualizarParcelamento()">
+                    <option value="1">1x de R$ 0,00 (sem juros)</option>
+                    <option value="2">2x de R$ 0,00 (sem juros)</option>
+                    <option value="3">3x de R$ 0,00 (sem juros)</option>
+                    <option value="4">4x de R$ 0,00 (sem juros)</option>
+                    <option value="5">5x de R$ 0,00 (sem juros)</option>
+                    <option value="6">6x de R$ 0,00 (sem juros)</option>
+                </select>
+            </div>
         </div>
-        <button class="btn-confirm" id="btnConfirmar" onclick="confirmarPagamento()"><i class="fas fa-check-circle"></i> Confirmar pagamento</button>
-        <div style="text-align:center; padding:0 20px 20px; font-size:0.65rem; color:#9ca3af;"><i class="fas fa-lock"></i> Transação segura</div>
+
+        <button class="btn-confirm" id="btnConfirmar" onclick="confirmarPagamento()">
+            <i class="fas fa-check-circle"></i> Confirmar pagamento
+        </button>
+
+        <div style="padding: 0 24px 24px; text-align: center;">
+            <div style="display: flex; justify-content: center; gap: 16px; font-size: 0.7rem; color: #9ca3af;">
+                <span><i class="fas fa-lock"></i> Seguro</span>
+                <span><i class="fas fa-clock"></i> Atendimento 24h</span>
+                <span><i class="fas fa-headset"></i> Suporte</span>
+            </div>
+        </div>
     </div>
 </div>
-<div class="footer"><p>© 2026 Ativa Caçambas - Locação profissional | Curitiba - PR</p></div>
+
+<div class="footer">
+    <p>© 2026 Ativa Caçambas - Locação de caçambas estacionárias em Curitiba | CNPJ: 00.000.000/0001-00</p>
+    <p style="margin-top: 8px;">Rua Irmã Maria Lúcia Roland, 410 - Hauer, Curitiba - PR | (41) 9 9287-8772</p>
+</div>
 
 <script>
     let metodoAtual = 'pix';
-    let clienteId = localStorage.getItem('cliente_id') || '1';
-    let produtoId = localStorage.getItem('produto_id') || '1';
+    let clienteId = localStorage.getItem('cliente_id');
+    let produtoId = localStorage.getItem('produto_id');
     let produtoNome = localStorage.getItem('produto_nome') || 'Caçamba 5m³';
     let produtoPreco = parseFloat(localStorage.getItem('produto_preco')) || 450;
-    let clienteNome = localStorage.getItem('cliente_nome') || 'Cliente';
-    let clienteCpf = localStorage.getItem('cliente_cpf') || '';
-    let clienteTelefone = localStorage.getItem('cliente_telefone') || '';
+    let clienteNome = localStorage.getItem('cliente_nome');
+    let clienteCpf = localStorage.getItem('cliente_cpf');
+    let clienteTelefone = localStorage.getItem('cliente_telefone');
     
     let taxaServico = produtoPreco * 0.05;
     let totalComTaxa = produtoPreco + taxaServico;
-    let paymentConfirmed = false;
-    let currentPixCode = '', currentTransactionId = '', qrcodeInstance = null, paymentCheckInterval = null;
     
-    // Atualizar UI
-    document.getElementById('produtoNome').innerText = produtoNome;
-    document.getElementById('produtoDesc').innerText = `Locação de ${produtoNome} - 7 dias`;
+    let currentPixCode = '';
+    let currentTransactionId = '';
+    let qrcodeInstance = null;
+    let paymentCheckInterval = null;
+    let paymentConfirmed = false;
+    
+    // Carregar foto do produto se tiver link
+    const fotoLink = "SEU_LINK_DA_FOTO_DO_PRODUTO_AQUI";
+    if(fotoLink && fotoLink !== "SEU_LINK_DA_FOTO_DO_PRODUTO_AQUI") {
+        document.getElementById('produtoFoto').src = fotoLink;
+        document.getElementById('produtoFoto').style.display = 'block';
+        document.getElementById('produtoIcone').style.display = 'none';
+    }
+    
+    document.getElementById('produtoNome').innerHTML = produtoNome;
     document.getElementById('subtotal').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
     document.getElementById('taxaServico').innerHTML = `R$ ${taxaServico.toFixed(2)}`;
     document.getElementById('totalValor').innerHTML = `R$ ${totalComTaxa.toFixed(2)}`;
-    document.getElementById('cpfTitular').value = clienteCpf;
+    
+    if (document.getElementById('cpfTitular')) {
+        document.getElementById('cpfTitular').value = clienteCpf || '';
+    }
+    
+    document.getElementById('btnConfirmar').disabled = true;
     
     function atualizarParcelamento() {
-        let parcelas = parseInt(document.getElementById('parcelas').value);
-        let valorParcela = totalComTaxa / parcelas;
-        let select = document.getElementById('parcelas');
-        for(let i=0; i<select.options.length; i++) {
-            let num = parseInt(select.options[i].value);
-            let valor = totalComTaxa / num;
+        const parcelas = parseInt(document.getElementById('parcelas').value);
+        const valorParcela = totalComTaxa / parcelas;
+        const select = document.getElementById('parcelas');
+        for(let i = 0; i < select.options.length; i++) {
+            const num = parseInt(select.options[i].value);
+            const valor = totalComTaxa / num;
             select.options[i].text = `${num}x de R$ ${valor.toFixed(2)} (sem juros)`;
         }
     }
-    atualizarParcelamento();
     
-    function detectarBandeira(num) {
-        let n = num.replace(/\s/g,'');
-        if(/^4/.test(n)) return {nome:'Visa', cor:'#1a1f36', icon:'fab fa-cc-visa'};
-        if(/^5[1-5]/.test(n)) return {nome:'Mastercard', cor:'#eb001b', icon:'fab fa-cc-mastercard'};
-        if(/^3[47]/.test(n)) return {nome:'Amex', cor:'#006fcf', icon:'fab fa-cc-amex'};
-        return {nome:'Cartão', cor:'#ffb800', icon:'fas fa-credit-card'};
-    }
     function formatarCartao(input) {
-        let v = input.value.replace(/\D/g,'');
-        v = v.replace(/(\d{4})(?=\d)/g,'$1 ');
-        input.value = v.slice(0,19);
-        document.getElementById('cardNumberPreview').innerHTML = v.slice(0,19)||'**** **** **** ****';
-        let band = detectarBandeira(v);
-        document.getElementById('cardBrandIcon').innerHTML = `<i class="${band.icon}" style="font-size:36px;color:${band.cor};"></i>`;
-        document.getElementById('cardPreview').style.background = `linear-gradient(135deg, ${band.cor}dd, #1a1f36)`;
+        let value = input.value.replace(/\D/g, '');
+        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        input.value = value.slice(0, 19);
+        document.getElementById('cardNumberPreview').innerHTML = value.slice(0, 19) || '**** **** **** ****';
         validarCamposCartao();
     }
+    
     function formatarValidade(input) {
-        let v = input.value.replace(/\D/g,'');
-        if(v.length>=2) v = v.slice(0,2)+'/'+v.slice(2,4);
-        input.value = v.slice(0,5);
-        document.getElementById('cardExpiryPreview').innerHTML = v.slice(0,5)||'**/**';
+        let value = input.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.slice(0,2) + '/' + value.slice(2,4);
+        }
+        input.value = value.slice(0,5);
+        document.getElementById('cardExpiryPreview').innerHTML = value.slice(0,5) || '**/**';
         validarCamposCartao();
     }
+    
     function validarCamposCartao() {
-        if(metodoAtual==='cartao'){
-            let n = document.getElementById('numeroCartao').value.replace(/\s/g,'');
-            let nome = document.getElementById('nomeTitular').value;
-            let cvv = document.getElementById('cvv').value;
-            let val = document.getElementById('validade').value;
-            if(n.length>=10 && nome && cvv && val.length===5) document.getElementById('btnConfirmar').disabled=false;
-            else document.getElementById('btnConfirmar').disabled=true;
+        if (metodoAtual === 'cartao') {
+            const nomeTitular = document.getElementById('nomeTitular').value;
+            const numeroCartao = document.getElementById('numeroCartao').value;
+            const cvv = document.getElementById('cvv').value;
+            const validade = document.getElementById('validade').value;
+            
+            if (numeroCartao.replace(/\s/g, '').length >= 10 && nomeTitular && cvv && validade.length === 5) {
+                document.getElementById('btnConfirmar').disabled = false;
+            } else {
+                document.getElementById('btnConfirmar').disabled = true;
+            }
         }
     }
-    document.getElementById('nomeTitular')?.addEventListener('input',function(){ document.getElementById('cardNamePreview').innerHTML = this.value.toUpperCase().slice(0,20)||'NOME DO TITULAR'; validarCamposCartao(); });
-    document.getElementById('cvv')?.addEventListener('input',validarCamposCartao);
-    document.getElementById('validade')?.addEventListener('input',validarCamposCartao);
+    
+    document.getElementById('nomeTitular')?.addEventListener('input', function() {
+        let name = this.value.toUpperCase();
+        document.getElementById('cardNamePreview').innerHTML = name.slice(0, 20) || 'NOME DO TITULAR';
+        validarCamposCartao();
+    });
+    
+    document.getElementById('cvv')?.addEventListener('input', function() {
+        validarCamposCartao();
+    });
     
     function metodoPagamento(metodo) {
         metodoAtual = metodo;
-        document.querySelectorAll('.method-option').forEach(opt=>opt.classList.remove('active'));
+        document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('active'));
         event.target.closest('.method-option').classList.add('active');
-        if(metodo==='pix'){
+        
+        if (metodo === 'pix') {
             document.getElementById('pixSection').classList.remove('hidden');
             document.getElementById('cartaoSection').classList.add('hidden');
             document.getElementById('btnConfirmar').disabled = !paymentConfirmed;
@@ -635,71 +840,190 @@
     }
     
     function mostrarQrCode(pixCode, transactionId) {
-        if(qrcodeInstance) document.getElementById('qrcode').innerHTML='';
+        if (qrcodeInstance) {
+            document.getElementById('qrcode').innerHTML = '';
+        }
+        
         currentTransactionId = transactionId;
+        
         document.getElementById('pixLoading').classList.add('hidden');
+        document.getElementById('pixError').classList.add('hidden');
         document.getElementById('qrcodeWrapper').classList.remove('hidden');
         document.getElementById('pixCodeDiv').classList.remove('hidden');
-        qrcodeInstance = new QRCode(document.getElementById('qrcode'), { text: pixCode, width: 200, height: 200, colorDark:"#1a1f36", colorLight:"#ffffff" });
-        document.getElementById('pixCodeValue')?.setAttribute('data-code', pixCode);
-        let statusDiv = document.getElementById('paymentStatus');
+        
+        qrcodeInstance = new QRCode(document.getElementById('qrcode'), {
+            text: pixCode,
+            width: 200,
+            height: 200,
+            colorDark: "#1a1f36",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+        document.getElementById('pixCodeValue').innerHTML = pixCode;
+        
+        const statusDiv = document.getElementById('paymentStatus');
         statusDiv.classList.remove('hidden');
         statusDiv.className = 'payment-status status-waiting';
-        statusDiv.innerHTML = '<i class="fas fa-clock"></i> Aguardando pagamento...';
+        statusDiv.innerHTML = '<i class="fas fa-clock"></i> Aguardando pagamento... Escaneie o QR Code e pague';
+        
         startPaymentCheck(transactionId);
     }
     
-    function startPaymentCheck(id) {
-        if(paymentCheckInterval) clearInterval(paymentCheckInterval);
-        paymentCheckInterval = setInterval(async()=>{
-            try{
-                let resp = await fetch(`/api/check-payment/${id}`);
-                let data = await resp.json();
-                if(data.status==='paid'){
+    function startPaymentCheck(transactionId) {
+        if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+        
+        paymentCheckInterval = setInterval(async () => {
+            try {
+                const response = await fetch(`/api/check-payment/${transactionId}`);
+                const data = await response.json();
+                
+                if (data.status === 'paid') {
                     clearInterval(paymentCheckInterval);
                     paymentConfirmed = true;
-                    document.getElementById('paymentStatus').className = 'payment-status status-paid';
-                    document.getElementById('paymentStatus').innerHTML = '<i class="fas fa-check-circle"></i> Pagamento confirmado!';
+                    
+                    const statusDiv = document.getElementById('paymentStatus');
+                    statusDiv.className = 'payment-status status-paid';
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Pagamento confirmado!';
+                    
                     document.getElementById('btnConfirmar').disabled = false;
                     await salvarPedido();
                 }
-            }catch(e){ console.error(e); }
-        },3000);
+            } catch (error) {
+                console.error('Erro ao verificar pagamento:', error);
+            }
+        }, 3000);
     }
     
     async function salvarPedido() {
-        try{ await fetch('/api/pedidos', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ cliente_id:parseInt(clienteId), produto_id:parseInt(produtoId), quantidade:1, valor_total:totalComTaxa, tipo_pagamento:metodoAtual }) }); }catch(e){}
+        try {
+            await fetch('/api/pedidos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cliente_id: parseInt(clienteId),
+                    produto_id: parseInt(produtoId),
+                    quantidade: 1,
+                    valor_total: totalComTaxa,
+                    tipo_pagamento: metodoAtual
+                })
+            });
+        } catch (error) {
+            console.error('Erro ao salvar pedido:', error);
+        }
+    }
+    
+    function mostrarErro(mensagem) {
+        document.getElementById('pixLoading').classList.add('hidden');
+        document.getElementById('pixError').classList.remove('hidden');
+        document.getElementById('pixError').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${mensagem}`;
+        document.getElementById('qrcodeWrapper').classList.add('hidden');
+        document.getElementById('pixCodeDiv').classList.add('hidden');
+        document.getElementById('paymentStatus').classList.add('hidden');
     }
     
     async function gerarPix() {
-        let btn = document.getElementById('btnGerarPix');
-        btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Gerando...';
-        document.getElementById('pixLoading').classList.remove('hidden');
-        try{
-            let resp = await fetch('/api/create-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ amount:totalComTaxa, customer_name:clienteNome||'Cliente', customer_cpf:clienteCpf||'00000000000', customer_phone:clienteTelefone||'41992878772' }) });
-            let data = await resp.json();
-            if(data.success && data.payment?.pix_code){
+        const btnGerar = document.getElementById('btnGerarPix');
+        const loadingDiv = document.getElementById('pixLoading');
+        
+        btnGerar.disabled = true;
+        btnGerar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Gerando...';
+        loadingDiv.classList.remove('hidden');
+        loadingDiv.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Gerando PIX...';
+        document.getElementById('pixError').classList.add('hidden');
+        
+        try {
+            const response = await fetch('/api/create-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    amount: totalComTaxa,
+                    customer_name: clienteNome || 'Cliente',
+                    customer_cpf: clienteCpf || '00000000000',
+                    customer_phone: clienteTelefone || '41992878772'
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success && data.payment && data.payment.pix_code) {
                 currentPixCode = data.payment.pix_code;
                 mostrarQrCode(currentPixCode, data.payment.id);
-                btn.classList.add('hidden');
-                await fetch('/api/save-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ transaction_id:data.payment.id, cpf:clienteCpf, valor:totalComTaxa, telefone:clienteTelefone }) });
-            } else { alert('Erro ao gerar PIX'); btn.disabled=false; btn.innerHTML='<i class="fas fa-bolt"></i> Gerar PIX'; }
-        }catch(e){ alert('Erro de conexão'); btn.disabled=false; btn.innerHTML='<i class="fas fa-bolt"></i> Gerar PIX'; }
+                btnGerar.classList.add('hidden');
+                document.getElementById('btnCopiarPix').classList.remove('hidden');
+                
+                await fetch('/api/save-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        transaction_id: data.payment.id,
+                        cpf: clienteCpf,
+                        valor: totalComTaxa,
+                        telefone: clienteTelefone
+                    })
+                });
+            } else {
+                mostrarErro(data.error || 'Erro ao gerar PIX. Tente novamente.');
+                btnGerar.disabled = false;
+                btnGerar.innerHTML = '<i class="fas fa-bolt"></i> Gerar PIX';
+            }
+        } catch (error) {
+            mostrarErro('Erro de conexão. Verifique sua internet.');
+            btnGerar.disabled = false;
+            btnGerar.innerHTML = '<i class="fas fa-bolt"></i> Gerar PIX';
+        }
     }
     
-    function copiarQrCode() { if(currentPixCode){ navigator.clipboard.writeText(currentPixCode); alert('Código PIX copiado!'); } }
+    function copiarQrCode() {
+        if (currentPixCode) {
+            navigator.clipboard.writeText(currentPixCode);
+        }
+    }
     
     async function confirmarPagamento() {
-        if(metodoAtual==='pix' && !paymentConfirmed) return;
-        let btn = document.getElementById('btnConfirmar');
-        btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Processando...';
-        await salvarPedido();
-        localStorage.clear();
-        window.location.href = 'obrigado.html';
+        if (metodoAtual === 'pix' && !paymentConfirmed) {
+            return;
+        }
+        
+        if (metodoAtual === 'cartao') {
+            const nomeTitular = document.getElementById('nomeTitular').value;
+            const numeroCartao = document.getElementById('numeroCartao').value;
+            const cvv = document.getElementById('cvv').value;
+            const validade = document.getElementById('validade').value;
+            
+            if (!nomeTitular || !numeroCartao || !cvv || !validade) {
+                return;
+            }
+            
+            const btnConfirmar = document.getElementById('btnConfirmar');
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processando...';
+            
+            try {
+                await salvarPedido();
+                localStorage.clear();
+                window.location.href = 'checker.html';
+            } catch (error) {
+                console.error('Erro:', error);
+                btnConfirmar.disabled = false;
+                btnConfirmar.innerHTML = '<i class="fas fa-check-circle"></i> Confirmar pagamento';
+            }
+        }
+        
+        if (metodoAtual === 'pix' && paymentConfirmed) {
+            const btnConfirmar = document.getElementById('btnConfirmar');
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Finalizando...';
+            localStorage.clear();
+            window.location.href = 'checker.html';
+        }
     }
     
-    document.getElementById('btnConfirmar').disabled = true;
-    if(!localStorage.getItem('cliente_id')) window.location.href = '/agendamento.html';
+    atualizarParcelamento();
+    
+    if (!clienteId || !produtoId) {
+        window.location.href = '/agendamento.html';
+    }
 </script>
 </body>
 </html>
