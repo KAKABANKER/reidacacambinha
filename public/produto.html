@@ -161,36 +161,52 @@
             overflow: hidden;
         }
 
-        /* Product Image - COM SUPORTE PARA IMAGEM REAL */
+        /* Product Image - ESTILO PROFISSIONAL */
         .product-image {
-            background: linear-gradient(135deg, #fff9ef 0%, #ffffff 100%);
+            background: linear-gradient(145deg, #fafbfc 0%, #ffffff 100%);
             padding: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 400px;
+            position: relative;
         }
 
         .product-image img {
             max-width: 100%;
             max-height: 350px;
+            width: auto;
+            height: auto;
             object-fit: contain;
-            border-radius: 16px;
+            border-radius: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.1));
+        }
+
+        .product-image img:hover {
+            transform: scale(1.02);
+            filter: drop-shadow(0 12px 28px rgba(0,0,0,0.15));
         }
 
         .image-placeholder {
             text-align: center;
+            padding: 40px;
+            background: linear-gradient(145deg, #fef9e8 0%, #fff9ef 100%);
+            border-radius: 32px;
+            width: 100%;
         }
 
         .image-placeholder i {
-            font-size: 120px;
+            font-size: 100px;
             color: #f5a623;
+            margin-bottom: 20px;
+            display: block;
         }
 
         .image-placeholder p {
-            margin-top: 16px;
             color: #6b7280;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         /* Product Info */
@@ -199,14 +215,15 @@
         }
 
         .product-badge {
-            background: rgba(245,166,35,0.1);
+            background: rgba(245,166,35,0.12);
             color: #f5a623;
             display: inline-block;
-            padding: 4px 16px;
+            padding: 6px 18px;
             border-radius: 40px;
             font-size: 12px;
             font-weight: 700;
             margin-bottom: 20px;
+            letter-spacing: 0.5px;
         }
 
         .product-info h1 {
@@ -214,10 +231,15 @@
             font-weight: 800;
             margin-bottom: 16px;
             color: #1a1f2e;
+            line-height: 1.2;
         }
 
         .price-section {
             margin: 24px 0;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #eef2f6;
         }
 
         .current-price {
@@ -242,7 +264,7 @@
         .description {
             color: #4b5563;
             line-height: 1.6;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             font-size: 15px;
         }
 
@@ -259,14 +281,28 @@
             padding: 16px;
             border-radius: 16px;
             border: 1px solid #eef2f6;
+            transition: all 0.2s;
+        }
+
+        .info-item:hover {
+            border-color: #f5a623;
+            background: rgba(245,166,35,0.03);
         }
 
         .info-label {
             font-size: 11px;
             text-transform: uppercase;
             color: #9ca3af;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-label i {
+            color: #f5a623;
+            font-size: 12px;
         }
 
         .info-value {
@@ -304,6 +340,7 @@
         .btn-primary:hover {
             background: #e09515;
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245,166,35,0.3);
         }
 
         .btn-secondary {
@@ -504,31 +541,28 @@
             border-top: 1px solid #2d3748;
         }
 
-        /* Melhorias para Mobile */
         @media (max-width: 900px) {
             .container { padding: 0 20px; }
             .product-grid { grid-template-columns: 1fr; gap: 24px; }
             .product-info { padding: 28px; }
-            .product-image { padding: 32px; min-height: 280px; }
-            .product-image img { max-height: 220px; }
+            .product-image { padding: 32px; min-height: 320px; }
+            .product-image img { max-height: 260px; }
             .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
             .info-grid { grid-template-columns: 1fr; gap: 12px; }
             .current-price { font-size: 36px; }
             .product-info h1 { font-size: 28px; }
-            .description { font-size: 14px; margin-bottom: 24px; }
-            .info-item { padding: 14px; }
-            .info-value { font-size: 14px; }
+            .price-section { padding: 16px; }
         }
 
         @media (max-width: 600px) {
             .container { padding: 0 16px; }
             .product-grid { border-radius: 20px; }
-            .product-image { padding: 24px; min-height: 220px; }
-            .product-image img { max-height: 180px; }
+            .product-image { padding: 24px; min-height: 260px; }
+            .product-image img { max-height: 200px; border-radius: 16px; }
             .product-info { padding: 20px; }
-            .product-badge { font-size: 10px; padding: 3px 12px; margin-bottom: 12px; }
+            .product-badge { font-size: 10px; padding: 4px 14px; margin-bottom: 12px; }
             .product-info h1 { font-size: 22px; margin-bottom: 12px; }
-            .price-section { margin: 16px 0; }
+            .price-section { margin: 16px 0; padding: 14px; }
             .current-price { font-size: 28px; }
             .old-price { font-size: 14px; }
             .installment { font-size: 11px; }
@@ -555,12 +589,14 @@
             .error-container { padding: 40px 20px; }
             .error-container i { font-size: 48px; }
             .error-container h3 { font-size: 18px; }
+            .image-placeholder { padding: 24px; }
+            .image-placeholder i { font-size: 60px; }
         }
 
         @media (max-width: 380px) {
             .container { padding: 0 12px; }
-            .product-image { padding: 16px; min-height: 180px; }
-            .product-image img { max-height: 140px; }
+            .product-image { padding: 16px; min-height: 200px; }
+            .product-image img { max-height: 160px; }
             .product-info { padding: 16px; }
             .current-price { font-size: 24px; }
             .info-item { padding: 10px; }
@@ -684,14 +720,11 @@
             if (data.success) {
                 const p = data.produto;
                 
-                // Atualizar breadcrumb
                 document.getElementById('produtoNome').textContent = p.nome;
                 
-                // Verificar se tem imagem
                 const hasImage = p.imagem && p.imagem.trim() !== '';
                 const categoryName = p.tipo === 'cacamba' ? 'Caçamba Estacionária' : 'Material de Construção';
                 
-                // Descrição melhorada se não tiver
                 let descricao = p.descricao;
                 if (!descricao) {
                     if (p.tipo === 'cacamba') {
@@ -701,7 +734,6 @@
                     }
                 }
                 
-                // Gerar HTML do produto com imagem real
                 document.getElementById('detalhes').innerHTML = `
                     <div class="product-grid">
                         <div class="product-image">
@@ -733,7 +765,7 @@
                                 ` : ''}
                                 ${p.capacidade ? `
                                 <div class="info-item">
-                                    <div class="info-label"><i class="fas fa-weight-hanging"></i> CAPACIDADE MÁXIMA</div>
+                                    <div class="info-label"><i class="fas fa-weight-hanging"></i> CAPACIDADE</div>
                                     <div class="info-value">${p.capacidade}</div>
                                 </div>
                                 ` : ''}
@@ -742,7 +774,7 @@
                                     <div class="info-value">${categoryName}</div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="info-label"><i class="fas fa-truck-fast"></i> PRAZO DE ENTREGA</div>
+                                    <div class="info-label"><i class="fas fa-truck-fast"></i> ENTREGA</div>
                                     <div class="info-value">Em até 2 horas</div>
                                 </div>
                             </div>
