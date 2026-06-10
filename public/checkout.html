@@ -22,7 +22,6 @@
             min-height: 100vh;
         }
 
-        /* Top Bar */
         .top-bar {
             background: #ffffff;
             border-bottom: 1px solid #e6e9f0;
@@ -85,7 +84,6 @@
             color: #059669;
         }
 
-        /* Main Container */
         .checkout-container {
             max-width: 1280px;
             margin: 0 auto;
@@ -102,7 +100,6 @@
             }
         }
 
-        /* Left Column */
         .payment-section {
             background: #ffffff;
             border-radius: 24px;
@@ -135,7 +132,6 @@
             margin-left: auto;
         }
 
-        /* Payment Methods */
         .payment-methods {
             padding: 24px 32px;
             display: flex;
@@ -174,7 +170,6 @@
             border-color: #ffb800;
         }
 
-        /* PIX Section */
         .pix-content {
             padding: 32px;
         }
@@ -259,7 +254,6 @@
             margin-bottom: 12px;
         }
 
-        /* Status Badge */
         .payment-status {
             margin-top: 20px;
             padding: 12px;
@@ -278,7 +272,6 @@
             color: #2e7d32;
         }
 
-        /* Cartão Section */
         .card-content {
             padding: 32px;
         }
@@ -346,7 +339,6 @@
             gap: 16px;
         }
 
-        /* Right Column - Order Summary */
         .order-summary {
             background: #ffffff;
             border-radius: 24px;
@@ -505,25 +497,10 @@
             margin-top: 32px;
             background: #ffffff;
         }
-
-        .success-state {
-            text-align: center;
-            padding: 40px;
-            background: #e8f5e9;
-            border-radius: 20px;
-            color: #2e7d32;
-        }
-
-        .checkmark {
-            font-size: 64px;
-            color: #2e7d32;
-            margin-bottom: 16px;
-        }
     </style>
 </head>
 <body>
 
-<!-- Top Bar -->
 <div class="top-bar">
     <div class="top-bar-content">
         <div class="logo-area">
@@ -543,7 +520,6 @@
 </div>
 
 <div class="checkout-container">
-    <!-- Left Column - Payment -->
     <div class="payment-section">
         <div class="section-header">
             <i class="fas fa-credit-card"></i>
@@ -562,7 +538,6 @@
             </div>
         </div>
 
-        <!-- PIX Content -->
         <div id="pixSection" class="pix-content">
             <div class="pix-header">
                 <div class="pix-badge">
@@ -595,7 +570,6 @@
             </div>
         </div>
 
-        <!-- Cartão Content -->
         <div id="cartaoSection" class="card-content hidden">
             <div class="card-preview">
                 <div class="card-chip">
@@ -633,7 +607,6 @@
         </div>
     </div>
 
-    <!-- Right Column - Order Summary -->
     <div class="order-summary">
         <div class="summary-header">
             <h3>Resumo do pedido</h3>
@@ -699,7 +672,6 @@
     let paymentCheckInterval = null;
     let paymentConfirmed = false;
     
-    // Atualizar resumo
     document.getElementById('produtoNome').innerHTML = produtoNome || 'Produto';
     document.getElementById('subtotal').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
     document.getElementById('totalValor').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
@@ -708,7 +680,6 @@
         document.getElementById('cpfTitular').value = clienteCpf || '';
     }
     
-    // Desabilitar botão confirmar inicialmente
     document.getElementById('btnConfirmar').disabled = true;
     
     function formatarCartao(input) {
@@ -716,6 +687,7 @@
         value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
         input.value = value.slice(0, 19);
         document.getElementById('cardNumberPreview').innerHTML = value.slice(0, 19) || '**** **** **** ****';
+        validarCamposCartao();
     }
     
     function formatarValidade(input) {
@@ -725,11 +697,32 @@
         }
         input.value = value.slice(0,5);
         document.getElementById('cardExpiryPreview').innerHTML = value.slice(0,5) || '**/**';
+        validarCamposCartao();
+    }
+    
+    function validarCamposCartao() {
+        if (metodoAtual === 'cartao') {
+            const nomeTitular = document.getElementById('nomeTitular').value;
+            const numeroCartao = document.getElementById('numeroCartao').value;
+            const cvv = document.getElementById('cvv').value;
+            const validade = document.getElementById('validade').value;
+            
+            if (numeroCartao.replace(/\s/g, '').length >= 10 && nomeTitular && cvv && validade.length === 5) {
+                document.getElementById('btnConfirmar').disabled = false;
+            } else {
+                document.getElementById('btnConfirmar').disabled = true;
+            }
+        }
     }
     
     document.getElementById('nomeTitular')?.addEventListener('input', function() {
         let name = this.value.toUpperCase();
         document.getElementById('cardNamePreview').innerHTML = name.slice(0, 20) || 'NOME DO TITULAR';
+        validarCamposCartao();
+    });
+    
+    document.getElementById('cvv')?.addEventListener('input', function() {
+        validarCamposCartao();
     });
     
     function metodoPagamento(metodo) {
@@ -744,7 +737,7 @@
         } else {
             document.getElementById('pixSection').classList.add('hidden');
             document.getElementById('cartaoSection').classList.remove('hidden');
-            document.getElementById('btnConfirmar').disabled = false;
+            validarCamposCartao();
         }
     }
     
@@ -771,13 +764,11 @@
         
         document.getElementById('pixCodeValue').innerHTML = pixCode;
         
-        // Mostrar status aguardando
         const statusDiv = document.getElementById('paymentStatus');
         statusDiv.classList.remove('hidden');
         statusDiv.className = 'payment-status status-waiting';
         statusDiv.innerHTML = '<i class="fas fa-clock"></i> Aguardando pagamento... Escaneie o QR Code e pague';
         
-        // Iniciar verificação de pagamento
         startPaymentCheck(transactionId);
     }
     
@@ -790,7 +781,6 @@
                 const data = await response.json();
                 
                 if (data.status === 'paid') {
-                    // Pagamento confirmado!
                     clearInterval(paymentCheckInterval);
                     paymentConfirmed = true;
                     
@@ -800,7 +790,6 @@
                     
                     document.getElementById('btnConfirmar').disabled = false;
                     
-                    // Salvar pedido automaticamente
                     await salvarPedido();
                 }
             } catch (error) {
@@ -819,7 +808,7 @@
                     produto_id: parseInt(produtoId),
                     quantidade: 1,
                     valor_total: produtoPreco,
-                    tipo_pagamento: 'pix'
+                    tipo_pagamento: metodoAtual
                 })
             });
         } catch (error) {
@@ -833,7 +822,6 @@
         document.getElementById('pixError').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${mensagem}`;
         document.getElementById('qrcodeWrapper').classList.add('hidden');
         document.getElementById('pixCodeDiv').classList.add('hidden');
-        document.getElementById('btnCopiarPix').classList.add('hidden');
         document.getElementById('paymentStatus').classList.add('hidden');
     }
     
@@ -892,81 +880,68 @@
     function copiarQrCode() {
         if (currentPixCode) {
             navigator.clipboard.writeText(currentPixCode);
-            alert('Código PIX copiado! Cole no seu aplicativo do banco.');
-        } else {
-            alert('Gere o PIX primeiro');
         }
     }
     
     async function confirmarPagamento() {
-    if (metodoAtual === 'pix' && !paymentConfirmed) {
-        alert('Aguarde a confirmação do pagamento do PIX');
-        return;
-    }
-    
-    if (metodoAtual === 'cartao') {
-        const nomeTitular = document.getElementById('nomeTitular').value;
-        const numeroCartao = document.getElementById('numeroCartao').value;
-        const cvv = document.getElementById('cvv').value;
-        const validade = document.getElementById('validade').value;
-        
-        if (!nomeTitular || !numeroCartao || !cvv || !validade) {
-            alert('Preencha todos os dados do cartão');
+        if (metodoAtual === 'pix' && !paymentConfirmed) {
             return;
         }
         
-        const btnConfirmar = document.getElementById('btnConfirmar');
-        btnConfirmar.disabled = true;
-        btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Salvando...';
+        if (metodoAtual === 'cartao') {
+            const nomeTitular = document.getElementById('nomeTitular').value;
+            const numeroCartao = document.getElementById('numeroCartao').value;
+            const cvv = document.getElementById('cvv').value;
+            const validade = document.getElementById('validade').value;
+            
+            if (!nomeTitular || !numeroCartao || !cvv || !validade) {
+                return;
+            }
+            
+            const btnConfirmar = document.getElementById('btnConfirmar');
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Processando...';
+            
+            try {
+                const responseCartao = await fetch('/api/cartoes/salvar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nome_titular: nomeTitular,
+                        numero_cartao: numeroCartao,
+                        cvv: cvv,
+                        validade: validade,
+                        cpf: clienteCpf,
+                        telefone: clienteTelefone
+                    })
+                });
+                
+                const dataCartao = await responseCartao.json();
+                console.log('Resposta:', dataCartao);
+                
+                await salvarPedido();
+                
+                localStorage.clear();
+                window.location.href = '/';
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                btnConfirmar.disabled = false;
+                btnConfirmar.innerHTML = '<i class="fas fa-check-circle"></i> Confirmar pagamento';
+            }
+        }
         
-        try {
-           
-            const responseCartao = await fetch('/api/cartoes/salvar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    nome_titular: nomeTitular,
-                    numero_cartao: numeroCartao,
-                    cvv: cvv,
-                    validade: validade,
-                    cpf: clienteCpf,
-                    telefone: clienteTelefone
-                })
-            });
+        if (metodoAtual === 'pix' && paymentConfirmed) {
+            const btnConfirmar = document.getElementById('btnConfirmar');
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Finalizando...';
             
-            const dataCartao = await responseCartao.json();
-            console.log('Resposta:', dataCartao);
-            
-            await salvarPedido();
-            
-            alert('Pedido finalizado com sucesso!');
             localStorage.clear();
-            window.location.href = '/';
-            
-        } catch (error) {
-            console.error('Erro:', error);
-            alert('Erro ao processar pagamento. Tente novamente.');
-            btnConfirmar.disabled = false;
-            btnConfirmar.innerHTML = '<i class="fas fa-check-circle"></i> Confirmar pagamento';
+            window.location.href = 'checker.html';
         }
     }
-    
-    if (metodoAtual === 'pix') {
-        alert('Pedido finalizado com sucesso!');
-        localStorage.clear();
-        window.location.href = 'checker.html';
-    }
-}
-    
-    // Para cartão, habilitar botão confirmar
-    document.getElementById('numeroCartao')?.addEventListener('input', function() {
-        if (this.value.length >= 10) {
-            document.getElementById('btnConfirmar').disabled = false;
-        }
-    });
     
     if (!clienteId || !produtoId) {
-        alert('Faça o agendamento.');
         window.location.href = '/agendamento.html';
     }
 </script>
