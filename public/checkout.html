@@ -382,17 +382,19 @@
             display: flex;
             gap: 16px;
             border-bottom: 1px solid #eef2f6;
+            align-items: center;
         }
 
         .product-image {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, #fff8e8, #ffe4b5);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .product-image img {
@@ -402,19 +404,29 @@
         }
 
         .product-image i {
-            font-size: 38px;
+            font-size: 42px;
             color: #ffb800;
         }
 
         .product-details h4 {
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1a1f36;
+        }
+
+        .product-details .prod-desc {
+            font-size: 0.7rem;
+            color: #6b7280;
             margin-bottom: 4px;
         }
 
-        .product-details p {
-            font-size: 0.7rem;
-            color: #6b7280;
+        .product-details .prod-medidas {
+            font-size: 0.65rem;
+            color: #9ca3af;
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
         }
 
         .price-details {
@@ -563,13 +575,13 @@
 
 <div class="top-bar">
     <div class="top-bar-content">
-        <div class="img/logo.png">
-            <div class="img/logo.png">
+        <div class="logo-area">
+            <div class="logo-icon">
                 <i class="fas fa-dumpster"></i>
             </div>
             <div class="logo-text">
                 <h2>ATIVA <span>CAÇAMBAS</span></h2>
-                <p>Locação de caçambas</p>
+                <p>Locação de caçambas | Curitiba - PR</p>
             </div>
         </div>
         <div class="secure-badge">
@@ -678,13 +690,17 @@
             <h3>Resumo do pedido</h3>
         </div>
 
-        <div class="product-item">
+        <div class="product-item" id="produtoPreview">
             <div class="product-image" id="produtoImagem">
                 <i class="fas fa-dumpster"></i>
             </div>
             <div class="product-details">
                 <h4 id="produtoNome">Carregando...</h4>
-                <p>Locação única · Entrega programada</p>
+                <div class="prod-desc" id="produtoDesc">Lcação única · Entrega programada</div>
+                <div class="prod-medidas" id="produtoMedidas">
+                    <span><i class="fas fa-ruler"></i> <span id="prodMedida">5m³</span></span>
+                    <span><i class="fas fa-weight-hanging"></i> <span id="prodPeso">Até 3 toneladas</span></span>
+                </div>
             </div>
         </div>
 
@@ -744,6 +760,11 @@
     let clienteCpf = localStorage.getItem('cliente_cpf');
     let clienteTelefone = localStorage.getItem('cliente_telefone');
     
+    // Dados adicionais do produto
+    let produtoMedida = localStorage.getItem('produto_medida') || '5m³';
+    let produtoPeso = localStorage.getItem('produto_peso') || 'Até 3 toneladas';
+    let produtoDescricao = localStorage.getItem('produto_descricao') || 'Ideal para entulhos de construção e reformas';
+    
     let taxaServico = produtoPreco * 0.05;
     let totalComTaxa = produtoPreco + taxaServico;
     
@@ -753,11 +774,29 @@
     let paymentCheckInterval = null;
     let paymentConfirmed = false;
     
+    // Atualizar prévia do produto com todos os detalhes
+    function atualizarPreviaProduto() {
+        document.getElementById('produtoNome').innerHTML = produtoNome;
+        document.getElementById('produtoDesc').innerHTML = produtoDescricao;
+        document.getElementById('prodMedida').innerHTML = produtoMedida;
+        document.getElementById('prodPeso').innerHTML = produtoPeso;
+        
+        // Mudar ícone baseado no tamanho da caçamba
+        const imgDiv = document.getElementById('produtoImagem');
+        if (produtoMedida.includes('10') || produtoMedida.includes('15')) {
+            imgDiv.innerHTML = '<i class="fas fa-dumpster" style="font-size: 42px; color: #ffb800;"></i>';
+        } else if (produtoMedida.includes('7')) {
+            imgDiv.innerHTML = '<i class="fas fa-dumpster" style="font-size: 42px; color: #ffb800;"></i>';
+        } else {
+            imgDiv.innerHTML = '<i class="fas fa-dumpster" style="font-size: 42px; color: #ffb800;"></i>';
+        }
+    }
+    
     // Atualizar valores
-    document.getElementById('produtoNome').innerHTML = produtoNome;
     document.getElementById('subtotal').innerHTML = `R$ ${produtoPreco.toFixed(2)}`;
     document.getElementById('taxaServico').innerHTML = `R$ ${taxaServico.toFixed(2)}`;
     document.getElementById('totalValor').innerHTML = `R$ ${totalComTaxa.toFixed(2)}`;
+    atualizarPreviaProduto();
     
     function atualizarParcelamento() {
         const parcelas = parseInt(document.getElementById('parcelas').value);
