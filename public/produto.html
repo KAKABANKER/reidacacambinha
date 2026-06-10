@@ -161,7 +161,7 @@
             overflow: hidden;
         }
 
-        /* Product Image - ESTILO PROFISSIONAL */
+        /* Product Image - DESKTOP */
         .product-image {
             background: linear-gradient(145deg, #fafbfc 0%, #ffffff 100%);
             padding: 48px;
@@ -232,6 +232,73 @@
             margin-bottom: 16px;
             color: #1a1f2e;
             line-height: 1.2;
+        }
+
+        /* Botão de Curtida e Contador de Agendamentos */
+        .social-stats {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .like-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            border: 1px solid #eef2f6;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .like-btn i {
+            font-size: 16px;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .like-btn.liked {
+            background: #fef2f2;
+            border-color: #f5a623;
+        }
+
+        .like-btn.liked i {
+            color: #f5a623;
+        }
+
+        .like-btn:hover {
+            background: #fff5e6;
+            border-color: #f5a623;
+        }
+
+        .booking-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            border: 1px solid #eef2f6;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .booking-counter i {
+            color: #10b981;
+            font-size: 14px;
+        }
+
+        .booking-number {
+            font-weight: 700;
+            color: #f5a623;
+            font-size: 16px;
         }
 
         .price-section {
@@ -554,11 +621,36 @@
             .price-section { padding: 16px; }
         }
 
+        /* MOBILE - IMAGEM FULL WIDTH */
         @media (max-width: 600px) {
-            .container { padding: 0 16px; }
-            .product-grid { border-radius: 20px; }
-            .product-image { padding: 24px; min-height: 260px; }
-            .product-image img { max-height: 200px; border-radius: 16px; }
+            .container { padding: 0; }
+            .product-section { margin: 0 0 40px 0; }
+            .product-grid { border-radius: 0; gap: 0; border-left: none; border-right: none; }
+            
+            /* Imagem ocupando toda largura */
+            .product-image {
+                padding: 0;
+                min-height: auto;
+                margin: 0 -20px;
+                border-radius: 0;
+                background: linear-gradient(145deg, #fafbfc 0%, #ffffff 100%);
+            }
+            
+            .product-image img {
+                max-height: 320px;
+                width: 100%;
+                object-fit: cover;
+                border-radius: 0;
+                max-width: none;
+            }
+            
+            .image-placeholder {
+                border-radius: 0;
+                padding: 60px 20px;
+                width: 100vw;
+                margin-left: -20px;
+            }
+            
             .product-info { padding: 20px; }
             .product-badge { font-size: 10px; padding: 4px 14px; margin-bottom: 12px; }
             .product-info h1 { font-size: 22px; margin-bottom: 12px; }
@@ -573,7 +665,7 @@
             .action-buttons { flex-direction: column; gap: 12px; margin-top: 24px; }
             .btn-primary, .btn-secondary { padding: 12px 20px; font-size: 14px; }
             .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 20px; }
-            .cta-section { padding: 32px 24px; margin: 32px 0; }
+            .cta-section { padding: 32px 24px; margin: 32px 0; border-radius: 0; }
             .cta-section h3 { font-size: 22px; }
             .cta-section p { font-size: 12px; }
             .cta-buttons { flex-direction: column; align-items: stretch; gap: 12px; }
@@ -585,21 +677,22 @@
             .logo img { height: 40px; }
             .logo-text h1 { font-size: 18px; }
             .logo-text p { font-size: 8px; }
-            .breadcrumb { margin: 16px 0; font-size: 11px; }
-            .error-container { padding: 40px 20px; }
+            .breadcrumb { margin: 16px 20px; font-size: 11px; }
+            .error-container { padding: 40px 20px; border-radius: 0; margin: 0; }
             .error-container i { font-size: 48px; }
             .error-container h3 { font-size: 18px; }
-            .image-placeholder { padding: 24px; }
-            .image-placeholder i { font-size: 60px; }
+            .social-stats { margin-bottom: 16px; }
+            .like-btn, .booking-counter { padding: 6px 14px; font-size: 12px; }
+            .booking-number { font-size: 14px; }
         }
 
         @media (max-width: 380px) {
-            .container { padding: 0 12px; }
-            .product-image { padding: 16px; min-height: 200px; }
-            .product-image img { max-height: 160px; }
+            .product-image img { max-height: 260px; }
             .product-info { padding: 16px; }
             .current-price { font-size: 24px; }
             .info-item { padding: 10px; }
+            .image-placeholder i { font-size: 60px; }
+            .image-placeholder { padding: 40px 20px; }
         }
     </style>
 </head>
@@ -707,6 +800,67 @@
     const urlParams = new URLSearchParams(window.location.search);
     const produtoId = urlParams.get('id');
     
+    // Contadores variáveis por produto (simulando dados do banco)
+    const contadoresAgendamentos = {
+        1: { count: 147, label: 'pessoas já agendaram' },
+        2: { count: 89, label: 'pessoas já agendaram' },
+        3: { count: 234, label: 'pessoas já agendaram' },
+        4: { count: 56, label: 'pessoas já solicitaram' },
+        5: { count: 112, label: 'pessoas já agendaram' },
+        6: { count: 78, label: 'pessoas já agendaram' }
+    };
+    
+    // Contadores de curtidas por produto
+    let curtidas = {
+        1: { count: 45, liked: false },
+        2: { count: 32, liked: false },
+        3: { count: 67, liked: false },
+        4: { count: 23, liked: false },
+        5: { count: 41, liked: false },
+        6: { count: 28, liked: false }
+    };
+    
+    // Carregar curtidas salvas no localStorage
+    function carregarCurtidas() {
+        const saved = localStorage.getItem('produtosCurtidas');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            Object.keys(parsed).forEach(id => {
+                if (curtidas[id]) {
+                    curtidas[id].count = parsed[id].count;
+                    curtidas[id].liked = parsed[id].liked;
+                }
+            });
+        }
+    }
+    
+    function salvarCurtidas() {
+        localStorage.setItem('produtosCurtidas', JSON.stringify(curtidas));
+    }
+    
+    function darLike(produtoId, likeBtn, countSpan) {
+        if (!curtidas[produtoId]) {
+            curtidas[produtoId] = { count: 0, liked: false };
+        }
+        
+        if (curtidas[produtoId].liked) {
+            // Descurtir
+            curtidas[produtoId].count--;
+            curtidas[produtoId].liked = false;
+            likeBtn.classList.remove('liked');
+        } else {
+            // Curtir
+            curtidas[produtoId].count++;
+            curtidas[produtoId].liked = true;
+            likeBtn.classList.add('liked');
+        }
+        
+        countSpan.textContent = curtidas[produtoId].count;
+        salvarCurtidas();
+    }
+    
+    carregarCurtidas();
+    
     async function carregarProduto() {
         if (!produtoId) {
             window.location.href = '/produtos.html';
@@ -719,11 +873,18 @@
             
             if (data.success) {
                 const p = data.produto;
+                const id = p.id;
                 
                 document.getElementById('produtoNome').textContent = p.nome;
                 
                 const hasImage = p.imagem && p.imagem.trim() !== '';
                 const categoryName = p.tipo === 'cacamba' ? 'Caçamba Estacionária' : 'Material de Construção';
+                
+                // Obter contador de agendamentos
+                const agendamentoInfo = contadoresAgendamentos[id] || { count: 121, label: 'pessoas já agendaram' };
+                
+                // Obter contador de curtidas
+                const likeInfo = curtidas[id] || { count: 0, liked: false };
                 
                 let descricao = p.descricao;
                 if (!descricao) {
@@ -734,7 +895,7 @@
                     }
                 }
                 
-                document.getElementById('detalhes').innerHTML = `
+                const produtoHTML = `
                     <div class="product-grid">
                         <div class="product-image">
                             ${hasImage ? 
@@ -748,6 +909,20 @@
                         <div class="product-info">
                             <div class="product-badge">${p.tipo === 'cacamba' ? 'CAÇAMBA ESTACIONÁRIA' : 'MATERIAL DE CONSTRUÇÃO'}</div>
                             <h1>${p.nome}</h1>
+                            
+                            <div class="social-stats">
+                                <div class="like-btn ${likeInfo.liked ? 'liked' : ''}" id="likeBtn">
+                                    <i class="fas fa-heart"></i>
+                                    <span id="likeCount">${likeInfo.count}</span>
+                                    <span>Curtir</span>
+                                </div>
+                                <div class="booking-counter">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span class="booking-number">${agendamentoInfo.count}</span>
+                                    <span>${agendamentoInfo.label}</span>
+                                </div>
+                            </div>
+                            
                             <div class="price-section">
                                 <span class="current-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</span>
                                 ${p.preco_promocional ? `<span class="old-price">R$ ${p.preco.toFixed(2)}</span>` : ''}
@@ -789,6 +964,18 @@
                         </div>
                     </div>
                 `;
+                
+                document.getElementById('detalhes').innerHTML = produtoHTML;
+                
+                // Adicionar evento de like após renderizar
+                const likeBtn = document.getElementById('likeBtn');
+                if (likeBtn) {
+                    const likeCountSpan = document.getElementById('likeCount');
+                    likeBtn.addEventListener('click', () => {
+                        darLike(id, likeBtn, likeCountSpan);
+                    });
+                }
+                
             } else {
                 document.getElementById('detalhes').innerHTML = `
                     <div class="error-container">
@@ -816,7 +1003,7 @@
         window.location.href = '/checkout.html';
     }
     
-    carregarProduto();
+    carregarProduto(); 
 </script>
 </body>
 </html>
