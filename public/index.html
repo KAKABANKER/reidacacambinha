@@ -291,6 +291,37 @@
             line-height: 1.5;
         }
 
+        /* Trust Badges Section */
+        .trust-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            margin: 32px 0;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #eef2f6;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+        }
+
+        .trust-item i {
+            font-size: 28px;
+            color: #f5a623;
+        }
+
+        .trust-item span {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1a1f2e;
+        }
+
         /* Testimonials Section */
         .testimonials-section {
             background: #f8fafc;
@@ -534,6 +565,14 @@
                 text-align: center;
                 justify-content: center;
             }
+            
+            .trust-badges {
+                gap: 16px;
+            }
+            
+            .trust-item {
+                padding: 6px 12px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -587,6 +626,11 @@
                 bottom: 16px;
                 right: 16px;
             }
+            
+            .trust-badges {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -595,7 +639,8 @@
 <!-- Top Bar -->
 <div class="top-bar">
     <div class="container">
-        <span>Entrega rápida para todo o BRASIL!</span>
+        <span><i class="fas fa-truck"></i> Entrega rápida para todo o BRASIL! </span>
+        <span><i class="fas fa-phone-alt"></i> Atendimento 24h: (41) 9 9287-8772</span>
     </div>
 </div>
 
@@ -603,11 +648,14 @@
 <div class="main-header">
     <div class="container header-flex">
         <div class="logo">
-            <img src="img/logo.png" alt="Ativa Caçambas Logo" onerror="this.src='https://placehold.co/45x45/f5a623/ffffff?text=AC'">
+            <img src="img/logo.png" alt="Ativa Caçambas Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23f5a623%22/%3E%3Ctext x=%2250%22 y=%2265%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22white%22 font-weight=%22bold%22%3EAC%3C/text%3E%3C/svg%3E'">
             <div class="logo-text">
                 <h1>ATIVA <span>CAÇAMBAS</span></h1>
                 <p>Locação profissional desde 2012</p>
             </div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <a href="/agendamento.html" style="background: #f5a623; padding: 8px 20px; border-radius: 40px; font-weight: 600; font-size: 13px; text-decoration: none; color: #1a1f2e;">Agendar agora</a>
         </div>
     </div>
 </div>
@@ -635,7 +683,7 @@
             </div>
         </div>
         <div class="hero-image">
-            <img src="img/frota.png" alt="Frota Ativa Caçambas" onerror="this.src='https://placehold.co/300x180/f5a623/ffffff?text=FROTA'">
+            <img src="img/frota.png" alt="Frota Ativa Caçambas" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 180%22%3E%3Crect width=%22300%22 height=%22180%22 fill=%22%23eef2f6%22/%3E%3Ctext x=%22150%22 y=%2290%22 text-anchor=%22middle%22 fill=%22%239ca3af%22 font-size=%2214%22%3EFrota Ativa%3C/text%3E%3C/svg%3E'">
         </div>
     </div>
 
@@ -646,7 +694,33 @@
             <p>Fundada em 2012 por empreendedores com vasta experiência no setor da construção civil, a Ativa Caçambas nasceu com o propósito de oferecer um serviço de locação de caçambas ágil, transparente e ambientalmente responsável.</p>
             <p>O que começou com apenas três veículos e uma visão clara de atendimento humanizado, hoje se tornou referência em Curitiba e região metropolitana. Com mais de 1.200 obras atendidas, mantemos o compromisso de inovar e cuidar do descarte correto de resíduos.</p>
             <p>Nossa certificação SEMMA e alvará de funcionamento são a garantia de que sua obra estará em conformidade com as leis ambientais, evitando multas e contribuindo para um futuro mais sustentável.</p>
+            <p><strong>+5 anos de experiência</strong> · <strong>+15 colaboradores treinados</strong> · <strong>100% dos resíduos destinados corretamente</strong></p>
         </div>
+    </div>
+
+    <!-- Selos de Confiança -->
+    <div class="trust-badges">
+        <div class="trust-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Alvará e Licenciamento</span>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-recycle"></i>
+            <span>Destinação Ambiental</span>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-certificate"></i>
+            <span>Certificação SEMMA</span>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-hand-holding-usd"></i>
+            <span>Melhor Preço Garantido</span>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-headset"></i>
+            <span>Suporte 24 horas</span>
+        </div>
+    </div>
 
     <!-- Valores e Diferenciais -->
     <div class="section-title">
@@ -718,10 +792,10 @@
         <p>Solicite um orçamento sem compromisso e tenha sua caçamba no local em até 2 horas</p>
         <div class="cta-buttons">
             <a href="/agendamento.html" class="btn-primary-large">
-                Ver modelos de caçambas
+                <i class="fas fa-dumpster"></i> Ver modelos de caçambas
             </a>
             <a href="/agendamento.html" class="btn-outline-large">
-                Agendar entrega
+                <i class="fas fa-calendar-check"></i> Agendar entrega
             </a>
         </div>
     </div>
@@ -738,27 +812,28 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>Ativa Caçambas</h4>
-                <p>+1237 Lojas no Brasil.</p>
-                <p>Hauer, Curitiba - PR</p>
+                <p><i class="fas fa-map-marker-alt"></i> Hauer, Curitiba - PR</p>
                 <p>CEP: 81.630-250</p>
+                <p><i class="fas fa-check-circle"></i> CNPJ: 00.000.000/0001-00</p>
             </div>
             <div class="footer-col">
-                <h4>Atendimento Central</h4>
-                <p>(41) 9 9287-8772</p>
-                <p>Segunda a Sábado: 7h às 20h</p>
-                <p>Domingo: Plantão 24h para emergências</p>
+                <h4>Atendimento</h4>
+                <p><i class="fas fa-phone"></i> (41) 9 9287-8772</p>
+                <p><i class="far fa-clock"></i> Segunda a Sábado: 7h às 20h</p>
+                <p><i class="fas fa-moon"></i> Domingo: Plantão 24h</p>
             </div>
             <div class="footer-col">
                 <h4>Documentação</h4>
-                <p>Alvará de funcionamento</p>
-                <p>Certificação SEMMA</p>
-                <p>Licença ambiental IAP</p>
+                <p><i class="fas fa-file-alt"></i> Alvará de funcionamento</p>
+                <p><i class="fas fa-leaf"></i> Certificação SEMMA</p>
+                <p><i class="fas fa-tree"></i> Licença ambiental IAP</p>
             </div>
             <div class="footer-col">
                 <h4>Formas de pagamento</h4>
-                <p>PIX | Cartão de crédito</p>
-                <p>Boleto bancário</p>
-                <p>Faturamento para empresas</p>
+                <p><i class="fas fa-qrcode"></i> PIX</p>
+                <p><i class="fas fa-credit-card"></i> Cartão de crédito</p>
+                <p><i class="fas fa-barcode"></i> Boleto bancário</p>
+                <p><i class="fas fa-building"></i> Faturamento para empresas</p>
             </div>
         </div>
         <div class="copyright">
