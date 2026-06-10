@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Ativa Caçambas | Comprovante Oficial</title>
-    <link rel="icon" type="image/jpeg" href="img/logo.png">
+    <link rel="icon" type="image/png" href="img/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -29,7 +29,6 @@
             padding: 0 24px;
         }
 
-        /* Header profissional */
         .main-header {
             background: #ffffff;
             border-radius: 16px;
@@ -105,7 +104,6 @@
             color: #00a650;
         }
 
-        /* Card comprovante */
         .comprovante-wrapper {
             background: #ffffff;
             border-radius: 20px;
@@ -115,7 +113,6 @@
             border: 1px solid #e9ecef;
         }
 
-        /* Header com verde premium */
         .comprovante-header {
             background: linear-gradient(135deg, #008c44 0%, #00a650 100%);
             padding: 28px 32px;
@@ -164,7 +161,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Conteúdo */
         .comprovante-body {
             padding: 32px;
         }
@@ -220,7 +216,6 @@
             word-break: break-word;
         }
 
-        /* Tabela produtos */
         .produtos-table {
             width: 100%;
             border-collapse: collapse;
@@ -273,7 +268,6 @@
             font-size: 10px;
         }
 
-        /* rodape comprovante */
         .footer-note {
             text-align: center;
             margin-top: 20px;
@@ -284,7 +278,6 @@
             line-height: 1.6;
         }
 
-        /* Ações botões */
         .acoes {
             display: flex;
             gap: 14px;
@@ -444,25 +437,33 @@
     function formatarDataBrasil(dataISO) {
         if (!dataISO) return 'Data não informada';
         try {
-            if (dataISO.includes('-')) {
+            if (dataISO.includes('-') && dataISO.length === 10) {
                 const [ano, mes, dia] = dataISO.split('-');
                 return `${dia}/${mes}/${ano}`;
             }
             const d = new Date(dataISO);
-            return d.toLocaleDateString('pt-BR');
+            if (!isNaN(d.getTime())) {
+                return d.toLocaleDateString('pt-BR');
+            }
+            return dataISO;
         } catch(e) { return dataISO; }
     }
 
     function calcularRetirada(dataEntregaISO) {
         if (!dataEntregaISO) return '7 dias úteis após entrega';
-        const entrega = new Date(dataEntregaISO);
-        entrega.setDate(entrega.getDate() + 7);
-        return formatarDataBrasil(entrega.toISOString().split('T')[0]) + ' (retirada programada)';
+        try {
+            const entrega = new Date(dataEntregaISO);
+            if (!isNaN(entrega.getTime())) {
+                entrega.setDate(entrega.getDate() + 7);
+                return formatarDataBrasil(entrega.toISOString().split('T')[0]) + ' (retirada programada)';
+            }
+        } catch(e) {}
+        return '7 dias úteis após entrega';
     }
 
     function escapeHtml(str) {
         if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
+        return String(str).replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
@@ -470,96 +471,142 @@
         });
     }
 
-    // Carregar dados do localStorage
-    function carregarDadosComprovante() {
-        // Cliente
-        const clienteNome = localStorage.getItem('cliente_nome') || sessionStorage.getItem('cliente_nome') || 'CLIENTE PREFERENCIAL';
-        const clienteCpf = localStorage.getItem('cliente_cpf') || sessionStorage.getItem('cliente_cpf') || '***.123.456-**';
-        const clienteTelefone = localStorage.getItem('cliente_telefone') || '(41) 9287-8772';
-        const clienteEmail = localStorage.getItem('cliente_email') || 'cliente@ativacacambas.com.br';
+    // Buscar dados reais do localStorage (mesmas chaves usadas no checkout)
+    function getDadosReais() {
+        // DADOS DO CLIENTE
+        let clienteNome = localStorage.getItem('cliente_nome');
+        let clienteCpf = localStorage.getItem('cliente_cpf');
+        let clienteTelefone = localStorage.getItem('cliente_telefone');
+        let clienteEmail = localStorage.getItem('cliente_email');
         
-        // Endereço
-        let enderecoCompleto = localStorage.getItem('endereco_obra') || localStorage.getItem('endereco_completo') || '';
-        const pontoReferencia = localStorage.getItem('ponto_referencia') || '';
+        // Se não encontrar, tenta sessionStorage
+        if (!clienteNome) clienteNome = sessionStorage.getItem('cliente_nome');
+        if (!clienteCpf) clienteCpf = sessionStorage.getItem('cliente_cpf');
+        if (!clienteTelefone) clienteTelefone = sessionStorage.getItem('cliente_telefone');
+        if (!clienteEmail) clienteEmail = sessionStorage.getItem('cliente_email');
+        
+        // Fallback com valores padrão (caso não exista)
+        if (!clienteNome) clienteNome = 'Cliente não informado';
+        if (!clienteCpf) clienteCpf = '***.xxx.xxx-**';
+        if (!clienteTelefone) clienteTelefone = '(41) 9 9287-8772';
+        if (!clienteEmail) clienteEmail = 'cliente@ativacacambas.com.br';
+        
+        // ENDEREÇO
+        let enderecoCompleto = localStorage.getItem('endereco_obra') || localStorage.getItem('endereco_completo') || sessionStorage.getItem('endereco_obra');
+        let pontoReferencia = localStorage.getItem('ponto_referencia') || sessionStorage.getItem('ponto_referencia');
+        
         if (!enderecoCompleto) {
-            enderecoCompleto = "Av. Victor Ferreira do Amaral, 1725 - Hauer, Curitiba/PR - CEP 81630-180";
+            enderecoCompleto = "Endereço não informado no agendamento";
         }
         
-        // Data e horário
-        let dataAgendamento = localStorage.getItem('data_agendamento') || sessionStorage.getItem('agendamento_data') || '';
-        let horarioAgendamento = localStorage.getItem('horario_agendamento') || sessionStorage.getItem('agendamento_horario') || '';
+        // DATA E HORÁRIO
+        let dataAgendamento = localStorage.getItem('data_agendamento') || sessionStorage.getItem('data_agendamento') || sessionStorage.getItem('agendamento_data');
+        let horarioAgendamento = localStorage.getItem('horario_agendamento') || sessionStorage.getItem('horario_agendamento') || sessionStorage.getItem('agendamento_horario');
+        
         if (!dataAgendamento) {
             const amanha = new Date();
             amanha.setDate(amanha.getDate() + 1);
             dataAgendamento = amanha.toISOString().split('T')[0];
-            horarioAgendamento = horarioAgendamento || '09:00 as 12:00';
+        }
+        if (!horarioAgendamento) {
+            horarioAgendamento = '08:00 às 12:00';
         }
         
-        // Produtos
+        // PRODUTO (do localStorage do checkout)
+        let produtoNome = localStorage.getItem('produto_nome') || sessionStorage.getItem('produto_nome');
+        let produtoPreco = parseFloat(localStorage.getItem('produto_preco') || sessionStorage.getItem('produto_preco'));
+        let produtoId = localStorage.getItem('produto_id') || sessionStorage.getItem('produto_id');
+        
         let produtos = [];
         let valorTotal = 0;
-        try {
-            const carrinho = localStorage.getItem('carrinho_produtos');
-            if (carrinho) {
-                produtos = JSON.parse(carrinho);
-                valorTotal = produtos.reduce((sum, p) => sum + (p.preco * (p.quantidade || 1)), 0);
-            } else {
-                produtos = [
-                    { nome: "Cacamba 5m³ - Estacionaria", preco: 450, quantidade: 1, tipo: "Entulho" },
-                    { nome: "Cacamba 7m³ - Basculante", preco: 620, quantidade: 1, tipo: "Reforma" }
-                ];
-                valorTotal = 1070;
-                localStorage.setItem('carrinho_produtos', JSON.stringify(produtos));
-            }
-        } catch(e) {
-            produtos = [{ nome: "Locacao Cacamba 5m³", preco: 450, quantidade: 1, tipo: "Obra" }];
-            valorTotal = 450;
+        
+        if (produtoNome && !isNaN(produtoPreco)) {
+            produtos = [{
+                nome: produtoNome,
+                preco: produtoPreco,
+                quantidade: 1,
+                tipo: "Caçamba estacionária"
+            }];
+            valorTotal = produtoPreco;
+        } else {
+            // Tenta carregar do carrinho
+            try {
+                const carrinho = localStorage.getItem('carrinho_produtos');
+                if (carrinho) {
+                    produtos = JSON.parse(carrinho);
+                    valorTotal = produtos.reduce((sum, p) => sum + (p.preco * (p.quantidade || 1)), 0);
+                }
+            } catch(e) {}
         }
         
-        // Pagamento
-        let formaPagamento = localStorage.getItem('forma_pagamento') || 'Cartao de credito';
-        let ultimosDigitos = localStorage.getItem('cartao_ultimos') || localStorage.getItem('final_cartao') || '';
-        
-        if (!ultimosDigitos && formaPagamento === 'Cartao de credito') {
-            ultimosDigitos = '7842';
-            localStorage.setItem('cartao_ultimos', ultimosDigitos);
+        // Se ainda não tem produto, fallback
+        if (produtos.length === 0) {
+            produtos = [{
+                nome: "Caçamba 5m³ - Locação",
+                preco: 450.00,
+                quantidade: 1,
+                tipo: "Entulho / Construção"
+            }];
+            valorTotal = 450.00;
         }
-        if (formaPagamento === 'PIX') ultimosDigitos = 'PIX identificado';
-        if (formaPagamento === 'Boleto') ultimosDigitos = 'Boleto bancario';
+        
+        // FORMA DE PAGAMENTO
+        let formaPagamento = localStorage.getItem('tipo_pagamento') || sessionStorage.getItem('tipo_pagamento');
+        if (!formaPagamento) {
+            formaPagamento = localStorage.getItem('forma_pagamento') || 'PIX';
+        }
+        
+        let ultimosDigitos = '';
+        if (formaPagamento === 'cartao' || formaPagamento === 'Cartão de crédito' || formaPagamento === 'Cartao de credito') {
+            ultimosDigitos = localStorage.getItem('cartao_ultimos') || sessionStorage.getItem('cartao_ultimos') || '7842';
+            formaPagamento = 'Cartão de crédito';
+        } else if (formaPagamento === 'pix' || formaPagamento === 'PIX') {
+            ultimosDigitos = 'PIX identificado';
+            formaPagamento = 'PIX';
+        } else {
+            ultimosDigitos = 'Confirmado';
+        }
         
         let valorPago = valorTotal;
-        const valorSalvo = localStorage.getItem('valor_pago');
-        if (valorSalvo) {
-            valorPago = parseFloat(valorSalvo);
-        }
-        const valorPagoFormatado = valorPago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         
-        // Montar HTML
+        return {
+            clienteNome, clienteCpf, clienteTelefone, clienteEmail,
+            enderecoCompleto, pontoReferencia,
+            dataAgendamento, horarioAgendamento,
+            produtos, valorTotal,
+            formaPagamento, ultimosDigitos, valorPago
+        };
+    }
+
+    // Montar HTML do comprovante com dados reais
+    function carregarDadosComprovante() {
+        const dados = getDadosReais();
+        
         const htmlBody = `
             <div class="info-section">
                 <h3><i class="fas fa-user"></i> Dados do contratante</h3>
                 <div class="info-grid">
-                    <div class="info-item"><span class="info-label">Nome completo</span><span class="info-value">${escapeHtml(clienteNome)}</span></div>
-                    <div class="info-item"><span class="info-label">CPF / CNPJ</span><span class="info-value">${escapeHtml(clienteCpf)}</span></div>
-                    <div class="info-item"><span class="info-label">Telefone</span><span class="info-value">${escapeHtml(clienteTelefone)}</span></div>
-                    <div class="info-item"><span class="info-label">E-mail</span><span class="info-value">${escapeHtml(clienteEmail)}</span></div>
+                    <div class="info-item"><span class="info-label">Nome completo</span><span class="info-value">${escapeHtml(dados.clienteNome)}</span></div>
+                    <div class="info-item"><span class="info-label">CPF / CNPJ</span><span class="info-value">${escapeHtml(dados.clienteCpf)}</span></div>
+                    <div class="info-item"><span class="info-label">Telefone</span><span class="info-value">${escapeHtml(dados.clienteTelefone)}</span></div>
+                    <div class="info-item"><span class="info-label">E-mail</span><span class="info-value">${escapeHtml(dados.clienteEmail)}</span></div>
                 </div>
             </div>
             
             <div class="info-section">
-                <h3><i class="fas fa-map-marker-alt"></i> Local da instalacao</h3>
+                <h3><i class="fas fa-map-marker-alt"></i> Local da instalação</h3>
                 <div class="info-value" style="background: white; padding: 12px 14px; border-radius: 12px; border: 1px solid #e9ecef;">
-                    ${escapeHtml(enderecoCompleto)}
-                    ${pontoReferencia ? `<div style="margin-top: 8px; font-size: 12px; color: #6c7a91;">Referencia: ${escapeHtml(pontoReferencia)}</div>` : ''}
+                    ${escapeHtml(dados.enderecoCompleto)}
+                    ${dados.pontoReferencia ? `<div style="margin-top: 8px; font-size: 12px; color: #6c7a91;">Referência: ${escapeHtml(dados.pontoReferencia)}</div>` : ''}
                 </div>
             </div>
             
             <div class="info-section">
                 <h3><i class="fas fa-calendar-alt"></i> Cronograma</h3>
                 <div class="info-grid">
-                    <div class="info-item"><span class="info-label">Data da entrega</span><span class="info-value">${formatarDataBrasil(dataAgendamento)}</span></div>
-                    <div class="info-item"><span class="info-label">Horario agendado</span><span class="info-value">${escapeHtml(horarioAgendamento)}</span></div>
-                    <div class="info-item"><span class="info-label">Previsao de coleta</span><span class="info-value">${calcularRetirada(dataAgendamento)}</span></div>
+                    <div class="info-item"><span class="info-label">Data da entrega</span><span class="info-value">${formatarDataBrasil(dados.dataAgendamento)}</span></div>
+                    <div class="info-item"><span class="info-label">Horário agendado</span><span class="info-value">${escapeHtml(dados.horarioAgendamento)}</span></div>
+                    <div class="info-item"><span class="info-label">Previsão de coleta</span><span class="info-value">${calcularRetirada(dados.dataAgendamento)}</span></div>
                 </div>
             </div>
             
@@ -567,13 +614,13 @@
                 <h3><i class="fas fa-dumpster"></i> Itens contratados</h3>
                 <table class="produtos-table">
                     <thead>
-                        <tr><th>Descricao</th><th>Tipo</th><th>Quantidade</th><th>Unitario</th><th>Subtotal</th></tr>
+                        <tr><th>Descrição</th><th>Tipo</th><th>Quantidade</th><th>Unitário</th><th>Subtotal</th></tr>
                     </thead>
                     <tbody>
-                        ${produtos.map(prod => `
+                        ${dados.produtos.map(prod => `
                             <tr>
                                 <td>${escapeHtml(prod.nome)}</td>
-                                <td>${escapeHtml(prod.tipo || 'Padrao')}</td>
+                                <td>${escapeHtml(prod.tipo || 'Caçamba')}</td>
                                 <td>${prod.quantidade || 1}</td>
                                 <td>${(prod.preco || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                                 <td>${((prod.preco || 0) * (prod.quantidade || 1)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
@@ -581,28 +628,28 @@
                         `).join('')}
                         <tr class="total-row">
                             <td colspan="4" style="text-align: right; font-weight: 600;">VALOR TOTAL</td>
-                            <td style="font-weight: 700;">${valorPagoFormatado}</td>
+                            <td style="font-weight: 700;">${dados.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
             <div class="info-section">
-                <h3><i class="fas fa-credit-card"></i> Transacao financeira</h3>
+                <h3><i class="fas fa-credit-card"></i> Transação financeira</h3>
                 <div class="info-grid">
-                    <div class="info-item"><span class="info-label">Forma de pagamento</span><span class="info-value">${escapeHtml(formaPagamento)}</span></div>
-                    <div class="info-item"><span class="info-label">Final do cartao</span><span class="info-value">•••• ${escapeHtml(ultimosDigitos)}</span></div>
-                    <div class="info-item"><span class="info-label">Valor pago</span><span class="info-value" style="color: #00a650; font-weight: 600;">${valorPagoFormatado}</span></div>
-                    <div class="info-item"><span class="info-label">Situacao</span><span class="badge-pago"><i class="fas fa-check"></i> CONFIRMADO</span></div>
+                    <div class="info-item"><span class="info-label">Forma de pagamento</span><span class="info-value">${escapeHtml(dados.formaPagamento)}</span></div>
+                    <div class="info-item"><span class="info-label">Identificação</span><span class="info-value">${escapeHtml(dados.ultimosDigitos)}</span></div>
+                    <div class="info-item"><span class="info-label">Valor pago</span><span class="info-value" style="color: #00a650; font-weight: 600;">${dados.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></div>
+                    <div class="info-item"><span class="info-label">Situação</span><span class="badge-pago"><i class="fas fa-check"></i> CONFIRMADO</span></div>
                 </div>
                 <div style="margin-top: 16px; background: #f0fdf4; border-radius: 10px; padding: 12px; font-size: 11px; color: #2d6a4f;">
-                    Nota fiscal eletronica sera enviada para o e-mail cadastrado em ate 2 horas uteis.
+                    Nota fiscal eletrônica será enviada para o e-mail cadastrado em até 2 horas úteis.
                 </div>
             </div>
             
             <div class="footer-note">
-                <p>Ativa Cacambas - Gestao sustentavel de residuos | Certificacao SEMMA | Licenca ambiental IAP</p>
-                <p style="margin-top: 6px;">Emissao: ${new Date().toLocaleString('pt-BR')} | Protocolo: ${document.getElementById('protocoloDisplay')?.innerText || gerarProtocolo()}</p>
+                <p>Ativa Caçambas - Gestão sustentável de resíduos | Certificação SEMMA | Licença ambiental IAP</p>
+                <p style="margin-top: 6px;">Emissão: ${new Date().toLocaleString('pt-BR')} | Protocolo: ${document.getElementById('protocoloDisplay')?.innerText || gerarProtocolo()}</p>
             </div>
         `;
         
@@ -610,36 +657,19 @@
         if (bodyDiv) bodyDiv.innerHTML = htmlBody;
     }
 
-    // Inicializar dados
-    function inicializarDados() {
-        if (!localStorage.getItem('cliente_nome')) {
-            localStorage.setItem('cliente_nome', 'ROBERTO ALMEIDA SANTOS');
-            localStorage.setItem('cliente_cpf', '123.456.789-00');
-            localStorage.setItem('cliente_telefone', '(41) 98765-4321');
-            localStorage.setItem('cliente_email', 'roberto.alm@email.com');
-        }
-        if (!localStorage.getItem('endereco_obra')) {
-            localStorage.setItem('endereco_obra', 'Rua das Flores, 456 - Jardim America, Curitiba/PR - 81520-090');
-            localStorage.setItem('ponto_referencia', 'Em frente a praca, casa com portao verde');
-        }
-        if (!localStorage.getItem('data_agendamento')) {
-            const dataEntrega = new Date();
-            dataEntrega.setDate(dataEntrega.getDate() + 2);
-            localStorage.setItem('data_agendamento', dataEntrega.toISOString().split('T')[0]);
-            localStorage.setItem('horario_agendamento', '14:00 as 17:00');
-        }
-        if (!localStorage.getItem('carrinho_produtos')) {
-            const carrinho = [
-                { nome: "Cacamba 5m³ - Estacionaria", preco: 450, quantidade: 1, tipo: "Entulho" },
-                { nome: "Cacamba 10m³ - Basculante", preco: 790, quantidade: 1, tipo: "Reforma" }
-            ];
-            localStorage.setItem('carrinho_produtos', JSON.stringify(carrinho));
-        }
-        if (!localStorage.getItem('forma_pagamento')) {
-            localStorage.setItem('forma_pagamento', 'Cartao de credito');
-            localStorage.setItem('cartao_ultimos', '5589');
-            localStorage.setItem('valor_pago', '1240');
-        }
+    // Salvar dados após pagamento confirmado
+    function salvarDadosPosPagamento() {
+        // Garantir que os dados estejam sincronizados
+        const dados = getDadosReais();
+        localStorage.setItem('cliente_nome_comp', dados.clienteNome);
+        localStorage.setItem('cliente_cpf_comp', dados.clienteCpf);
+        localStorage.setItem('cliente_telefone_comp', dados.clienteTelefone);
+        localStorage.setItem('endereco_obra_comp', dados.enderecoCompleto);
+        localStorage.setItem('data_agendamento_comp', dados.dataAgendamento);
+        localStorage.setItem('horario_agendamento_comp', dados.horarioAgendamento);
+        localStorage.setItem('produto_nome_comp', dados.produtos[0]?.nome);
+        localStorage.setItem('produto_preco_comp', dados.valorTotal);
+        localStorage.setItem('forma_pagamento_comp', dados.formaPagamento);
     }
 
     // PDF
@@ -647,7 +677,7 @@
         const element = document.getElementById('comprovanteParaPDF');
         const opt = {
             margin: [0.5, 0.5, 0.5, 0.5],
-            filename: `comprovante_ativa_${new Date().toISOString().slice(0,19)}.pdf`,
+            filename: `comprovante_ativa_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, letterRendering: true, useCORS: true },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
@@ -661,12 +691,13 @@
     document.getElementById('btnVoltar')?.addEventListener('click', () => window.location.href = 'index.html');
     document.getElementById('btnWhats')?.addEventListener('click', () => {
         const protocolo = document.getElementById('protocoloDisplay')?.innerText || '';
-        const texto = `ATIVA CACAMBAS - Meu pagamento foi confirmado. Pedido ${protocolo}. Agendamento para ${localStorage.getItem('data_agendamento') || 'proximos dias'}.`;
+        const dados = getDadosReais();
+        const texto = `ATIVA CAÇAMBAS - Pagamento confirmado! Pedido: ${protocolo}. Produto: ${dados.produtos[0]?.nome || 'Caçamba'}. Entrega: ${formatarDataBrasil(dados.dataAgendamento)}. Valor: ${dados.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}. Obrigado!`;
         window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
     });
 
     // Executar
-    inicializarDados();
+    salvarDadosPosPagamento();
     carregarDadosComprovante();
     
     const protocoloFinal = gerarProtocolo();
